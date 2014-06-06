@@ -1,0 +1,10 @@
+html, body { background-color: $tan; color: $dark; height: 100%; width: 100%; }
+body { font: normal 300 normal 100%/1.4 'Ubuntu', Helvetica, Arial, sans-serif; }
+
+/* generate single palette */
+@each $color_var in $color_vars {
+	$i: index($color_vars, $color_var);
+	.border-#{$i} { border-color: $color_var; }
+	.color-#{$i} { color: $color_var; }
+	.bckgd-#{$i} { background-color: $color_var; }
+}
