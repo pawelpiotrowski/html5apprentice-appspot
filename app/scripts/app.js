@@ -6,6 +6,7 @@ angular.module('personalApp', [
 	'personalApp.directives',
 	'personalApp.logservice',
 	'personalApp.svgdrawings',
+	'personalApp.box2d',
 	'ngRoute'
 ])
 .config(function ($routeProvider) {

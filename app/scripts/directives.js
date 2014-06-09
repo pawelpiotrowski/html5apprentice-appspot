@@ -25,7 +25,6 @@ angular.module('personalApp.directives', [])
 	function($compile) {
 		return {
 			restrict: 'A',
-			controller: 'NavCtrl',
 			link: function(scope, iElement, iAttr) {
 				console.log(scope.sections)
 				var stripeClassName = iAttr.introStripeClass;
