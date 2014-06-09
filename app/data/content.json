@@ -1,0 +1,116 @@
+{
+  "sections": [
+    {
+      "name": "about",
+      "content": {
+        "title": "About me",
+        "txt": "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec id elit non mi porta gravida at eget metus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.",
+        "resources": {
+          "images": [],
+          "videos": [],
+          "other": []
+        }
+      }
+    },
+    {
+      "name": "projects",
+      "content": {
+        "title": "My projects",
+        "txt": "Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean lacinia bibendum nulla sed consectetur.",
+        "resources": {
+          "images": [],
+          "videos": [],
+          "other": [],
+          "items": [
+            {
+              "id": 1,
+              "content": {
+                "title": "Project 1",
+                "txt": "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur.",
+                "resources": {
+                  "images": [],
+                  "videos": [],
+                  "other": []
+                }
+              }
+            },
+            {
+              "id": 2,
+              "content": {
+                "title": "Project 2",
+                "txt": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "resources": {
+                  "images": [],
+                  "videos": [],
+                  "other": []
+                }
+              }
+            },
+            {
+              "id": 3,
+              "content": {
+                "title": "Project 3",
+                "txt": "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Etiam porta sem malesuada magna mollis euismod.",
+                "resources": {
+                  "images": [],
+                  "videos": [],
+                  "other": []
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "appendix",
+      "content": {
+        "title": "Appendix",
+        "txt": "Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean lacinia bibendum nulla sed consectetur.",
+        "resources": {
+          "images": [],
+          "videos": [],
+          "other": [],
+          "items": [
+            {
+              "id": 1,
+              "content": {
+                "title": "Appendix 1",
+                "txt": "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur.",
+                "resources": {
+                  "images": [],
+                  "videos": [],
+                  "other": []
+                }
+              }
+            },
+            {
+              "id": 2,
+              "content": {
+                "title": "Appendix 2",
+                "txt": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "resources": {
+                  "images": [],
+                  "videos": [],
+                  "other": []
+                }
+              }
+            },
+            {
+              "id": 3,
+              "content": {
+                "title": "Appendix 3",
+                "txt": "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Etiam porta sem malesuada magna mollis euismod.",
+                "resources": {
+                  "images": [],
+                  "videos": [],
+                  "other": []
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

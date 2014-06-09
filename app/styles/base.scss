@@ -1,6 +1,9 @@
 @import 'variables';
+@import 'mixins';
 html, body { background-color: $tan; color: $dark; height: 100%; width: 100%; }
-body { font: normal 300 normal 100%/1.4 'Ubuntu', Helvetica, Arial, sans-serif; }
+body { font-family: 'Ubuntu', Helvetica, Arial, sans-serif; font-size: 100%; font-weight: 300; line-height: 1.4; }
+
+.border-radius { @include border-radius(4px); }
 
 /* generate single palette */
 @each $color_var in $color_vars {
@@ -8,4 +11,13 @@ body { font: normal 300 normal 100%/1.4 'Ubuntu', Helvetica, Arial, sans-serif; 
 	.border-#{$i} { border-color: $color_var; }
 	.color-#{$i} { color: $color_var; }
 	.bckgd-#{$i} { background-color: $color_var; }
+}
+/* generate sections styling */
+@each $section_color in $section_colors {
+	$i: index($section_colors, $section_color);
+	.section-#{$i} {
+		.section-border { border-color: $section_color; }
+		.section-color { color: $section_color; }
+		.section-bckgd { background-color: $section_color; }
+	}
 }

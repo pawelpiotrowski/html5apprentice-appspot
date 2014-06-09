@@ -1,6 +1,24 @@
 @import 'reset';
 @import 'base';
 
-body {
-	h1 { color: $dark; }
+.full { height: 100%; width: 100%; }
+.screen-centered { align-items: center; display: flex; flex-flow: row; justify-content: center; }
+.view-container { @extend .full; position: relative; }
+.nav-container { @extend .full; left: 0; position: absolute; top: 0; z-index: 20; }
+.nav-item { @extend .screen-centered; float: left; height: 100%; vertical-align: top; text-align: center; width: 33.33%; }
+
+.bckgd-attractor { @extend .full; left: 0; overflow: hidden; position: absolute; top: 0; z-index: 1; }
+.bckgd-attractor svg { @extend .full; }
+
+/* intro */
+.intro-toplayer { position: relative; text-align: center; z-index: 10; }
+.intro-stripes { @extend .bckgd-attractor; }
+.intro-stripe {	@extend .nav-item; @include transform(rotate(15deg)); background-color: $white; margin-left: 2%; padding-right: 0.33%; width: 30%; }
+.intro-stripe-inner { @extend .full; }
+.intro-stripe .intro-stripe-inner { @extend .bckgd-5; }
+.intro-stripe:first-child .intro-stripe-inner { @extend .bckgd-2; }
+.intro-stripe:last-child {
+	padding-right: 0; width: 33.33%;
+	.intro-stripe-inner { @extend .bckgd-4; }
 }
+@import 'dev';

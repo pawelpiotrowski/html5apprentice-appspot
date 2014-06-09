@@ -20,6 +20,6 @@
   "smarttabs": true,
   "globals": {
     "angular": false,
-	"ppApp": false
+	"Raphael": true
   }
 }

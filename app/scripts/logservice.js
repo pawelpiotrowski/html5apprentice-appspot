@@ -1,6 +1,7 @@
 'use strict';
+angular.module('personalApp.logservice', [])
 
-ppApp.service('AppservLog',[
+.service('AppservLog',[
 	'$log',
 	function($log) {
 		this.log = function(logtype, logmsg) {

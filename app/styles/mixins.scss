@@ -1,0 +1,54 @@
+@mixin box-sizing($sizing: border-box) {
+	-webkit-box-sizing: $sizing;
+	-moz-box-sizing: $sizing;
+	box-sizing: $sizing;
+}
+
+@mixin box-shadow($shadow: 0 1px 1px rgba(0,0,0,.3)) {
+	-webkit-box-shadow: $shadow;
+	-moz-box-shadow: $shadow;
+	box-shadow: $shadow;
+}
+
+@mixin linear-top-gradient($c1: #fff, $c2: #000) {
+	background-image: -webkit-linear-gradient(top, $c1, $c2); /* Chrome 10+, Saf5.1+, iOS 5+ */
+	background-image: -moz-linear-gradient(top, $c1, $c2); /* FF3.6+ */
+	background-image: -ms-linear-gradient(top, $c1, $c2); /* IE10 */
+	background-image: -o-linear-gradient(top, $c1, $c2); /* Opera 11.10+ */
+	background-image: linear-gradient(to bottom, $c1, $c2);
+}
+
+@mixin border-radius($radius: 3px) {
+	-webkit-border-radius: $radius; /* Saf3-4, iOS 1-3.2, Android ≤1.6 */
+	border-radius: $radius; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
+	/* Hiding background color from leaking outside the border */
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
+}
+
+@mixin transform($transform: rotate(360deg)) {
+	-webkit-transform: $transform;
+	transform: $transform;
+}
+
+@mixin opacity($opacity: 1) {
+	-webkit-opacity: $opacity;
+	-moz-opacity: $opacity;
+	opacity: $opacity;
+}
+
+@mixin transition($transition: all 0.2s) {
+	-webkit-transition: $transition;
+	-moz-transition: $transition;
+	-ms-transition: $transition;
+	-o-transition: $transition;
+	transition: $transition;
+}
+
+@mixin background-size($background-size: cover) {
+	-webkit-background-size: $background-size;
+	-moz-background-size: $background-size;
+	-o-background-size: $background-size;
+	background-size: $background-size;
+}
