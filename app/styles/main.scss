@@ -13,7 +13,7 @@
 /* intro */
 .intro-toplayer { position: relative; text-align: center; z-index: 10; }
 .intro-stripes { @extend .bckgd-attractor; }
-.intro-stripe {	@extend .nav-item; @include transform(rotate(15deg)); background-color: $white; margin-left: 2%; padding-right: 0.33%; width: 30%; }
+.intro-stripe {	@extend .nav-item; @include transform(rotate(15deg)); background-color: $folk-yellow; margin-left: 2%; padding-right: 0.33%; width: 30%; }
 .intro-stripe-inner { @extend .full; }
 .intro-stripe .intro-stripe-inner { @extend .bckgd-5; }
 .intro-stripe:first-child .intro-stripe-inner { @extend .bckgd-2; }

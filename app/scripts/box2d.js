@@ -98,7 +98,7 @@ angular.module('personalApp.box2d', [])
 						},
 						ground: function() {
 							add.box({
-								x: 2,        // 740 / 30 / 2
+								x: (windowSize.w / 30) / 2,        // 740 / 30 / 2
 								y: (windowSize.h / 30),
 								height: 2,
 								width: windowSize.w / 30,     // 740 / 30
