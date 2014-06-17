@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('personalApp', [
+angular.module('personalApp', [,
+	'ngRoute',
 	'personalApp.appconfig',
-	'personalApp.controllers',
-	'personalApp.directives',
-	'personalApp.logservice',
-	'personalApp.svgdrawings',
-	'personalApp.box2d',
-	'ngRoute'
+	'personalApp.appcontroller',
+	'personalApp.appnavigation',
+	'personalApp.dollmaker',
+	'personalApp.dollhandcraft',
+	'personalApp.logservice'
 ])
 .config(function ($routeProvider) {
 	$routeProvider

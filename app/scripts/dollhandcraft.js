@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('personalApp.box2d', [])
+angular.module('personalApp.dollhandcraft', [])
 
 .directive('appdirBckgdAnimation', [
 

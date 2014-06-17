@@ -1,16 +1,18 @@
+/*
 'use strict';
 
 angular.module('personalApp.svgdrawings', [])
 
-.directive('appdirBckgdAttractor', [
+.directive('appdirMakeDoll', [
 	function() {
 		return {
 			restrict: 'A',
 			link: function(scope, iElement, iAttr) {
 				console.log(scope, iElement, iAttr);
 				var w = 134, h = 254;
+				var dollCounter = scope.$index;
 				var doll = new Raphael(iElement[0]);
-				
+				console.log(dollCounter);
 				// http://www.downloadclipart.net/browse/13031/russian-dolls-clipart
 				var basePath = doll.path('M66.384,4.445c-33.021,0.44-39.297,27.441-39.297,54.79 c0.192,22.427-20.81,34.056-20.81,55.662c0,0-2.566,23.821,0,35.086c5.212,22.879,13.528,51.22,25.876,68.961 c-7.27,3.925-11.574,8.787-11.574,13.361c0,9.898,20.111,17.256,46.923,17.256s46.922-7.357,46.922-17.256 c0-4.822-4.775-9.975-12.776-14c12.822-17.626,22.274-45.285,26.994-68.322c2.332-11.375-2.152-35.086-2.152-35.086 c-1.693-27.546-20.877-35.705-20.808-55.662C105.681,31.886,99.399,4.005,66.384,4.445L66.384,4.445z')
 				.attr({id: 'basePath','connector-curvature': '0',fill: '#ECC117','stroke-width': '0','stroke-opacity': '1'})
@@ -251,12 +253,14 @@ angular.module('personalApp.svgdrawings', [])
 					flowerSouthPath4,
 					flowerSouthPath5
 				);
+				
 				doll.setViewBox(0, 0, w, h, true);
 				//doll.setSize('100%', '100%');
-				//doll.canvas.setAttribute('preserveAspectRatio', 'xMidYMid');
+				doll.canvas.setAttribute('preserveAspectRatio', 'xMidYMid');
 				//doll.canvas.setAttribute('meetOrSlice', 'meet');
 				
 			}
 		};
 	}
 ]);
+*/

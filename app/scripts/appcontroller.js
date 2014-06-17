@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('personalApp.controllers', [])
+angular.module('personalApp.appcontroller', [])
 
 .controller('MainCtrl', [
 	'AppservLog',
@@ -30,14 +30,6 @@ angular.module('personalApp.controllers', [])
 		}, function(err) {
 			$scope.appLog('warn', err);
 		}, null);
-	}
-])
-
-.controller('NavCtrl', [
-	'$scope',
-	function($scope) {
-		console.log('nav controller');
-		console.log($scope.getAppColor(1));
 	}
 ])
 

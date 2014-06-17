@@ -6,7 +6,27 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 	colorNames: ['white', 'red', 'orange', 'blue', 'green', 'tan', 'dark'],
 	colorPalette: ['#fffffc', '#dd1e2f', '#ebb035', '#06a2cb', '#218559', '#d0c6b1', '#192823'],
 	contentPath: 'data/content.json',
-	exludeSections: ['test', '404', 'null']
+	exludeSections: ['test', '404', 'null'],
+	palette: {
+		page: {
+			bckgd: '#ffffff',
+			color: '#000000'
+		},
+		sections: [
+			{
+				main: '#e56a1a',
+				contra: '#ebc014'
+			},
+			{
+				main: '#003380',
+				contra: '#87aade'
+			},
+			{
+				main: '#445500',
+				contra: '#abc837'
+			}
+		]
+	}
 })
 
 .factory('AppfactConfig', [
@@ -16,21 +36,36 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 	'appSettings',
 	function($http, $q, $route, settings) {
 		
-		var	_sections = [];
-		(function() {
-			// build sections from routes
-			angular.forEach($route.routes, function(routeObj,routeVal) {
-				// remove slashes
-				var route = routeVal.replace(/\//g, '');
-				// ignore child routes -> search for name:id
-				var routeCheck = route.match(/[\:]/);
-				// ignore sections
-				var routeValidator = settings.exludeSections;
-				// valid route conditions
-				var validRoute = route.length && !routeCheck && _sections.indexOf(route) < 0 && routeValidator.indexOf(route) < 0;
-				if(validRoute) { _sections.push(route); }
-			});
-		}());
+		// stores valid routes
+		var _sections = [];
+		// array of sections objects
+		var	sections = [];
+		// build sections from routes
+		angular.forEach($route.routes, function(routeObj,routeVal) {
+			// remove slashes
+			var route = routeVal.replace(/\//g, '');
+			// ignore child routes -> search for name:id
+			var routeCheck = route.match(/[\:]/);
+			// ignore sections
+			var routeValidator = settings.exludeSections;
+			// valid route conditions
+			var validRoute = route.length && !routeCheck && _sections.indexOf(route) < 0 && routeValidator.indexOf(route) < 0;
+			//console.log(validRoute);
+			
+			var validRouteRef = sections.length;
+			if(validRoute) {
+				//console.log('valid route', validRouteRef);
+				_sections.push(route);
+				sections.push({
+					order: validRouteRef,
+					slug: route,
+					url: '#'+route,
+					palette: settings.palette.sections[validRouteRef]
+				});
+			}
+		});
+		
+		//console.log(sections);
 		
 		var getContent = function() {
 			var deferred = $q.defer();
@@ -47,7 +82,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 			getContentPromise: getContent,
 			getRoutedSections: function() {
 				var d = [];
-				return angular.extend(d,_sections);
+				return angular.extend(d,sections);
 			}
 		};
 	}
@@ -58,13 +93,14 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 	'AppservLog',
 	function(settings, appservLog) {
 		
-		// app palette log
+		/* app palette log
 		(function() {
 			appservLog.log('info', 'APPLICATION PALETTE:');
 			angular.forEach(settings.colorNames, function(k,v) {
 				appservLog.log('log', { name: k, val: settings.colorPalette[v] });
 			});
 		})();
+		*/
 		
 		this.getPallete = function() {
 			var d = [];
