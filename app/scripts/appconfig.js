@@ -15,17 +15,33 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 		sections: [
 			{
 				main: '#e56a1a',
-				contra: '#ebc014'
+				contra: '#ebc014',
+				extension: [
+					'#c87137'
+				]
 			},
 			{
 				main: '#003380',
-				contra: '#87aade'
+				contra: '#87aade',
+				extension: [
+					'#241c1c'
+				]
 			},
 			{
 				main: '#445500',
-				contra: '#abc837'
+				contra: '#abc837',
+				extension: [
+					'#fdd001'
+				]
 			}
-		]
+		],
+		sectionDefaultPalette: {
+			main: '#680420',
+			contra: '#eb2228',
+			extension: [
+				'#241c1c'
+			]
+		}
 	}
 })
 
@@ -55,12 +71,14 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 			var validRouteRef = sections.length;
 			if(validRoute) {
 				//console.log('valid route', validRouteRef);
+				var _p = settings.palette.sections[validRouteRef];
+				var _palette = (_p) ? _p : settings.palette.sectionDefaultPalette;
 				_sections.push(route);
 				sections.push({
 					order: validRouteRef,
 					slug: route,
 					url: '#'+route,
-					palette: settings.palette.sections[validRouteRef]
+					palette: _palette
 				});
 			}
 		});
