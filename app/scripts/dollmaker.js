@@ -46,8 +46,9 @@ angular.module('personalApp.dollmaker', [])
 			this.pathColors = (colors) ? colors : {};
 			this.dollShape = null;
 			this.dollPaths = {};
+			this.animated = false;
 			this.make = function() {
-				
+
 				var doll = this.el;
 				var	dollRef = AppservDoll.paths;
 				var	dollRoot = this;
@@ -58,21 +59,21 @@ angular.module('personalApp.dollmaker', [])
 				var removeCursorClass = function() {
 					htmlEl.removeClass('cursor-pointer');
 				};
-				
+
 				doll.setStart();
-				
+
 				angular.forEach(AppservDoll.pathOrder, function(pathName) {
 					var thisPath = dollRef[pathName];
 					dollRoot.dollPaths[pathName] = doll.path(thisPath.path)
 					.attr('fill', (thisPath.name in dollRoot.pathColors) ? dollRoot.pathColors[thisPath.name] : thisPath.color);
 					thisPath.make(dollRoot.dollPaths[pathName]);
 				});
-				
+
 				//doll.setViewBox(0, 0, this.svgSize.w * this.divider, this.svgSize.h * this.divider, true);
 				doll.setViewBox(0, 0, AppservDoll.svgSize.w, AppservDoll.svgSize.h, true);
 				//doll.setSize('100%', '100%');
 				doll.canvas.setAttribute('preserveAspectRatio', 'xMidYMax');
-				
+
 				this.dollShape = doll.setFinish();
 				this.dollShape.scale(this.scale,this.scale,AppservDoll.svgSize.w / 2, AppservDoll.svgSize.h);
 				this.dollShape.hover(addCursorClass,removeCursorClass);
@@ -91,23 +92,39 @@ angular.module('personalApp.dollmaker', [])
 				}
 			};
 			this.kiss = function() {
-				var lips = this.dollPaths.lipsPath;
-				var lipsPath = lips.attrs.path;
-				var pathString = '';
-				var animationEase = 'linear';
-				var kissingPath = 'M57.1865,72.9438 c4.0938,4.8081,2.2256,4.8149,9.1621,4.8706c7.0986-0.0732,5.9316-0.4062,9.1616-4.8706c-6.855-3.1934-3.8799-5.001-8.8281-3.4243 C61.1938,67.9717,64.499,70.0332,57.1865,72.9438z';
-				angular.forEach(lipsPath, function(p) {
-					pathString += p.toString()+' ';
-				});
-				var animateFinished = function() {
-					console.log('KISSED! :*');
-				};
-				var animateOut = Raphael.animation({ path: pathString }, 350, animationEase, animateFinished);
-				var animateOutClbk = function() {
-					lips.animate(animateOut.delay(500));
-				};
-				var animateIn = Raphael.animation({ path: kissingPath }, 200, animationEase, animateOutClbk);
-				lips.animate(animateIn);
+
+				if(!this.animated) {
+					console.log('inside');
+					this.animated = true;
+					var that = this;
+					var animationEase = 'linear';
+					var animationRef = AppservDoll.animationPaths.kiss;
+					var animationPathLast = animationRef.length - 1;
+
+					angular.forEach(animationRef, function(aPath, pathIndex) {
+
+						var originPath = that.dollPaths[aPath.reference];
+						var pathAttr = originPath.attrs.path;
+						var pathString = AppservDoll.getPathsString(pathAttr);
+						var kissingPath = aPath.path;
+
+						var kissFinished = function() {
+							that.animated = false;
+							console.log('KISSED! :*');
+						};
+						
+						var _kissFinished = (pathIndex === animationPathLast) ? kissFinished : null;
+
+						var kissOut = Raphael.animation({ path: pathString }, 350, animationEase, _kissFinished);
+
+
+						var kissOutClbk = function() {
+							originPath.animate(kissOut.delay(500));
+						};
+						var kissIn = Raphael.animation({ path: kissingPath }, 200, animationEase, kissOutClbk);
+						originPath.animate(kissIn);
+					});
+				}
 			};
 		};
 	}
@@ -115,9 +132,32 @@ angular.module('personalApp.dollmaker', [])
 
 .service('AppservDoll', [
 	function() {
+		this.getPathsString = function(pathsArray) {
+			var pathsString = '';
+			angular.forEach(pathsArray, function(p) {
+				pathsString += p.toString()+' ';
+			});
+			return pathsString;
+		};
 		this.svgSize = {
 			h: 254,
 			w: 134
+		};
+		this.animationPaths = {
+			kiss: [
+				{
+					reference: 'lipsPath',
+					path: 'M57.1865,72.9438 c4.0938,4.8081,2.2256,4.8149,9.1621,4.8706c7.0986-0.0732,5.9316-0.4062,9.1616-4.8706c-6.855-3.1934-3.8799-5.001-8.8281-3.4243 C61.1938,67.9717,64.499,70.0332,57.1865,72.9438z'
+				},
+				{
+					reference: 'leftEyePath',
+					path: 'M60.1069,53.585c0-1.1533-1.8389-1.085-4.1035-1.085 c-2.2656,0-4.1045-0.0684-4.1045,1.085c0,1.1523,1.8389,2.0952,4.1045,2.0952C58.2681,55.6802,60.1069,54.7373,60.1069,53.585z'
+				},
+				{
+					reference: 'rightEyePath',
+					path: 'M80.2319,53.585c0-1.1533-1.8389-1.085-4.1035-1.085c-2.2656,0-4.1045-0.0684-4.1045,1.085c0,1.1523,1.8389,2.0952,4.1045,2.0952C78.3931,55.6802,80.2319,54.7373,80.2319,53.585z'
+				}
+			]
 		};
 		this.paths = {
 			basePath: {
