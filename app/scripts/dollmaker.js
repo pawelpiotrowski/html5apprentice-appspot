@@ -14,7 +14,9 @@ angular.module('personalApp.dollmaker', [])
 				var navDollSize = navDollCounter + 1;
 				function navDollClick() {
 					console.log('clicked');
-					navDoll.action('click', navDollClick, false);
+					//navDoll.action('click', navDollClick, false);
+					//navDoll.animatePath(navDoll.dollPaths.lipsPath, null);
+					navDoll.kiss();
 				}
 				var navDoll = new AppfactDoll(
 					navDollRaphael,
@@ -29,6 +31,7 @@ angular.module('personalApp.dollmaker', [])
 				);
 				navDoll.make();
 				navDoll.action('click', navDollClick, true);
+				//console.log(navDoll.dollPaths.lipsPath.attrs.path[0].toString());
 			}
 		};
 	}
@@ -48,6 +51,13 @@ angular.module('personalApp.dollmaker', [])
 				var doll = this.el;
 				var	dollRef = AppservDoll.paths;
 				var	dollRoot = this;
+				var htmlEl = angular.element(document.getElementsByTagName('html')[0]);
+				var addCursorClass = function() {
+					htmlEl.addClass('cursor-pointer');
+				};
+				var removeCursorClass = function() {
+					htmlEl.removeClass('cursor-pointer');
+				};
 				
 				doll.setStart();
 				
@@ -65,7 +75,7 @@ angular.module('personalApp.dollmaker', [])
 				
 				this.dollShape = doll.setFinish();
 				this.dollShape.scale(this.scale,this.scale,AppservDoll.svgSize.w / 2, AppservDoll.svgSize.h);
-				
+				this.dollShape.hover(addCursorClass,removeCursorClass);
 				//console.log(this.dollPaths);
 				//console.log(this.dollShape);
 			};
@@ -79,6 +89,25 @@ angular.module('personalApp.dollmaker', [])
 						}
 						break;
 				}
+			};
+			this.kiss = function() {
+				var lips = this.dollPaths.lipsPath;
+				var lipsPath = lips.attrs.path;
+				var pathString = '';
+				var animationEase = 'linear';
+				var kissingPath = 'M57.1865,72.9438 c4.0938,4.8081,2.2256,4.8149,9.1621,4.8706c7.0986-0.0732,5.9316-0.4062,9.1616-4.8706c-6.855-3.1934-3.8799-5.001-8.8281-3.4243 C61.1938,67.9717,64.499,70.0332,57.1865,72.9438z';
+				angular.forEach(lipsPath, function(p) {
+					pathString += p.toString()+' ';
+				});
+				var animateFinished = function() {
+					console.log('KISSED! :*');
+				};
+				var animateOut = Raphael.animation({ path: pathString }, 350, animationEase, animateFinished);
+				var animateOutClbk = function() {
+					lips.animate(animateOut.delay(500));
+				};
+				var animateIn = Raphael.animation({ path: kissingPath }, 200, animationEase, animateOutClbk);
+				lips.animate(animateIn);
 			};
 		};
 	}

@@ -5,6 +5,7 @@ body { font-family: 'Ubuntu', Helvetica, Arial, sans-serif; font-size: 100%; fon
 a { color: inherit; }
 
 .border-radius { @include border-radius(4px); }
+.cursor-pointer { cursor: pointer; }
 
 /* generate single palette */
 @each $color_var in $color_vars {
