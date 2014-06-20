@@ -18,16 +18,30 @@ angular.module('personalApp.dollmaker', [])
 					//navDoll.animatePath(navDoll.dollPaths.lipsPath, null);
 					navDoll.kiss();
 				}
+				var navDollCustomColors = {
+					basePath: scope.sections[navDollCounter].palette.contra,
+					headPath: scope.sections[navDollCounter].palette.main,
+					bellyPath: scope.sections[navDollCounter].palette.main,
+					bowPath: scope.sections[navDollCounter].palette.main,
+					hairPath: scope.sections[navDollCounter].palette.extension[0]
+				};
+			
+				var navDollCustomPaths = false;
+				var navDollCustomAnimation = false;
+				
+				if(navDollCounter === 1) {
+					navDollCustomPaths = 0;
+					navDollCustomAnimation = {
+						kiss: 0
+					};
+				}
+				
 				var navDoll = new AppfactDoll(
 					navDollRaphael,
 					navDollSize,
-					{
-						basePath: scope.sections[navDollCounter].palette.contra,
-						headPath: scope.sections[navDollCounter].palette.main,
-						bellyPath: scope.sections[navDollCounter].palette.main,
-						bowPath: scope.sections[navDollCounter].palette.main,
-						hairPath: scope.sections[navDollCounter].palette.extension[0]
-					}
+					navDollCustomColors,
+					navDollCustomPaths,
+					navDollCustomAnimation
 				);
 				navDoll.make();
 				navDoll.action('click', navDollClick, true);
@@ -40,12 +54,14 @@ angular.module('personalApp.dollmaker', [])
 .factory('AppfactDoll', [
 	'AppservDoll',
 	function(AppservDoll) {
-		return function(doll, dollsize, colors) {
+		return function(doll, dollsize, colors, pathsRef, animationRef) {
 			this.el = doll;
 			this.scale = 1 - dollsize / 10;
 			this.pathColors = (colors) ? colors : {};
 			this.dollShape = null;
 			this.dollPaths = {};
+			this.customPaths = (angular.isNumber(pathsRef) && AppservDoll.customPaths[pathsRef]) ? AppservDoll.customPaths[pathsRef] : {};
+			this.customAnimation = (animationRef) ? animationRef : false;
 			this.animated = false;
 			this.make = function() {
 
@@ -63,7 +79,8 @@ angular.module('personalApp.dollmaker', [])
 				doll.setStart();
 
 				angular.forEach(AppservDoll.pathOrder, function(pathName) {
-					var thisPath = dollRef[pathName];
+					console.log(pathName in dollRoot.customPaths);
+					var thisPath = (pathName in dollRoot.customPaths) ? dollRoot.customPaths[pathName] : dollRef[pathName];
 					dollRoot.dollPaths[pathName] = doll.path(thisPath.path)
 					.attr('fill', (thisPath.name in dollRoot.pathColors) ? dollRoot.pathColors[thisPath.name] : thisPath.color);
 					thisPath.make(dollRoot.dollPaths[pathName]);
@@ -77,8 +94,6 @@ angular.module('personalApp.dollmaker', [])
 				this.dollShape = doll.setFinish();
 				this.dollShape.scale(this.scale,this.scale,AppservDoll.svgSize.w / 2, AppservDoll.svgSize.h);
 				this.dollShape.hover(addCursorClass,removeCursorClass);
-				//console.log(this.dollPaths);
-				//console.log(this.dollShape);
 			};
 			this.action = function(eName, eHandler, addOrRemove) {
 				switch(eName) {
@@ -92,39 +107,47 @@ angular.module('personalApp.dollmaker', [])
 				}
 			};
 			this.kiss = function() {
-
-				if(!this.animated) {
-					console.log('inside');
-					this.animated = true;
-					var that = this;
-					var animationEase = 'linear';
-					var animationRef = AppservDoll.animationPaths.kiss;
-					var animationPathLast = animationRef.length - 1;
-
-					angular.forEach(animationRef, function(aPath, pathIndex) {
-
-						var originPath = that.dollPaths[aPath.reference];
-						var pathAttr = originPath.attrs.path;
-						var pathString = AppservDoll.getPathsString(pathAttr);
-						var kissingPath = aPath.path;
-
-						var kissFinished = function() {
-							that.animated = false;
-							console.log('KISSED! :*');
-						};
-						
-						var _kissFinished = (pathIndex === animationPathLast) ? kissFinished : null;
-
-						var kissOut = Raphael.animation({ path: pathString }, 350, animationEase, _kissFinished);
-
-
-						var kissOutClbk = function() {
-							originPath.animate(kissOut.delay(500));
-						};
-						var kissIn = Raphael.animation({ path: kissingPath }, 200, animationEase, kissOutClbk);
-						originPath.animate(kissIn);
-					});
+				if(this.animated) { return; }
+				console.log('inside');
+				this.animated = true;
+				var that = this;
+				var animationEase = 'linear';
+				var animationRef = AppservDoll.animationPaths.kiss;
+				
+				var animateCustom = (this.customAnimation && angular.isObject(this.customAnimation) && 'kiss' in this.customAnimation && AppservDoll.customAnimation.kiss[this.customAnimation.kiss]);
+				
+				if(animateCustom) {
+					console.log('custom animation here');
+					console.log(this.customAnimation.kiss);
+					animationRef = AppservDoll.customAnimation.kiss[this.customAnimation.kiss];
+					console.log(AppservDoll.customAnimation.kiss[this.customAnimation.kiss]);
 				}
+				
+				var animationPathLast = animationRef.length - 1;
+
+				angular.forEach(animationRef, function(aPath, pathIndex) {
+
+					var originPath = that.dollPaths[aPath.reference];
+					var pathAttr = originPath.attrs.path;
+					var pathString = AppservDoll.getPathsString(pathAttr);
+					var kissingPath = aPath.path;
+
+					var kissFinished = function() {
+						that.animated = false;
+						console.log('KISSED! :*');
+					};
+
+					var _kissFinished = (pathIndex === animationPathLast) ? kissFinished : null;
+
+					var kissOut = Raphael.animation({ path: pathString }, 350, animationEase, _kissFinished);
+
+
+					var kissOutClbk = function() {
+						originPath.animate(kissOut.delay(500));
+					};
+					var kissIn = Raphael.animation({ path: kissingPath }, 200, animationEase, kissOutClbk);
+					originPath.animate(kissIn);
+				});
 			};
 		};
 	}
@@ -132,6 +155,10 @@ angular.module('personalApp.dollmaker', [])
 
 .service('AppservDoll', [
 	function() {
+		this.svgSize = {
+			h: 254,
+			w: 134
+		};
 		this.getPathsString = function(pathsArray) {
 			var pathsString = '';
 			angular.forEach(pathsArray, function(p) {
@@ -139,9 +166,159 @@ angular.module('personalApp.dollmaker', [])
 			});
 			return pathsString;
 		};
-		this.svgSize = {
-			h: 254,
-			w: 134
+		this.customPaths = [
+			{
+				lipsPath: {
+					name: 'lipsPath',
+					color: '#D41116',
+					path: 'M58.228,72.689 c3.4194,3.792,6.4272,5.1255,11.1206,5.1255c7.0986-0.0732,12.7441-7.5625,14.1616-11.8706C78.6475,72.731,71.2275,74.167,69,74.377 C65.7725,74.731,61.5596,74.1851,58.228,72.689z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'connector-curvature': '0',
+							'stroke-width': '0',
+							'stroke-opacity': '1',
+							'nodetypes': 'ccccc'
+						})
+						.data('id', this.name);
+					}
+				},
+				leftEyeBrowPath: {
+					name: 'leftEyeBrowPath',
+					color: '#320E10',
+					path: 'M53.5405,47.8975 c5.771,0.667,7.521,0.875,8.4131-1.2812c-4.1514-0.0488-10.4492-0.0728-11.085,0.0552 C50.8052,47.7671,51.707,48.564,53.5405,47.8975z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'connector-curvature': '0',
+							'stroke-width': '0',
+							'stroke-opacity': '1',
+							'nodetypes': 'cccc'
+						})
+						.data('id', this.name);
+					}
+				},
+				rightEyeBrowPath: {
+					name: 'rightEyeBrowPath',
+					color: '#320E10',
+					path: 'M73.0303,50.9551 c-2.6885,0.2505-3.7227-0.1816-2.6885-0.4551c4.1758-1.0669,6.1982-1.958,10.4131-3.4248 C81.002,48.5015,74.4365,50.7988,73.0303,50.9551z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'connector-curvature': '0',
+							'stroke-width': '0',
+							'stroke-opacity': '1',
+							'nodetypes': 'cccc'
+						})
+						.data('id', this.name);
+					}
+				},
+				leftEyeLashPath: {
+					name: 'leftEyeLashPath',
+					color: '#164450',
+					path: 'M59.667,51.8286 c-7.812-0.2363-9.231,0.0693-9.418,1.8872c3.2402-0.1089,5.5732-0.1406,9.5903-0.001 C60.3745,53.6108,59.9521,51.7925,59.667,51.8286C59.3813,51.8638,59.667,51.8286,59.667,51.8286z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'connector-curvature': '0',
+							'stroke-width': '0',
+							'stroke-opacity': '1',
+							'nodetypes': 'cccsc'
+						})
+						.data('id', this.name);
+					}
+				},
+				rightEyeLashPath: {
+					name: 'rightEyeLashPath',
+					color: '#164450',
+					path: 'M70.6685,54.2051 c7.0088-5.4482,10.5254-0.3438,12.2051,0.2266c-1.3965,2.2207-1.9062-1.9316-11.8887,0.6211 C70.2974,55.0527,70.3042,54.2295,70.6685,54.2051C72.5913,53.3311,70.6685,54.2051,70.6685,54.2051z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'connector-curvature': '0',
+							'stroke-width': '0',
+							'stroke-opacity': '1',
+							'nodetypes': 'cccsc'
+						})
+						.data('id', this.name);
+					}
+				},
+				leftEyePath: {
+					name: 'leftEyePath',
+					color: '#164551',
+					path: 'M59.4209,56.0957c0-1.7656-0.9688-4.1875-3.3281-4.1875 c-2.0625,0-3.3438,2.1562-3.3438,4.1875c0,2.0781,1.4062,4.1875,3.3438,4.1875C58.5615,60.2832,59.4209,57.877,59.4209,56.0957z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'connector-curvature': '0',
+							'stroke-width': '0',
+							'stroke-opacity': '1'
+						})
+						.data('id', this.name);
+					}
+				},
+				rightEyePath: {
+					name: 'rightEyePath',
+					color: '#164450',
+					path: 'M80.0771,55.6426 c0.2031-1.6094-1.2344-2.5195-3.9492-2.4375c-2.0913,0.063-4.0195,0.9219-3.707,2.4375c0.3994,1.938,2.25,2.4375,3.707,2.4375 C77.749,58.0801,79.8413,57.5122,80.0771,55.6426z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'connector-curvature': '0',
+							'stroke-width': '0',
+							'stroke-opacity': '1'
+						})
+						.data('id', this.name);
+					}
+				},
+				nosePath: {
+					name: 'nosePath',
+					color: '#320E10',
+					path: 'M69.7104,64.7642c-1.2632,1.4141-3.6875,2.0503-5.4263,1.4233c-1.082-0.3882-1.7168-1.4131-1.6841-2.2905 c-0.4712,1.2417,0.1152,2.4634,1.6079,3.001c1.9067,0.686,4.5649-0.0044,5.9355-1.5435c1.1118-1.2427,1.0396-2.6611-0.0342-3.519 C70.584,62.6055,70.5195,63.8584,69.7104,64.7642z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'stroke-width': '0',
+							'stroke-opacity': '1'
+						})
+						.data('id', this.name);
+					}
+				}
+			}
+		];
+		this.customAnimation = {
+			kiss: [
+				[
+					{
+						reference: 'lipsPath',
+						path: 'M56.2705,70.9653 c3.2285,4.2241,5.708,5.3076,10.312,5.3076c3.854,0,6.4585-0.771,9.8438-5.3076c-3.6562,3.3281-5.1978-3.5884-9.7188-0.9219 C62.145,67.5854,59.8325,74.127,56.2705,70.9653z'
+					},
+					{
+						reference: 'nosePath',
+						path: 'M69.2803,63.3301c-1.6519,1.0825-4.2627,1.0693-5.8438-0.0312c-0.9834-0.6816-1.3457-1.8843-1.0776-2.7578 c-0.8091,1.1216-0.5469,2.5093,0.8096,3.4526c1.7339,1.2041,4.5942,1.2256,6.3887,0.0474c1.4526-0.9512,1.7632-2.397,0.9146-3.5498 C70.7412,61.3936,70.3389,62.6367,69.2803,63.3301z'
+					},
+					{
+						reference: 'leftEyeBrowPath',
+						path: 'M53.5405,47.8975 c5.771,0.667,7.521,0.875,8.4131-1.2812c-4.1514-0.0488-10.4492-0.0728-11.085,0.0552 C50.8052,47.7671,51.707,48.564,53.5405,47.8975z',
+					},
+					{
+						reference: 'rightEyeBrowPath',
+						path: 'M71.0312,48.2539c-2.4062-1.6309-2.2266-1.5391-1.1562-1.5352c4.3086,0.0508,6.7559-0.1357,11.207-0.4619 C81.2812,49.375,71.8936,48.5625,71.0312,48.2539z'
+					},
+					{
+						reference: 'rightEyeLashPath',
+						path: 'M72.4629,51.9619c8.0049-0.3232,9.8691-0.5718,10.3125,1.8438c-3.1641-0.207-1.0938-0.0176-9.375-0.1875 c-0.6855-0.0605-1.3516,0.2466-1.2949-0.2632C71.8926,52.064,72.4629,51.9619,72.4629,51.9619z'
+					},
+					{
+						reference: 'leftEyePath',
+						path: 'M60.1069,53.585c0-1.1533-1.8389-1.085-4.1035-1.085 c-2.2656,0-4.1045-0.0684-4.1045,1.085c0,1.1523,1.8389,2.0952,4.1045,2.0952C58.2681,55.6802,60.1069,54.7373,60.1069,53.585z'
+					},
+					{
+						reference: 'rightEyePath',
+						path: 'M80.2319,53.585c0-1.1533-1.8389-1.085-4.1035-1.085c-2.2656,0-4.1045-0.0684-4.1045,1.085c0,1.1523,1.8389,2.0952,4.1045,2.0952C78.3931,55.6802,80.2319,54.7373,80.2319,53.585z'
+					}
+				]
+			]
 		};
 		this.animationPaths = {
 			kiss: [
@@ -429,11 +606,10 @@ angular.module('personalApp.dollmaker', [])
 			nosePath: {
 				name: 'nosePath',
 				color: '#D45714',
-				path: 'M61.935,60.89c-0.015,0.126-0.021,0.253-0.021,0.383 c0,2.099,2.021,3.801,4.509,3.801s4.501-1.702,4.501-3.801c0-0.129-0.007-0.257-0.021-0.383c-0.23,1.917-2.146,3.414-4.479,3.414 S62.167,62.807,61.935,60.89L61.935,60.89z',
+				path: 'M69.2803,63.3301c-1.6519,1.0825-4.2627,1.0693-5.8438-0.0312c-0.9834-0.6816-1.3457-1.8843-1.0776-2.7578 c-0.8091,1.1216-0.5469,2.5093,0.8096,3.4526c1.7339,1.2041,4.5942,1.2256,6.3887,0.0474c1.4526-0.9512,1.7632-2.397,0.9146-3.5498 C70.7412,61.3936,70.3389,62.6367,69.2803,63.3301z',
 				make: function(dollpath) {
 					dollpath.attr({
 						'id': this.name,
-						'connector-curvature': '0',
 						'stroke-width': '0',
 						'stroke-opacity': '1'
 					})
