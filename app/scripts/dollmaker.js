@@ -106,48 +106,62 @@ angular.module('personalApp.dollmaker', [])
 						break;
 				}
 			};
-			this.kiss = function() {
+			this.animateGesture = function(ao) {
 				if(this.animated) { return; }
 				console.log('inside');
 				this.animated = true;
 				var that = this;
-				var animationEase = 'linear';
-				var animationRef = AppservDoll.animationPaths.kiss;
-				
-				var animateCustom = (this.customAnimation && angular.isObject(this.customAnimation) && 'kiss' in this.customAnimation && AppservDoll.customAnimation.kiss[this.customAnimation.kiss]);
-				
-				if(animateCustom) {
-					console.log('custom animation here');
-					console.log(this.customAnimation.kiss);
-					animationRef = AppservDoll.customAnimation.kiss[this.customAnimation.kiss];
-					console.log(AppservDoll.customAnimation.kiss[this.customAnimation.kiss]);
-				}
-				
-				var animationPathLast = animationRef.length - 1;
-
-				angular.forEach(animationRef, function(aPath, pathIndex) {
+				angular.forEach(ao.animationRef, function(aPath, pathIndex) {
 
 					var originPath = that.dollPaths[aPath.reference];
 					var pathAttr = originPath.attrs.path;
 					var pathString = AppservDoll.getPathsString(pathAttr);
-					var kissingPath = aPath.path;
+					var animPath = aPath.path;
 
-					var kissFinished = function() {
+					var animFinished = function() {
 						that.animated = false;
-						console.log('KISSED! :*');
+						if(angular.isFunction(ao.animationCallback)) {
+							ao.animationCallback();
+						}
 					};
 
-					var _kissFinished = (pathIndex === animationPathLast) ? kissFinished : null;
+					var _animFinished = (pathIndex === ao.animationPathLast) ? animFinished : null;
 
-					var kissOut = Raphael.animation({ path: pathString }, 350, animationEase, _kissFinished);
+					var animOut = Raphael.animation({ path: pathString }, ao.animationTimeOut, ao.animationEase, _animFinished);
 
-
-					var kissOutClbk = function() {
-						originPath.animate(kissOut.delay(500));
+					var animOutClbk = function() {
+						originPath.animate(animOut.delay(ao.animationDelay));
 					};
-					var kissIn = Raphael.animation({ path: kissingPath }, 200, animationEase, kissOutClbk);
-					originPath.animate(kissIn);
+					var animIn = Raphael.animation({ path: animPath }, ao.animationTimeIn, ao.animationEase, animOutClbk);
+					originPath.animate(animIn);
 				});
+			};
+			this.kiss = function() {
+				var _animationRef = AppservDoll.animationPaths.kiss;
+				
+				var animateCustom = (
+					this.customAnimation &&
+					angular.isObject(this.customAnimation) &&
+					'kiss' in this.customAnimation &&
+					AppservDoll.customAnimation.kiss[this.customAnimation.kiss]
+				);
+				
+				if(animateCustom) {
+					_animationRef = AppservDoll.customAnimation.kiss[this.customAnimation.kiss];
+				}
+				var animationClbk = function() {
+					console.log('KISSED! :*');
+				};
+				var animationKissObj = {
+					animationEase: 'linear',
+					animationRef: _animationRef,
+					animationPathLast: _animationRef.length - 1,
+					animationTimeIn: 200,
+					animationDelay: 500,
+					animationTimeOut: 350,
+					animationCallback: animationClbk
+				};
+				this.animateGesture(animationKissObj);
 			};
 		};
 	}
