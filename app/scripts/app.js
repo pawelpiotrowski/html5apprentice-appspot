@@ -5,6 +5,7 @@ angular.module('personalApp', [,
 	'personalApp.appconfig',
 	'personalApp.appcontroller',
 	'personalApp.appnavigation',
+	'personalApp.apputils',
 	'personalApp.dollmaker',
 	'personalApp.dollhandcraft',
 	'personalApp.logservice'

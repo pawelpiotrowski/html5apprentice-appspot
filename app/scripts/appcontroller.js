@@ -25,9 +25,9 @@ angular.module('personalApp.appcontroller', [])
 		$scope.getAllColors = AppservConfig.getPallete;
 		$scope.getColorNames = AppservConfig.getColors;
 		$scope.$on('$routeChangeSuccess', function(event, next, current) {
-            console.log('route changed!!');
+			console.log('route changed!!');
 			console.log(event, next, current);
-        });
+		});
 		$scope.changeLocation = function(url, force) {
 			//this will mark the URL change
 			$location.path(url); //use $location.path(url).replace() if you want to replace the location instead

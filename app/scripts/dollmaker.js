@@ -54,7 +54,7 @@ angular.module('personalApp.dollmaker', [])
 				
 				navDoll.make();
 				navDoll.action('click', navDollClick, true);
-				console.log(navDoll.wrapper);
+				console.log(navDoll.goAway());
 			}
 		};
 	}
@@ -62,7 +62,8 @@ angular.module('personalApp.dollmaker', [])
 
 .factory('AppfactDoll', [
 	'AppservDoll',
-	function(AppservDoll) {
+	'AppfactPrefix',
+	function(AppservDoll, AppfactPrefix) {
 		return function(doll, dollsize, dollWrapper, colors, pathsRef, animationRef) {
 			this.el = doll;
 			this.wrapper = dollWrapper;
@@ -177,7 +178,12 @@ angular.module('personalApp.dollmaker', [])
 				this.animateGesture(animationKissObj);
 			};
 			this.goAway = function() {
-			
+				console.log(AppfactPrefix.cssAnimationEnd);
+				/*
+				console.log(this.wrapper[0]);
+				var el = this.wrapper[0];
+				TweenLite.to(el, 2, {rotation:30});
+				*/
 			};
 		};
 	}
