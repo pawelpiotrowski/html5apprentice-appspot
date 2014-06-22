@@ -10,6 +10,7 @@ angular.module('personalApp.dollmaker', [])
 			link: function(scope, iElement) {
 				//console.log(scope, iElement, iAttr);
 				var navDollCounter = scope.$index;
+				var navDollWrapper = iElement;
 				var navDollRaphael = new Raphael(iElement[0]);
 				var navDollSize = navDollCounter + 1;
 				function navDollClickCallback() {
@@ -45,6 +46,7 @@ angular.module('personalApp.dollmaker', [])
 				var navDoll = new AppfactDoll(
 					navDollRaphael,
 					navDollSize,
+					navDollWrapper,
 					navDollCustomColors,
 					navDollCustomPaths,
 					navDollCustomAnimation
@@ -52,6 +54,7 @@ angular.module('personalApp.dollmaker', [])
 				
 				navDoll.make();
 				navDoll.action('click', navDollClick, true);
+				console.log(navDoll.wrapper);
 			}
 		};
 	}
@@ -60,8 +63,9 @@ angular.module('personalApp.dollmaker', [])
 .factory('AppfactDoll', [
 	'AppservDoll',
 	function(AppservDoll) {
-		return function(doll, dollsize, colors, pathsRef, animationRef) {
+		return function(doll, dollsize, dollWrapper, colors, pathsRef, animationRef) {
 			this.el = doll;
+			this.wrapper = dollWrapper;
 			this.scale = 1 - dollsize / 10;
 			this.pathColors = (colors) ? colors : {};
 			this.dollShape = null;
@@ -171,6 +175,9 @@ angular.module('personalApp.dollmaker', [])
 					animationCallback: animationClbk
 				};
 				this.animateGesture(animationKissObj);
+			};
+			this.goAway = function() {
+			
 			};
 		};
 	}
