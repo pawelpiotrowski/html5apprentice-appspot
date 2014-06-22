@@ -9,37 +9,53 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 	exludeSections: ['test', '404', 'null'],
 	palette: {
 		page: {
-			bckgd: '#ffffff',
-			color: '#000000'
+			bckgd: '#fffffc',
+			color: '#192823'
 		},
 		sections: [
 			{
-				main: '#e56a1a',
-				contra: '#ebc014',
+				main: '#680420',
+				contra: '#eb2228',
 				extension: [
-					'#c87137'
-				]
-			},
-			{
-				main: '#003380',
-				contra: '#87aade',
-				extension: [
-					'#241c1c'
+					'#241c1c',
+					'#29190F',
+					'#320E10',
+					'#2D2727',
+					'#ab0613'
 				]
 			},
 			{
 				main: '#445500',
 				contra: '#abc837',
 				extension: [
-					'#fdd001'
+					'#c87137',
+					'#320E10',
+					'#546315',
+					'#320E10',
+					'#eb2228'
+				]
+			},
+			{
+				main: '#003380',
+				contra: '#87aade',
+				extension: [
+					'#fdd001',
+					'#502D17',
+					'#164450',
+					'#502D17',
+					'#da2d6e'
 				]
 			}
 		],
 		sectionDefaultPalette: {
-			main: '#680420',
-			contra: '#eb2228',
+			main: '#e56a1a',
+			contra: '#ebc014',
 			extension: [
-				'#241c1c'
+				'#3b0208', // hair
+				'#502D17', // eyebrow
+				'#29190F', // eye
+				'#D45714', // nose
+				'#D45714' // lips
 			]
 		}
 	}

@@ -11,9 +11,9 @@ angular.module('personalApp.appcontroller', [])
 	'$location',
 	'$routeParams',
 	function(AppservLog, AppfactConfig, AppservConfig, $scope, $route, $location, $routeParams) {
-		
+
 		$scope.content = null;
-		
+
 		$scope.$route = $route;
 		$scope.$location = $location;
 		$scope.$routeParams = $routeParams;
@@ -24,7 +24,21 @@ angular.module('personalApp.appcontroller', [])
 		$scope.getAppColor = AppservConfig.getColorByArrPos;
 		$scope.getAllColors = AppservConfig.getPallete;
 		$scope.getColorNames = AppservConfig.getColors;
-		
+		$scope.$on('$routeChangeSuccess', function(event, next, current) {
+            console.log('route changed!!');
+			console.log(event, next, current);
+        });
+		$scope.changeLocation = function(url, force) {
+			//this will mark the URL change
+			$location.path(url); //use $location.path(url).replace() if you want to replace the location instead
+
+			$scope = $scope || angular.element(document).scope();
+			if(force || !$scope.$$phase) {
+				//this will kickstart angular if to notice the change
+				$scope.$apply();
+			}
+		};
+
 		AppfactConfig.getContentPromise().then(function(d) {
 			$scope.content = d;
 		}, function(err) {
