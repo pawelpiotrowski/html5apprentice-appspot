@@ -19,10 +19,6 @@ angular.module('personalApp.appnavigation', [])
 			restrict: 'A',
 			controller: 'NavCtrl',
 			link: function(scope, iElement) {
-				var s = scope.sections.length;
-				scope.sectionDivider = function() {
-					return (100 / s)+'%';
-				};
 				$http.get('partials/navigation.html', {cache: $templateCache}).success(function(tplContent){
 					iElement.append($compile(tplContent)(scope));
 				});

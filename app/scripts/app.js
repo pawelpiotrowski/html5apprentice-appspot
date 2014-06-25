@@ -2,6 +2,7 @@
 
 angular.module('personalApp', [,
 	'ngRoute',
+	'ngAnimate',
 	'personalApp.appconfig',
 	'personalApp.appcontroller',
 	'personalApp.appnavigation',
@@ -23,7 +24,8 @@ angular.module('personalApp', [,
 		templateUrl: '/views/projects.html'
 	})
 	.when('/projects/:id', {
-		templateUrl: '/views/projects.html'
+		templateUrl: '/views/projects.html',
+		reloadOnSearch: false
 	})
 	.when('/appendix', {
 		templateUrl: '/views/appendix.html'

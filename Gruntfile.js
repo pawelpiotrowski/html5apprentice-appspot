@@ -286,7 +286,8 @@ module.exports = function (grunt) {
 						'partials/{,*/}*.html',
 						'bower_components/**/*',
 						'images/{,*/}*.{webp}',
-						'fonts/*'
+						'fonts/*',
+						'data/*'
 					]
 				}, {
 					expand: true,

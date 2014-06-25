@@ -1,3 +1,1 @@
-<div class="nav-item" ng-repeat="section in sections" ng-style="{ width: sectionDivider() }">
-	<div appdir-make-nav-doll class="bckgd-attractor"></div>
-</div>
+<a class="page-nav-item" ng-href="#/">Intro</a><a class="page-nav-item" ng-href="{{ section.url }}" ng-repeat="section in sections">{{ section.slug }}</a>

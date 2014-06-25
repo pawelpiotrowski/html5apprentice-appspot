@@ -17,4 +17,14 @@ angular.module('personalApp.apputils', [])
 			cssAnimationEnd: csstransend
 		};
 	}
+])
+
+.service('AppservUtils', [
+	function() {
+		this.uniqueid = function() {
+			var timeStamp = new Date().getTime();
+			var randNumber = Math.round(Math.random() * 1000000);
+			return timeStamp+'_'+randNumber;
+		};
+	}
 ]);

@@ -6,12 +6,16 @@
     "json3": "~3.2.6",
     "es5-shim": "~2.1.0",
     "angular-route": "1.2.6",
-	"raphael": "2.1.2",
-	"box2dweb": "git@github.com:pawelpiotrowski/box2dweb.git",
-	"gsap": "1.11.8"
+	"angular-animate": "1.2.18",
+    "raphael": "2.1.2",
+    "box2dweb": "git@github.com:pawelpiotrowski/box2dweb.git",
+    "gsap": "1.11.8"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",
     "angular-scenario": "1.2.6"
+  },
+  "resolutions": {
+    "angular": "1.2.18"
   }
 }

@@ -1,6 +1,7 @@
+@import 'animations';
 @import 'variables';
 @import 'mixins';
-html, body { background-color: $white; color: $dark; height: 100%; width: 100%; }
+html, body { background-color: $white; color: $dark; height: 100%; overflow: hidden; width: 100%; }
 body { font-family: 'Ubuntu', Helvetica, Arial, sans-serif; font-size: 100%; font-weight: 300; line-height: 1.4; }
 a { color: inherit; }
 

@@ -2,13 +2,35 @@
 
 angular.module('personalApp.dollmaker', [])
 
+.directive('appdirIntroNavigation', [
+	'$http',
+	'$compile',
+	'$templateCache',
+	function($http, $compile, $templateCache) {
+		return {
+			restrict: 'A',
+			link: function(scope, iElement) {
+				var s = scope.sections.length;
+				scope.sectionDivider = function() {
+					return (100 / s)+'%';
+				};
+				$http.get('views/intro/intro-navigation.html', {cache: $templateCache}).success(function(tplContent){
+					iElement.append($compile(tplContent)(scope));
+				});
+			}
+		};
+	}
+])
+
 .directive('appdirMakeNavDoll', [
 	'AppfactDoll',
-	function(AppfactDoll) {
+	'AppfactDollCollection',
+	function(AppfactDoll, AppfactDollCollection) {
 		return {
 			restrict: 'A',
 			link: function(scope, iElement) {
 				//console.log(scope, iElement, iAttr);
+				var dollCollection = new AppfactDollCollection();
 				var navDollCounter = scope.$index;
 				var navDollWrapper = iElement;
 				var navDollRaphael = new Raphael(iElement[0]);
@@ -16,12 +38,17 @@ angular.module('personalApp.dollmaker', [])
 				function navDollClickCallback() {
 					console.log('doll click animation callback');
 					console.log(scope.section.url);
-					//scope.changeLocation(scope.section.slug);
+					scope.changeLocation(scope.section.slug);
 				}
 				function navDollClick() {
 					console.log('doll clicked');
 					//navDoll.action('click', navDollClick, false);
-					navDoll.kiss(navDollClickCallback);
+					var others = dollCollection.getOthers(navDoll);
+					angular.forEach(others, function(other, i) {
+						var clbk = (i === others.length - 1) ? navDollClickCallback : false;
+						other.goAway(clbk);
+					});
+					navDoll.kiss();
 				}
 				// extension array order: hair eyebrow eye nose lips
 				var navDollCustomColors = {
@@ -54,17 +81,42 @@ angular.module('personalApp.dollmaker', [])
 				
 				navDoll.make();
 				navDoll.action('click', navDollClick, true);
-				console.log(navDoll.goAway());
+				dollCollection.addDoll(navDoll);
 			}
+		};
+	}
+])
+
+.factory('AppfactDollCollection', [
+	function() {
+		var dolls = [];
+		return function() {
+			this.addDoll = function(doll) {
+				dolls.push(doll);
+			};
+			this.getAll = function() {
+				return angular.extend([], dolls);
+			};
+			this.getOthers = function(doll) {
+				var _otherDolls = [];
+				angular.forEach(dolls, function(_doll) {
+					if(doll.id !== _doll.id) {
+						_otherDolls.push(_doll);
+					}
+				});
+				return _otherDolls;
+			};
 		};
 	}
 ])
 
 .factory('AppfactDoll', [
 	'AppservDoll',
-	'AppfactPrefix',
-	function(AppservDoll, AppfactPrefix) {
+	'AppservUtils',
+	'$timeout',
+	function(AppservDoll, AppservUtils, $timeout) {
 		return function(doll, dollsize, dollWrapper, colors, pathsRef, animationRef) {
+			this.id = AppservUtils.uniqueid();
 			this.el = doll;
 			this.wrapper = dollWrapper;
 			this.scale = 1 - dollsize / 10;
@@ -177,13 +229,15 @@ angular.module('personalApp.dollmaker', [])
 				};
 				this.animateGesture(animationKissObj);
 			};
-			this.goAway = function() {
-				console.log(AppfactPrefix.cssAnimationEnd);
-				/*
-				console.log(this.wrapper[0]);
-				var el = this.wrapper[0];
-				TweenLite.to(el, 2, {rotation:30});
-				*/
+			this.goAway = function(clbk) {
+				var dollWrapper = this.wrapper[0];
+				var walkingJump = TweenMax.to(dollWrapper, 0.04, { css: { y: '-10px' }, delay: 0.6, repeat: -1, yoyo: true, ease: 'Linear.easeNone' });
+				var wentAway = function() {
+					console.log('tween finished');
+					walkingJump.kill();
+					if(angular.isFunction(clbk)) { $timeout(function() { clbk(); }, 100); }
+				};
+				TweenMax.to(dollWrapper, 2, { css: { x: window.innerWidth }, delay: 0.5, ease: 'Power1.easeIn', onComplete: wentAway });
 			};
 		};
 	}

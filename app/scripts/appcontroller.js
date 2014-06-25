@@ -13,7 +13,7 @@ angular.module('personalApp.appcontroller', [])
 	function(AppservLog, AppfactConfig, AppservConfig, $scope, $route, $location, $routeParams) {
 
 		$scope.content = null;
-
+		$scope.viewCssClass = '';
 		$scope.$route = $route;
 		$scope.$location = $location;
 		$scope.$routeParams = $routeParams;
@@ -24,9 +24,10 @@ angular.module('personalApp.appcontroller', [])
 		$scope.getAppColor = AppservConfig.getColorByArrPos;
 		$scope.getAllColors = AppservConfig.getPallete;
 		$scope.getColorNames = AppservConfig.getColors;
-		$scope.$on('$routeChangeSuccess', function(event, next, current) {
-			console.log('route changed!!');
-			console.log(event, next, current);
+		$scope.$on('$routeChangeSuccess', function() {
+			var _path = $location.path();
+			var _stateClass = (_path === '/') ? 'intro' : _path.substring(1).replace(/\/.*$/,'')+' section';
+			$scope.viewCssClass = _stateClass;
 		});
 		$scope.changeLocation = function(url, force) {
 			//this will mark the URL change
@@ -38,7 +39,7 @@ angular.module('personalApp.appcontroller', [])
 				$scope.$apply();
 			}
 		};
-
+		
 		AppfactConfig.getContentPromise().then(function(d) {
 			$scope.content = d;
 		}, function(err) {
