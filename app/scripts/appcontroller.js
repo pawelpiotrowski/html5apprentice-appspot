@@ -4,17 +4,14 @@ angular.module('personalApp.appcontroller', [])
 
 .controller('MainCtrl', [
     '$scope',
-    '$route',
-    '$location',
-    '$routeParams',
     'AppservLog',
     'AppfactConfig',
     'AppservUtils',
-    function($scope, $route, $location, $routeParams, AppservLog, AppfactConfig, AppservUtils) {
+    function($scope, AppservLog, AppfactConfig, AppservUtils) {
 
-        $scope.$route = $route;
-        $scope.$location = $location;
-        $scope.$routeParams = $routeParams;
+        //$scope.$route = $route;
+        //$scope.$location = $location;
+        //$scope.$routeParams = $routeParams;
 
         $scope.appLog = AppservLog.log;
 
@@ -34,7 +31,7 @@ angular.module('personalApp.appcontroller', [])
             
             $scope.viewCssClass = _stateClass;
         });
-        
+        /*
         $scope.changeLocation = function(url, force) {
             //this will mark the URL change
             $location.path(url); //use $location.path(url).replace() if you want to replace the location instead
@@ -45,7 +42,7 @@ angular.module('personalApp.appcontroller', [])
                 $scope.$apply();
             }
         };
-
+		*/
         AppfactConfig.getContentPromise().then(function(d) {
             angular.forEach($scope.sections, function(thisSection,sectionIndex) {
                 thisSection.payload = d.sections[sectionIndex];

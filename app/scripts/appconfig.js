@@ -62,15 +62,15 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 .factory('AppfactConfig', [
 	'$http',
 	'$q',
-	'$route',
 	'appSettings',
-	function($http, $q, $route, settings) {
+	function($http, $q, settings) {
 		
 		// stores valid routes
 		var _sections = [];
 		// array of sections objects
 		var	sections = [];
 		// build sections from routes
+		/*
 		angular.forEach($route.routes, function(routeObj,routeVal) {
 			// remove slashes
 			var route = routeVal.replace(/\//g, '');
@@ -104,7 +104,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 				});
 			}
 		});
-		
+		*/
 		//console.log(sections);
 		
 		var getContent = function() {

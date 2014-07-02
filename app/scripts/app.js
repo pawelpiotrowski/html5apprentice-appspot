@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('personalApp', [
-	'ngRoute',
+	'ui.router',
 	'ngAnimate',
 	'personalApp.appconfig',
 	'personalApp.appcontroller',
@@ -13,7 +13,7 @@ angular.module('personalApp', [
 	'personalApp.dollhandcraft',
 	'personalApp.logservice'
 ])
-.config(function ($routeProvider) {
+.config(function ($stateProvider, $urlRouterProvider) {
     var _view = function(tmpl) {
         var templatesDir = '/views/';
         var templates = {
@@ -23,6 +23,25 @@ angular.module('personalApp', [
         };
         return (tmpl in templates) ? templates[tmpl] : templatesDir+tmpl;
     };
+	$urlRouterProvider.otherwise('/');
+    
+    $stateProvider
+        
+	// HOME STATES AND NESTED VIEWS ========================================
+	.state('intro', {
+		url: '/',
+		templateUrl: _view('intro')
+	})
+
+	// ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
+	.state('about', {
+		// we'll get to this in a bit       
+	});
+	
+	
+	
+	
+	/*
 	$routeProvider
 	.when('/',                 { templateUrl: _view('intro') })
 	.when('/about',            { templateUrl: _view('section') })
@@ -35,4 +54,5 @@ angular.module('personalApp', [
 	.when('/test',             { templateUrl: _view('test.html') })
 	.when('/404',              { templateUrl: '404.html' })
 	.otherwise(                { redirectTo: '/404' });
+	*/
 });

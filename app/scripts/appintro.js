@@ -17,6 +17,7 @@ angular.module('personalApp.appintro', [])
 		return {
 			restrict: 'A',
 			link: function(scope, iElement) {
+				console.log(iElement);
 				var s = scope.sections.length;
 				scope.sectionDivider = function() {
 					return (100 / s)+'%';
