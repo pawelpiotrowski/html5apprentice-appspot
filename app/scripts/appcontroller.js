@@ -3,82 +3,63 @@
 angular.module('personalApp.appcontroller', [])
 
 .controller('MainCtrl', [
-	'AppservLog',
-	'AppfactConfig',
-	'AppservConfig',
-	'$scope',
-	'$route',
-	'$location',
-	'$routeParams',
-	function(AppservLog, AppfactConfig, AppservConfig, $scope, $route, $location, $routeParams) {
+    '$scope',
+    '$route',
+    '$location',
+    '$routeParams',
+    'AppservLog',
+    'AppfactConfig',
+    'AppservUtils',
+    function($scope, $route, $location, $routeParams, AppservLog, AppfactConfig, AppservUtils) {
 
-		$scope.content = null;
-		$scope.viewCssClass = '';
-		$scope.$route = $route;
-		$scope.$location = $location;
-		$scope.$routeParams = $routeParams;
+        $scope.$route = $route;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
 
-		$scope.appLog = AppservLog.log;
+        $scope.appLog = AppservLog.log;
 
-		$scope.sections = AppfactConfig.getRoutedSections();
-		$scope.getAppColor = AppservConfig.getColorByArrPos;
-		$scope.getAllColors = AppservConfig.getPallete;
-		$scope.getColorNames = AppservConfig.getColors;
-		$scope.$on('$routeChangeSuccess', function() {
-			var _path = $location.path();
-			var _stateClass = (_path === '/') ? 'intro' : _path.substring(1).replace(/\/.*$/,'')+' section';
-			$scope.viewCssClass = _stateClass;
-		});
-		$scope.changeLocation = function(url, force) {
-			//this will mark the URL change
-			$location.path(url); //use $location.path(url).replace() if you want to replace the location instead
+        $scope.sections = AppfactConfig.getRoutedSections();
+        $scope.slugs = AppfactConfig.getRoutedSlugs();
+        
+        $scope.viewCssClass = '';
+        
+        $scope.$on('$routeChangeSuccess', function() {
+            var _routeObj = AppservUtils.extractPath($location.path());
+            var _stateClass = _routeObj.viewCssClass;
+            var _sectionRef = _routeObj.sectionReference;
+            
+            if(_sectionRef >= 0) {
+                _stateClass += ' '+AppservUtils.paletteCssClass(_sectionRef);
+            }
+            
+            $scope.viewCssClass = _stateClass;
+        });
+        
+        $scope.changeLocation = function(url, force) {
+            //this will mark the URL change
+            $location.path(url); //use $location.path(url).replace() if you want to replace the location instead
 
-			$scope = $scope || angular.element(document).scope();
-			if(force || !$scope.$$phase) {
-				//this will kickstart angular if to notice the change
-				$scope.$apply();
-			}
-		};
-		
-		AppfactConfig.getContentPromise().then(function(d) {
-			$scope.content = d;
-		}, function(err) {
-			$scope.appLog('warn', err);
-		}, null);
-	}
+            $scope = $scope || angular.element(document).scope();
+            if(force || !$scope.$$phase) {
+                //this will kickstart angular if to notice the change
+                $scope.$apply();
+            }
+        };
+
+        AppfactConfig.getContentPromise().then(function(d) {
+            angular.forEach($scope.sections, function(thisSection,sectionIndex) {
+                thisSection.payload = d.sections[sectionIndex];
+            });
+            console.log('After loop', $scope.sections);
+        }, function(err) {
+            $scope.appLog('warn', err);
+        }, null);
+    }
 ])
 
-.controller('IntroCtrl', [
-	'$scope',
-	function($scope) {
-		console.log('intro controller');
-		console.log($scope.getAppColor(1));
-	}
-])
-
-.controller('ProjectsCtrl', [
-	'$scope',
-	function($scope) {
-		console.log($scope.$routeParams);
-		$scope.projects = {
-			id: $scope.$routeParams.id
-		};
-	}
-])
-
-.controller('AppendixCtrl', [
-	'$scope',
-	function($scope) {
-		$scope.appendix = {
-			id: $scope.$routeParams.name
-		};
-	}
-])
-
-.controller('TestCtrl', [
-	'$scope',
-	function($scope) {
-		$scope.appPalette = $scope.getAllColors();
-		$scope.appColorNames = $scope.getColorNames();
-	}
+.controller('PaletteTestCtrl', [
+    '$scope',
+    function($scope) {
+        console.log('Palette test CTRL');
+    }
 ]);

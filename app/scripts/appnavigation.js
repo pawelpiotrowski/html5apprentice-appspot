@@ -6,7 +6,6 @@ angular.module('personalApp.appnavigation', [])
 	'$scope',
 	function($scope) {
 		console.log('nav controller');
-		console.log($scope.getAppColor(1));
 	}
 ])
 

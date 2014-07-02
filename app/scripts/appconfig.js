@@ -3,10 +3,8 @@
 angular.module('personalApp.appconfig', ['personalApp.logservice'])
 
 .constant('appSettings', {
-	colorNames: ['white', 'red', 'orange', 'blue', 'green', 'tan', 'dark'],
-	colorPalette: ['#fffffc', '#dd1e2f', '#ebb035', '#06a2cb', '#218559', '#d0c6b1', '#192823'],
 	contentPath: 'data/content.json',
-	exludeSections: ['test', '404', 'null'],
+	exludeSections: ['test', '404'],
 	palette: {
 		page: {
 			bckgd: '#fffffc',
@@ -77,24 +75,32 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 			// remove slashes
 			var route = routeVal.replace(/\//g, '');
 			// ignore child routes -> search for name:id
-			var routeCheck = route.match(/[\:]/);
+			var childRouteCheck = route.match(/[\:]/);
 			// ignore sections
 			var routeValidator = settings.exludeSections;
 			// valid route conditions
-			var validRoute = route.length && !routeCheck && _sections.indexOf(route) < 0 && routeValidator.indexOf(route) < 0;
+			var validRoute = route.length && !childRouteCheck && _sections.indexOf(route) < 0 && routeValidator.indexOf(route) < 0 && route !== 'null';
 			//console.log(validRoute);
 			
 			var validRouteRef = sections.length;
 			if(validRoute) {
 				//console.log('valid route', validRouteRef);
 				var _p = settings.palette.sections[validRouteRef];
-				var _palette = (_p) ? _p : settings.palette.sectionDefaultPalette;
+                var _palette = settings.palette.sectionDefaultPalette;
+                var _defaultPalette = true;
+                if(_p) {
+                    _palette = _p;
+                    _defaultPalette = false;
+                }
+                var _cattype = validRouteRef + 1;
 				_sections.push(route);
 				sections.push({
 					order: validRouteRef,
+                    type: _cattype,
 					slug: route,
-					url: '#'+route,
-					palette: _palette
+                    defaultPalette: _defaultPalette,
+					palette: _palette,
+                    payload: null
 				});
 			}
 		});
@@ -114,31 +120,24 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 		//API
 		return {
 			getContentPromise: getContent,
+            getRoutedSlugs: function() {
+                return angular.extend([],_sections);
+            },
 			getRoutedSections: function() {
-				var d = [];
-				return angular.extend(d,sections);
+				return angular.extend([],sections);
 			}
 		};
 	}
-])
-
+]);
+/*
 .service('AppservConfig', [
 	'appSettings',
 	'AppservLog',
 	function(settings, appservLog) {
 		
-		/* app palette log
-		(function() {
-			appservLog.log('info', 'APPLICATION PALETTE:');
-			angular.forEach(settings.colorNames, function(k,v) {
-				appservLog.log('log', { name: k, val: settings.colorPalette[v] });
-			});
-		})();
-		*/
-		
 		this.getPallete = function() {
 			var d = [];
-			return angular.extend(d,settings.colorPalette);
+			return angular.extend(d,settings.palette);
 		};
 		this.getColors = function() {
 			var d = [];
@@ -154,4 +153,5 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 			return settings.colorPalette[_arrPos];
 		};
 	}
-]);
+])
+*/
