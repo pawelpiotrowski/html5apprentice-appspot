@@ -29,13 +29,13 @@ angular.module('personalApp.apputils', [])
 		};
         this.extractPath = function(path) {
             var _sectionSlugs = AppfactConfig.getRoutedSlugs();
-            var _cleanPath = path.substring(1).replace(/\/.*$/,'');
+            var _cleanPath = path.replace(/\..*$/,'');
             var _matchSection = _sectionSlugs.indexOf(_cleanPath);
             
-            var _isIndex = (path === '/');
+            var _isIndex = (path === 'intro');
             var _isCategory = (_matchSection >= 0);
-            var _isSubcategory = (path.substring(1) !== _cleanPath);
-            var _is404 = (path === '/404');
+            var _isSubcategory = (path !== _cleanPath);
+            var _is404 = (path === 'not-found');
             var _viewClassName = '';
             var _sectionRef = -1;
             

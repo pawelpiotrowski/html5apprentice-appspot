@@ -4,7 +4,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 
 .constant('appSettings', {
 	contentPath: 'data/content.json',
-	exludeSections: ['test', '404'],
+	exludeSections: ['test', 'not-found'],
 	palette: {
 		page: {
 			bckgd: '#fffffc',
@@ -62,27 +62,29 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 .factory('AppfactConfig', [
 	'$http',
 	'$q',
+    '$state',
 	'appSettings',
-	function($http, $q, settings) {
-		
+	function($http, $q, $state, settings) {
+        
+        var appStates = $state.get();
 		// stores valid routes
 		var _sections = [];
 		// array of sections objects
 		var	sections = [];
 		// build sections from routes
-		/*
-		angular.forEach($route.routes, function(routeObj,routeVal) {
-			// remove slashes
-			var route = routeVal.replace(/\//g, '');
-			// ignore child routes -> search for name:id
-			var childRouteCheck = route.match(/[\:]/);
-			// ignore sections
-			var routeValidator = settings.exludeSections;
-			// valid route conditions
-			var validRoute = route.length && !childRouteCheck && _sections.indexOf(route) < 0 && routeValidator.indexOf(route) < 0 && route !== 'null';
-			//console.log(validRoute);
-			
-			var validRouteRef = sections.length;
+        angular.forEach(appStates, function(appState) {
+            
+            // remove slashes or make empty string expecting "/" or "^"
+            var route = appState.url.substring(1);
+            // ignore detail (nested) routes -> /:something
+            var childRouteCheck = route.match(/[\:]/);
+            // ignore sections
+            var routeValidator = settings.exludeSections;
+            // valid route conditions
+            var validRoute = route.length && !childRouteCheck && _sections.indexOf(route) < 0 && routeValidator.indexOf(route) < 0;
+            
+            var validRouteRef = sections.length;
+            
 			if(validRoute) {
 				//console.log('valid route', validRouteRef);
 				var _p = settings.palette.sections[validRouteRef];
@@ -103,9 +105,9 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
                     payload: null
 				});
 			}
-		});
-		*/
-		//console.log(sections);
+        });
+        
+		// console.log(sections);
 		
 		var getContent = function() {
 			var deferred = $q.defer();
@@ -129,29 +131,3 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 		};
 	}
 ]);
-/*
-.service('AppservConfig', [
-	'appSettings',
-	'AppservLog',
-	function(settings, appservLog) {
-		
-		this.getPallete = function() {
-			var d = [];
-			return angular.extend(d,settings.palette);
-		};
-		this.getColors = function() {
-			var d = [];
-			return angular.extend(d,settings.colorNames);
-		};
-		this.getColorByArrPos = function(arrPos) {
-			var _arrPos = arrPos - 1;
-			if(_arrPos < 0 || _arrPos >= settings.colorPalette.length) {
-				var warnmsg = 'Get app color out of range('+arrPos+' = '+_arrPos+'), returning (1): '+settings.colorNames[0]+' '+settings.colorPalette[0];
-				appservLog.log('warn', warnmsg);
-				_arrPos = 1;
-			}
-			return settings.colorPalette[_arrPos];
-		};
-	}
-])
-*/

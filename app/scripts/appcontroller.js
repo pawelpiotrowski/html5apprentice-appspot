@@ -4,10 +4,11 @@ angular.module('personalApp.appcontroller', [])
 
 .controller('MainCtrl', [
     '$scope',
+    '$state',
     'AppservLog',
     'AppfactConfig',
     'AppservUtils',
-    function($scope, AppservLog, AppfactConfig, AppservUtils) {
+    function($scope, $state, AppservLog, AppfactConfig, AppservUtils) {
 
         //$scope.$route = $route;
         //$scope.$location = $location;
@@ -20,29 +21,26 @@ angular.module('personalApp.appcontroller', [])
         
         $scope.viewCssClass = '';
         
-        $scope.$on('$routeChangeSuccess', function() {
-            var _routeObj = AppservUtils.extractPath($location.path());
-            var _stateClass = _routeObj.viewCssClass;
-            var _sectionRef = _routeObj.sectionReference;
+        $scope.$on('$stateChangeSuccess', function(event, toState) {
+            console.log(event, toState);
+            
+            var _stateObj = AppservUtils.extractPath(toState.name);
+            console.log(_stateObj);
+            var _stateClass = _stateObj.viewCssClass;
+            var _sectionRef = _stateObj.sectionReference;
             
             if(_sectionRef >= 0) {
                 _stateClass += ' '+AppservUtils.paletteCssClass(_sectionRef);
             }
             
             $scope.viewCssClass = _stateClass;
+            
         });
-        /*
-        $scope.changeLocation = function(url, force) {
-            //this will mark the URL change
-            $location.path(url); //use $location.path(url).replace() if you want to replace the location instead
-
-            $scope = $scope || angular.element(document).scope();
-            if(force || !$scope.$$phase) {
-                //this will kickstart angular if to notice the change
-                $scope.$apply();
-            }
+        
+        $scope.changeLocation = function(statename) {
+            $state.go(statename);
         };
-		*/
+		
         AppfactConfig.getContentPromise().then(function(d) {
             angular.forEach($scope.sections, function(thisSection,sectionIndex) {
                 thisSection.payload = d.sections[sectionIndex];

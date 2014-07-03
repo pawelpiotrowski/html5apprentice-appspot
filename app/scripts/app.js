@@ -23,7 +23,8 @@ angular.module('personalApp', [
         };
         return (tmpl in templates) ? templates[tmpl] : templatesDir+tmpl;
     };
-	$urlRouterProvider.otherwise('/');
+    
+	$urlRouterProvider.otherwise('/not-found');
     
     $stateProvider
         
@@ -35,10 +36,55 @@ angular.module('personalApp', [
 
 	// ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
 	.state('about', {
-		// we'll get to this in a bit       
+		// we'll get to this in a bit    
+        url: '/about',
+		templateUrl: _view('section')
+	})
+    
+    .state('projects', {
+		// we'll get to this in a bit    
+        url: '/projects',
+		templateUrl: _view('section')
+	})
+	
+	.state('projects.detail', {
+        url: '/:id',
+        templateUrl: _view('sectionDetail')
+    })
+    
+    .state('appendix', {
+		// we'll get to this in a bit    
+        url: '/appendix',
+		templateUrl: _view('section')
+	})
+	
+	.state('appendix.detail', {
+        url: '/:slug',
+        templateUrl: _view('sectionDetail')
+    })
+    
+    .state('blog', {
+		// we'll get to this in a bit    
+        url: '/blog',
+		templateUrl: _view('section')
+	})
+	
+	.state('blog.detail', {
+        url: '/:entry',
+        templateUrl: _view('sectionDetail')
+    })
+    
+    .state('test', {
+		// we'll get to this in a bit    
+        url: '/test',
+		templateUrl: _view('test.html')
+	})
+    
+    .state('not-found', {
+		// we'll get to this in a bit    
+        url: '/not-found',
+		templateUrl: '404.html'
 	});
-	
-	
 	
 	
 	/*
