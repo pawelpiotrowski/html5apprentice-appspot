@@ -21,8 +21,8 @@ angular.module('personalApp.appcontroller', [])
         
         $scope.viewCssClass = '';
         
-        $scope.$on('$stateChangeSuccess', function(event, toState) {
-            console.log(event, toState);
+        $scope.$on('$stateChangeSuccess', function(event, toState, toParams) {
+            console.log(event, toState, toParams);
             
             var _stateObj = AppservUtils.extractPath(toState.name);
             console.log(_stateObj);
