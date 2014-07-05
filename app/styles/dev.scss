@@ -1,24 +1,15 @@
 /* DEV */
-.intro-toplayer { z-index: 30; }
 
-.doll-floor { background: grey; bottom: 0; height: 16%; width: 100%; position: absolute; }
-
-.pagenav-container { left: 0; position: absolute; top: 0; z-index: 66; }
-.page-nav-item { display: inline-block; margin: 10px; text-transform: capitalize; vertical-align: top; }
-
-.page {
-	backface-visibility: hidden;
-	transform: translate3d(0, 0, 0);
-	transform-style: preserve-3d;
-	position: absolute;
+.page-nav {
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 66;
 }
 
-.intro.ng-enter {
-	animation: moveFromBottom 0.6s ease both;
-}
-.section.ng-enter {
-	animation: moveFromTop 0.6s ease-in-out both;
-}
-.page.ng-leave {
-	animation: moveToBottom 0.6s ease-in-out both;
+.page-nav--item {
+    display: inline-block;
+    margin: 10px;
+    text-transform: capitalize;
+    vertical-align: top;
 }

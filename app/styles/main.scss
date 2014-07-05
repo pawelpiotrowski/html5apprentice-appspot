@@ -9,7 +9,7 @@
     @extend %full;
 }
 
-.nav-container {
+.doll-nav {
     @extend %full;
     height: 95%;
     left: 0;
@@ -19,7 +19,7 @@
     z-index: 20;
 }
 
-.nav-item {
+.doll-nav--item {
     @extend %screen-centered;
     float: left;
     height: 100%;
@@ -28,7 +28,7 @@
     width: auto;
 }
 
-.bckgd-attractor {
+.doll-attractor {
     @extend %full;
     left: 0;
     overflow: hidden;
@@ -37,15 +37,24 @@
     z-index: 1;
 }
 
-.bckgd-attractor svg {
+.doll-attractor svg {
     @extend %full;
 }
 
 /* intro */
-.intro-toplayer {
-    position: relative;
-    text-align: center;
-    z-index: 10;
+.#{$home} {
+    .headline {
+        position: relative;
+        text-align: center;
+        z-index: 30;
+    }
+    .footer {
+        background: grey;
+        bottom: 0;
+        height: 16%;
+        position: absolute;
+        width: 100%;
+    }
 }
 
 @import 'dev';
