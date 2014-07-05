@@ -34,8 +34,7 @@ angular.module('personalApp.apputils', [])
 			return timeStamp+'_'+randNumber;
 		};
         this.extractPath = function(path) {
-            console.log(appsettings);
-            console.log(path);
+            
             var _sectionSlugs = AppfactConfig.getRoutedSlugs();
             var _homeSlug = _stateSlugs.home;
             var _page404Slug = _stateSlugs.page404;

@@ -17,12 +17,11 @@ angular.module('personalApp.appintro', [])
 		return {
 			restrict: 'A',
 			link: function(scope, iElement) {
-				console.log(iElement);
 				var s = scope.sections.length;
 				scope.sectionDivider = function() {
 					return (100 / s)+'%';
 				};
-				$http.get('views/intro-navigation.html', {cache: $templateCache}).success(function(tplContent){
+				$http.get(scope.viewsDir+'intro-navigation.html', {cache: $templateCache}).success(function(tplContent){
 					iElement.append($compile(tplContent)(scope));
 				});
 			}

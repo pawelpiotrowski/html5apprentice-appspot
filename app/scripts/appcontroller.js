@@ -6,18 +6,30 @@ angular.module('personalApp.appcontroller', [])
     '$scope',
     '$state',
     'AppservLog',
+    'AppservError',
     'AppfactConfig',
     'AppservUtils',
-    function($scope, $state, AppservLog, AppfactConfig, AppservUtils) {
+    'appSettings',
+    function($scope, $state, AppservLog, AppservError, AppfactConfig, AppservUtils, appSettings) {
 
         //$scope.$route = $route;
         //$scope.$location = $location;
         //$scope.$routeParams = $routeParams;
 
         $scope.appLog = AppservLog.log;
+        
+        $scope.appErr = AppservError;
 
         $scope.sections = AppfactConfig.getRoutedSections();
-        $scope.slugs = AppfactConfig.getRoutedSlugs();
+        $scope.sectionsSlugs = AppfactConfig.getRoutedSlugs();
+        $scope.stateSlugs = appSettings.stateSlugs;
+        
+        $scope.cssSlugs = 
+        
+        $scope.stateHome = $scope.stateSlugs.home;
+        $scope.statePage404 = $scope.stateSlugs.page404;
+        
+        
         
         $scope.mainBckgd = AppservUtils.decorationCssClass('main','background');
         $scope.mainBorder = AppservUtils.decorationCssClass('main','border');
@@ -27,13 +39,17 @@ angular.module('personalApp.appcontroller', [])
         $scope.contraBorder = AppservUtils.decorationCssClass('contra','border');
         $scope.contraColor = AppservUtils.decorationCssClass('contra','color');
         
+        $scope.viewsDir = appSettings.templatesDir;
+        $scope.partialsDir = appSettings.partialsDir;
+        
         $scope.viewCssClass = '';
         
+        $scope.currentState = {};
+        
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams) {
-            console.log(event, toState, toParams);
             
             var _stateObj = AppservUtils.extractPath(toState.name);
-            console.log(_stateObj);
+            
             var _stateClass = _stateObj.viewCssClass;
             var _sectionRef = _stateObj.sectionReference;
             
@@ -42,7 +58,11 @@ angular.module('personalApp.appcontroller', [])
             }
             
             $scope.viewCssClass = _stateClass;
-            
+            $scope.currentState = {
+                event: event,
+                toState: toState,
+                toParams: toParams
+            };
         });
         
         $scope.changeLocation = function(statename) {
@@ -50,7 +70,7 @@ angular.module('personalApp.appcontroller', [])
         };
 		
         AppfactConfig.getContentPromise().then(function(d) {
-            angular.forEach($scope.sections, function(thisSection,sectionIndex) {
+            angular.forEach($scope.sections, function(thisSection, sectionIndex) {
                 thisSection.payload = d.sections[sectionIndex];
             });
             console.log('After loop', $scope.sections);

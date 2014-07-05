@@ -1,14 +1,42 @@
 @import 'animations';
 @import 'variables';
 @import 'mixins';
-html, body { background-color: $pageBckgd; color: $pageColor; height: 100%; overflow: hidden; width: 100%; }
-body { font-family: 'Ubuntu', Helvetica, Arial, sans-serif; font-size: 100%; font-weight: 300; line-height: 1.4; }
-a { color: inherit; }
 
-.border-radius { @include border-radius(4px); }
-.cursor-pointer { cursor: pointer; }
+html, body {
+    background-color: $pageBckgd;
+    color: $pageColor;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
 
-/* Palettes classes */
+body {
+    font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+    font-size: 100%;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
+a {
+    color: inherit;
+}
+
+%cursor-pointer {
+    cursor: pointer;
+}
+
+%full {
+    height: 100%; width: 100%;
+}
+
+%screen-centered {
+    align-items: center;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+// Palettes classes
 $allPalettesMain: append($palettes_main, $palette_main_default);
 $allPalettesContra: append($palettes_contra, $palette_contra_default);
 $allPalettesCount: length($allPalettesMain);
@@ -36,3 +64,5 @@ $allPalettesCount: length($allPalettesMain);
         }
     }
 }
+
+@import 'viewsanimation';

@@ -15,21 +15,7 @@ angular.module('personalApp.dollmaker', [])
 				var navDollWrapper = iElement;
 				var navDollRaphael = new Raphael(iElement[0]);
 				var navDollSize = navDollCounter + 1;
-				function navDollClickCallback() {
-					console.log('doll click animation callback');
-					console.log(scope.section.url);
-					scope.changeLocation(scope.section.slug);
-				}
-				function navDollClick() {
-					console.log('doll clicked');
-					//navDoll.action('click', navDollClick, false);
-					var others = dollCollection.getOthers(navDoll);
-					angular.forEach(others, function(other, i) {
-						var clbk = (i === others.length - 1) ? navDollClickCallback : false;
-						other.goAway(clbk);
-					});
-					navDoll.kiss();
-				}
+				
 				// extension array order: hair eyebrow eye nose lips
 				var navDollCustomColors = {
 					basePath: scope.sections[navDollCounter].palette.contra,
@@ -58,7 +44,23 @@ angular.module('personalApp.dollmaker', [])
 					navDollCustomPaths,
 					navDollCustomAnimation
 				);
-				
+                
+				function navDollClickCallback() {
+					console.log('doll click animation callback');
+					console.log(scope.section.url);
+					scope.changeLocation(scope.section.slug);
+				}
+				function navDollClick() {
+					console.log('doll clicked');
+					//navDoll.action('click', navDollClick, false);
+					var others = dollCollection.getOthers(navDoll);
+					angular.forEach(others, function(other, i) {
+						var clbk = (i === others.length - 1) ? navDollClickCallback : false;
+						other.goAway(clbk);
+					});
+					navDoll.kiss();
+				}
+                
 				navDoll.make();
 				navDoll.action('click', navDollClick, true);
 				dollCollection.addDoll(navDoll);

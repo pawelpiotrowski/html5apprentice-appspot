@@ -17,20 +17,20 @@ $folk-d-blue: #2a2d96;
 $pageBckgd: #fffffc;
 $pageColor: #192823;
 
+// default palette
 $palette_main_default: #e56a1a;
 $palette_contra_default: #ebc014;
-/* 
-    hair eyebrow eye nose lips
-*/
+//                           hair eyebrow eye nose lips
 $palette_extensions_default: #3b0208 #502D17 #29190F #D45714 #D45714;
 
+// custom palettes
 $palettes_main: #680420 #445500 #003380;
 $palettes_contra: #eb2228 #abc837 #87aade;
-
 $palettes_extensions: #241c1c #29190F #320E10 #2D2727 #ab0613,
     #c87137 #320E10 #546315 #320E10 #eb2228,
     #fdd001 #502D17 #164450 #502D17 #da2d6e;
 
+// slugs
 $home: 'intro';
 $page404: 'not-found';
 $section: 'section';

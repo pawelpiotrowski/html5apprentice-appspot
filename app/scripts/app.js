@@ -5,6 +5,7 @@ angular.module('personalApp', [
 	'ngAnimate',
 	'personalApp.appconfig',
 	'personalApp.appcontroller',
+    'personalApp.apperror',
 	'personalApp.appnavigation',
     'personalApp.appintro',
     'personalApp.appsection',
@@ -19,19 +20,21 @@ angular.module('personalApp', [
     var _page404 = appSettings.stateSlugs.page404;
     var _section = appSettings.stateSlugs.section;
     var _sectionDetail = appSettings.stateSlugs.sectionDetail;
+    var _templatesDir = appSettings.templatesDir;
     
     var _view = function(tmpl) {
         
-        var templatesDir = '/views/';
         var templates = {};
         
-        templates[_home] = templatesDir+'intro.html';
+        templates[_home] = _templatesDir+'intro.html';
         templates[_page404] = '404.html';
-        templates[_section] = templatesDir+'section.html';
-        templates[_sectionDetail] = templatesDir+'section-detail.html';
+        templates[_section] = _templatesDir+'section.html';
+        templates[_sectionDetail] = _templatesDir+'section-detail.html';
         
-        return (tmpl in templates) ? templates[tmpl] : templatesDir+tmpl;
+        return (tmpl in templates) ? templates[tmpl] : _templatesDir+tmpl;
     };
+    
+    $urlRouterProvider.when('', '/');
     
 	$stateProvider
     

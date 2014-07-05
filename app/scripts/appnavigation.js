@@ -4,8 +4,11 @@ angular.module('personalApp.appnavigation', [])
 
 .controller('NavCtrl', [
 	'$scope',
-	function($scope) {
-		console.log('nav controller');
+    '$state',
+	function($scope, $state) {
+        $scope.navVisible = function() {
+            return !$state.is($scope.stateHome);
+        };
 	}
 ])
 
@@ -18,7 +21,7 @@ angular.module('personalApp.appnavigation', [])
 			restrict: 'A',
 			controller: 'NavCtrl',
 			link: function(scope, iElement) {
-				$http.get('partials/navigation.html', {cache: $templateCache}).success(function(tplContent){
+				$http.get(scope.partialsDir+'navigation.html', {cache: $templateCache}).success(function(tplContent){
 					iElement.append($compile(tplContent)(scope));
 				});
 			}

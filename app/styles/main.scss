@@ -1,16 +1,48 @@
 @import 'reset';
 @import 'base';
 
-.full { height: 100%; width: 100%; }
-.screen-centered { align-items: center; display: flex; flex-flow: row; justify-content: center; }
-.view-container { @extend .full; position: relative; }
-.nav-container { @extend .full; height: 95%; left: 0; overflow: hidden; position: absolute; top: 0; z-index: 20; }
-.nav-item { @extend .screen-centered; float: left; height: 100%; position: relative; text-align: center; width: auto; }
+.view-container {
+    @extend %full;
+    position: relative;
+}
 
-.bckgd-attractor { @extend .full; left: 0; overflow: hidden; position: absolute; top: 0; z-index: 1; }
-.bckgd-attractor svg { @extend .full; }
+.nav-container {
+    @extend %full;
+    height: 95%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 20;
+}
+
+.nav-item {
+    @extend %screen-centered;
+    float: left;
+    height: 100%;
+    position: relative;
+    text-align: center;
+    width: auto;
+}
+
+.bckgd-attractor {
+    @extend %full;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+
+.bckgd-attractor svg {
+    @extend %full;
+}
 
 /* intro */
-.intro-toplayer { position: relative; text-align: center; z-index: 10; }
+.intro-toplayer {
+    position: relative;
+    text-align: center;
+    z-index: 10;
+}
 
 @import 'dev';

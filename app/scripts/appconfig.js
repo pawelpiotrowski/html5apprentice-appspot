@@ -4,6 +4,8 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 
 .constant('appSettings', {
 	contentPath: 'data/content.json',
+    templatesDir: '/views/',
+    partialsDir: '/partials/',
 	exludeSections: ['test', 'not-found'],
 	palette: {
 		page: {
@@ -100,8 +102,6 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
             var validRouteRef = sections.length;
             
 			if(validRoute) {
-				//console.log('valid route', validRouteRef);
-                console.log(appState);
 				var _p = settings.palette.sections[validRouteRef];
                 var _palette = settings.palette.sectionDefaultPalette;
                 var _defaultPalette = true;
