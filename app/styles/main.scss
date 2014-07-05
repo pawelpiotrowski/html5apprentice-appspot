@@ -1,6 +1,10 @@
 @import 'reset';
 @import 'base';
 
+.cursor-pointer {
+    @extend %cursor-pointer;
+}
+
 .view-container {
     @extend %full;
 }

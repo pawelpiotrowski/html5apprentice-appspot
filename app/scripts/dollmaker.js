@@ -45,6 +45,8 @@ angular.module('personalApp.dollmaker', [])
 					navDollCustomAnimation
 				);
                 
+				var htmlEl = angular.element(document.getElementsByTagName('html')[0]);
+                
 				function navDollClickCallback() {
 					console.log('doll click animation callback');
 					console.log(scope.section.url);
@@ -60,10 +62,23 @@ angular.module('personalApp.dollmaker', [])
 					});
 					navDoll.kiss();
 				}
-                
+                function cursorPointerOn() {
+				    htmlEl.addClass('cursor-pointer');
+                }
+                function cursorPointerOff() {
+				    htmlEl.removeClass('cursor-pointer');
+                }
+                function removeCursorPointer() {
+                    navDoll.action('hover', [cursorPointerOn, cursorPointerOff], false);
+                    cursorPointerOff();
+                }
 				navDoll.make();
 				navDoll.action('click', navDollClick, true);
+                navDoll.action('hover', [cursorPointerOn, cursorPointerOff], true);
 				dollCollection.addDoll(navDoll);
+                scope.$on('$destroy', function() {
+                    removeCursorPointer();
+                });
 			}
 		};
 	}
@@ -113,14 +128,7 @@ angular.module('personalApp.dollmaker', [])
 				var doll = this.el;
 				var	dollRef = AppservDoll.paths;
 				var	dollRoot = this;
-				var htmlEl = angular.element(document.getElementsByTagName('html')[0]);
-				var addCursorClass = function() {
-					htmlEl.addClass('cursor-pointer');
-				};
-				var removeCursorClass = function() {
-					htmlEl.removeClass('cursor-pointer');
-				};
-
+				
 				doll.setStart();
 
 				angular.forEach(AppservDoll.pathOrder, function(pathName) {
@@ -137,7 +145,7 @@ angular.module('personalApp.dollmaker', [])
 
 				this.dollShape = doll.setFinish();
 				this.dollShape.scale(this.scale,this.scale,AppservDoll.svgSize.w / 2, AppservDoll.svgSize.h);
-				this.dollShape.hover(addCursorClass,removeCursorClass);
+                
 			};
 			this.action = function(eName, eHandler, addOrRemove) {
 				switch(eName) {
@@ -148,6 +156,13 @@ angular.module('personalApp.dollmaker', [])
 							this.dollShape.unclick(eHandler);
 						}
 						break;
+                    case 'hover':
+                        if(addOrRemove) {
+							this.dollShape.hover(eHandler[0], eHandler[1]);
+						} else {
+							this.dollShape.unhover(eHandler[0], eHandler[1]);
+						}
+                        break;
 				}
 			};
 			this.animateGestureTo = function() {

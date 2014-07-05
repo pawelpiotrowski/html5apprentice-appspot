@@ -24,7 +24,7 @@ angular.module('personalApp.appcontroller', [])
         $scope.sectionsSlugs = AppfactConfig.getRoutedSlugs();
         $scope.stateSlugs = appSettings.stateSlugs;
         
-        $scope.cssSlugs = 
+        //$scope.cssSlugs = 
         
         $scope.stateHome = $scope.stateSlugs.home;
         $scope.statePage404 = $scope.stateSlugs.page404;

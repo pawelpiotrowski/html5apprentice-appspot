@@ -1,8 +1,8 @@
 .view-container {
 	backface-visibility: hidden;
+	position: absolute;
 	transform: translate3d(0, 0, 0);
 	transform-style: preserve-3d;
-	position: absolute;
 }
 
 .#{$home}.ng-enter {
