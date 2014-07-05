@@ -1,26 +1,38 @@
 @import 'animations';
 @import 'variables';
 @import 'mixins';
-html, body { background-color: $white; color: $dark; height: 100%; overflow: hidden; width: 100%; }
+html, body { background-color: $pageBckgd; color: $pageColor; height: 100%; overflow: hidden; width: 100%; }
 body { font-family: 'Ubuntu', Helvetica, Arial, sans-serif; font-size: 100%; font-weight: 300; line-height: 1.4; }
 a { color: inherit; }
 
 .border-radius { @include border-radius(4px); }
 .cursor-pointer { cursor: pointer; }
 
-/* generate single palette */
-@each $color_var in $color_vars {
-	$i: index($color_vars, $color_var);
-	.border-#{$i} { border-color: $color_var; }
-	.color-#{$i} { color: $color_var; }
-	.bckgd-#{$i} { background-color: $color_var; }
-}
-/* generate sections styling */
-@each $section_color in $section_colors {
-	$i: index($section_colors, $section_color);
-	.section-#{$i} {
-		.section-border { border-color: $section_color; }
-		.section-color { color: $section_color; }
-		.section-bckgd { background-color: $section_color; }
-	}
+/* Palettes classes */
+$allPalettesMain: append($palettes_main, $palette_main_default);
+$allPalettesContra: append($palettes_contra, $palette_contra_default);
+$allPalettesCount: length($allPalettesMain);
+
+@for $i from 1 through $allPalettesCount {
+    
+    $thisSectionPalette: if($i == 4, $paletteDefault, #{$palette}-#{$i});
+    $thisColorMain: nth($allPalettesMain, $i);
+    $thisColorContra: nth($allPalettesContra, $i);
+
+    .#{$section}#{$thisSectionPalette} {
+        @for $j from 1 through 2 {
+            $thisPalette: if($j == 1, $paletteMain, $paletteContra);
+            $thisColor: if($j == 1, $thisColorMain, $thisColorContra);
+            // .palette-main || .palette-contra
+            .#{$thisPalette}-bckgd {
+                background-color: $thisColor;
+            }
+            .#{$thisPalette}-border {
+                border-color: $thisColor;
+            }
+            .#{$thisPalette}-color {
+                color: $thisColor;
+            }
+        }
+    }
 }

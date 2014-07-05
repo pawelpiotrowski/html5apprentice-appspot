@@ -19,6 +19,14 @@ angular.module('personalApp.appcontroller', [])
         $scope.sections = AppfactConfig.getRoutedSections();
         $scope.slugs = AppfactConfig.getRoutedSlugs();
         
+        $scope.mainBckgd = AppservUtils.decorationCssClass('main','background');
+        $scope.mainBorder = AppservUtils.decorationCssClass('main','border');
+        $scope.mainColor = AppservUtils.decorationCssClass('main','color');
+        
+        $scope.contraBckgd = AppservUtils.decorationCssClass('contra','background');
+        $scope.contraBorder = AppservUtils.decorationCssClass('contra','border');
+        $scope.contraColor = AppservUtils.decorationCssClass('contra','color');
+        
         $scope.viewCssClass = '';
         
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams) {

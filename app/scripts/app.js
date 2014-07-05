@@ -13,60 +13,66 @@ angular.module('personalApp', [
 	'personalApp.dollhandcraft',
 	'personalApp.logservice'
 ])
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, appSettings) {
+    
+    var _home = appSettings.stateSlugs.home;
+    var _page404 = appSettings.stateSlugs.page404;
+    var _section = appSettings.stateSlugs.section;
+    var _sectionDetail = appSettings.stateSlugs.sectionDetail;
     
     var _view = function(tmpl) {
+        
         var templatesDir = '/views/';
-        var templates = {
-            intro: templatesDir+'intro.html',
-            section: templatesDir+'section.html',
-            sectionDetail: templatesDir+'section-detail.html'
-        };
+        var templates = {};
+        
+        templates[_home] = templatesDir+'intro.html';
+        templates[_page404] = '404.html';
+        templates[_section] = templatesDir+'section.html';
+        templates[_sectionDetail] = templatesDir+'section-detail.html';
+        
         return (tmpl in templates) ? templates[tmpl] : templatesDir+tmpl;
     };
     
-	$urlRouterProvider.otherwise('/not-found');
+	$stateProvider
     
-    $stateProvider
-    
-	.state('intro', {
+	.state(_home, {
 		url: '/',
-		templateUrl: _view('intro')
+		templateUrl: _view(_home)
 	})
     
     .state('about', {
         url: '/about',
-		templateUrl: _view('section')
+		templateUrl: _view(_section)
 	})
     
     .state('projects', {
         url: '/projects',
-		templateUrl: _view('section')
+		templateUrl: _view(_section)
 	})
 	
 	.state('projects.detail', {
         url: '/:id',
-        templateUrl: _view('sectionDetail')
+        templateUrl: _view(_sectionDetail)
     })
     
     .state('appendix', {
         url: '/appendix',
-		templateUrl: _view('section')
+		templateUrl: _view(_section)
 	})
 	
 	.state('appendix.detail', {
         url: '/:slug',
-        templateUrl: _view('sectionDetail')
+        templateUrl: _view(_sectionDetail)
     })
     /*
     .state('blog', {
         url: '/blog',
-		templateUrl: _view('section')
+		templateUrl: _view(_section)
 	})
 	
 	.state('blog.detail', {
         url: '/:entry',
-        templateUrl: _view('sectionDetail')
+        templateUrl: _view(_sectionDetail)
     })
     */
     .state('test', {
@@ -74,9 +80,10 @@ angular.module('personalApp', [
 		templateUrl: _view('test.html')
 	})
     
-    .state('not-found', {
-        url: '/not-found',
-		templateUrl: '404.html'
+    .state(_page404, {
+        url: '/'+_page404,
+		templateUrl: _view(_page404)
 	});
     
+    $urlRouterProvider.otherwise('/'+_page404);
 });

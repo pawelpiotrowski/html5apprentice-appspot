@@ -55,8 +55,22 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 				'#D45714', // nose
 				'#D45714' // lips
 			]
-		}
-	}
+		},
+        sectionPaletteCssSlug: '-palette',
+        sectionPaletteCssDefaultSlug: '-default'
+	},
+    stateSlugs: {
+        home: 'intro',
+        page404: 'not-found',
+        section: 'section',
+        sectionDetail: '-detail'
+    },
+    stateCssSlugs: {
+        home: 'intro',
+        page404: 'not-found',
+        section: 'section',
+        sectionDetail: '-detail'
+    }
 })
 
 .factory('AppfactConfig', [
@@ -87,6 +101,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
             
 			if(validRoute) {
 				//console.log('valid route', validRouteRef);
+                console.log(appState);
 				var _p = settings.palette.sections[validRouteRef];
                 var _palette = settings.palette.sectionDefaultPalette;
                 var _defaultPalette = true;

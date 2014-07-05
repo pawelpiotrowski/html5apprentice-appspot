@@ -1,11 +1,3 @@
-$white: #fffffc;
-$red: #eb2228; // #dd1e2f;
-$orange: #ebb035;
-$blue: #005c8f; // #06a2cb;
-$green: #94cf1c; // #218559;
-$tan: #d0c6b1;
-$dark: #192823;
-
 $folk-l-green: #94cf1c;
 $folk-d-green: #00a849;
 
@@ -22,8 +14,37 @@ $folk-blue: #005c8f;
 $folk-l-blue: #5dd9f9;
 $folk-d-blue: #2a2d96;
 
+$pageBckgd: #fffffc;
+$pageColor: #192823;
 
-$color_names: white red orange blue green tan dark;
-$color_vars: $white $red $orange $blue $green $tan $dark;
+$palette_main_default: #e56a1a;
+$palette_contra_default: #ebc014;
+/* 
+    hair eyebrow eye nose lips
+*/
+$palette_extensions_default: #3b0208 #502D17 #29190F #D45714 #D45714;
 
-$section_colors: $red $green $blue;
+$palettes_main: #680420 #445500 #003380;
+$palettes_contra: #eb2228 #abc837 #87aade;
+
+$palettes_extensions: #241c1c #29190F #320E10 #2D2727 #ab0613,
+    #c87137 #320E10 #546315 #320E10 #eb2228,
+    #fdd001 #502D17 #164450 #502D17 #da2d6e;
+
+$home: 'intro';
+$page404: 'not-found';
+$section: 'section';
+$s_detail: '-detail';
+$sectionDetail: #{$section}#{$s_detail};
+$palette: '-palette';
+$p_default: '-default';
+$paletteDefault: #{$palette}#{$p_default};
+
+$paletteSlug: 'palette';
+
+$p_main: '-main';
+$paletteMain: #{$paletteSlug}#{$p_main};
+$p_contra: '-contra';
+$paletteContra: #{$paletteSlug}#{$p_contra};
+$p_extension: '-extension';
+$paletteExtension: #{$palette}#{$p_contra};
