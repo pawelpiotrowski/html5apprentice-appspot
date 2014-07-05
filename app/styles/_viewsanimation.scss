@@ -1,4 +1,4 @@
-.page {
+.view-container {
 	backface-visibility: hidden;
 	transform: translate3d(0, 0, 0);
 	transform-style: preserve-3d;
@@ -11,6 +11,6 @@
 .#{$section}.ng-enter {
 	animation: moveFromTop 0.6s ease-in-out both;
 }
-.page.ng-leave {
+.view-container--main.ng-leave {
 	animation: moveToBottom 0.6s ease-in-out both;
 }
