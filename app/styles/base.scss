@@ -1,39 +1,65 @@
-@import 'animations';
 @import 'variables';
+@import 'images';
 @import 'mixins';
+@import 'reset';
+@import 'fonts';
+@import 'animations';
+
+// Fonts
+
+%cursiveLatinBold { font-family: "VeljovicScriptLTW02-Bol", cursive; }
+%cursiveLatinMedium { font-family: "VeljovicScriptLTW02-Med", cursive; }
+%cursiveLatinRegular { font-family: "VeljovicScriptLTW02-Reg", cursive; }
+%cursiveLatinLight { font-family: "VeljovicScriptLTW02-Lig", cursive; }
+
+%cursiveCyrillicBold { font-family: "VeljovicScriptLTW10-Bol", cursive; }
+%cursiveCyrillicMedium { font-family: "VeljovicScriptLTW10-Med", cursive; }
+%cursiveCyrillicRegular { font-family: "VeljovicScriptLTW10-Reg", cursive; }
+%cursiveCyrillicLight { font-family: "VeljovicScriptLTW10-Lig", cursive; }
+
+// Background images
+
+%pageBckgdImg { background-image: url($psNeutralImg); }
+
+// Layout
+
+%full { height: 100%; width: 100%; }
+%screenCentered { align-items: center; display: flex; flex-flow: row; justify-content: center; }
+
+// Helpers
+
+%cursorPointer { cursor: pointer; }
+
+%frameBorder {
+    border-color: #AD9B5C;
+    border-image-source: url($frameBorderImg);
+    border-image-slice: 45;
+    border-image-repeat: round;
+    border-style: solid;
+}
+
+%frameBorderBckgd {
+    background-image: url('/images/frame-border.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
 
 html, body {
     background-color: $pageBckgd;
     color: $pageColor;
-    height: 100%;
     overflow: hidden;
-    width: 100%;
+    @extend %full;
 }
 
 body {
-    font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+    @extend %pageBckgdImg;
+    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
     font-size: 100%;
-    font-weight: 300;
     line-height: 1.4;
 }
 
 a {
     color: inherit;
-}
-
-%cursor-pointer {
-    cursor: pointer;
-}
-
-%full {
-    height: 100%; width: 100%;
-}
-
-%screen-centered {
-    align-items: center;
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
 }
 
 // Palettes classes
@@ -64,5 +90,3 @@ $allPalettesCount: length($allPalettesMain);
         }
     }
 }
-
-@import 'viewsanimation';

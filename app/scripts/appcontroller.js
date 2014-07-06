@@ -77,6 +77,8 @@ angular.module('personalApp.appcontroller', [])
         }, function(err) {
             $scope.appLog('warn', err);
         }, null);
+        
+        // AppservUtils.fontTracking();
     }
 ])
 

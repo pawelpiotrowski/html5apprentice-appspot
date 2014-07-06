@@ -2,13 +2,6 @@
 
 angular.module('personalApp.appintro', [])
 
-.controller('IntroCtrl', [
-    '$scope',
-    function($scope) {
-        console.log('intro controller');
-    }
-])
-
 .directive('appdirIntroNavigation', [
 	'$http',
 	'$compile',

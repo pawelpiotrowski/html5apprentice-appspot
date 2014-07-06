@@ -40,7 +40,10 @@ angular.module('personalApp', [
     
 	.state(_home, {
 		url: '/',
-		templateUrl: _view(_home)
+		templateUrl: _view(_home),
+        controller: function($scope) {
+            $scope.content = appSettings.homeContent;
+        }
 	})
     
     .state('about', {

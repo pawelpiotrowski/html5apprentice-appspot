@@ -1,26 +1,55 @@
-@import 'reset';
 @import 'base';
+@import 'viewsanimation';
 
-.cursor-pointer {
-    @extend %cursor-pointer;
+// Cursive font declaration
+.cursive-bold {
+    @extend %cursiveLatinBold;
+}
+.cursive-medium {
+    @extend %cursiveLatinMedium;
+}
+.cursive-regular {
+    @extend %cursiveLatinRegular;
+}
+.cursive-light {
+    @extend %cursiveLatinLight;
+}
+// Cyrillic overriding
+.lang-ru {
+    .cursive-bold {
+        @extend %cursiveCyrillicBold;
+    }
+    .cursive-medium {
+        @extend %cursiveCyrillicMedium;
+    }
+    .cursive-regular {
+        @extend %cursiveCyrillicRegular;
+    }
+    .cursive-light {
+        @extend %cursiveCyrillicLight;
+    }
 }
 
-.view-container {
+.cursor-pointer {
+    @extend %cursorPointer;
+}
+
+.page-view {
     @extend %full;
 }
 
 .doll-nav {
-    @extend %full;
-    height: 95%;
+    bottom: 5%;
+    height: 85%;
     left: 0;
     overflow: hidden;
     position: absolute;
-    top: 0;
+    width: 100%;
     z-index: 20;
 }
 
 .doll-nav--item {
-    @extend %screen-centered;
+    @extend %screenCentered;
     float: left;
     height: 100%;
     position: relative;
@@ -44,12 +73,27 @@
 /* intro */
 .#{$home} {
     .headline {
+        @extend .cursive-regular;
+        font-size: 2em;
+        font-size: 5vmin;
         position: relative;
-        text-align: center;
-        z-index: 30;
+        text-align: right;
+        text-shadow: 1px 1px 1px #808080;
+        z-index: 10;
+        ._wrap {
+            background-color: #fff;
+            border-width: 1em;
+            display: inline-block;
+            margin: 20px 10% 0 0;
+            padding: 10px 15px;
+            text-align: center;
+            vertical-align: top;
+            @extend %frameBorder;
+            // @extend %frameBorderBckgd;
+        }
     }
     .footer {
-        background: grey;
+        background-color: #808080;
         bottom: 0;
         height: 16%;
         position: absolute;

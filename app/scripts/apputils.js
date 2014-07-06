@@ -84,5 +84,17 @@ angular.module('personalApp.apputils', [])
             var _paletteSlug = _paletteSett.sectionPaletteCssSlug.substring(1);
             return _paletteSlug + '-' + mainOrContra + '-' + _decorationType;
         };
+        
+        this.fontTracking = function() {
+            window.MTIProjectId = 'c5c97bbb-4edc-42a1-853b-387cd1b12245';
+            var mtiTracking = document.createElement('script');
+            var trackingUrl = '//fast.fonts.net/t/trackingCode.js';
+            var urlProtocol = ('https:' === document.location.protocol ? 'https:' : 'http:');
+            var elToAppendTo = (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]);
+            mtiTracking.type = 'text/javascript';
+            mtiTracking.async = 'true';
+            mtiTracking.src = urlProtocol + trackingUrl;
+            elToAppendTo.appendChild(mtiTracking);
+        };
 	}
 ]);

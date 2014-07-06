@@ -72,6 +72,11 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         page404: 'not-found',
         section: 'section',
         sectionDetail: '-detail'
+    },
+    homeContent: {
+        line1: 'Hello my name is Pawel and I make',
+        line2: 'handcrafted html, css',
+        line3: 'and javascript.'
     }
 })
 
