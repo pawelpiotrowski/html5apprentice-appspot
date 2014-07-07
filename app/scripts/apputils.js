@@ -68,7 +68,7 @@ angular.module('personalApp.apputils', [])
             };
         };
         
-        this.paletteCssClass = function(sectionRef) {
+        this.paletteCssClass = function(sectionRef, globalFlag) {
             
             var _sections = AppfactConfig.getRoutedSections();
             var _section = _sections[sectionRef];
@@ -76,6 +76,10 @@ angular.module('personalApp.apputils', [])
             var _paletteDefaultCssSlug = _paletteSett.sectionPaletteCssDefaultSlug;
             var _paletteType = (_section.defaultPalette) ? _paletteDefaultCssSlug : '-'+_section.type;
             
+            if(angular.isDefined(globalFlag) && globalFlag) {
+                _paletteCssSlug = _paletteSett.sectionPaletteCssSlug.substring(1);
+            }
+            console.log(_paletteSett.sectionPaletteCssSlug.substring(1));
             return _paletteCssSlug + _paletteType;
         };
         

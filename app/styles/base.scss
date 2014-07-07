@@ -73,6 +73,8 @@ $allPalettesCount: length($allPalettesMain);
     $thisColorMain: nth($allPalettesMain, $i);
     $thisColorContra: nth($allPalettesContra, $i);
 
+    $atRootPalettePrefix: if($i == 4, $p_default, -#{$i});
+
     .#{$section}#{$thisSectionPalette} {
         @for $j from 1 through 2 {
             $thisPalette: if($j == 1, $paletteMain, $paletteContra);
@@ -87,6 +89,22 @@ $allPalettesCount: length($allPalettesMain);
             .#{$thisPalette}-color {
                 color: $thisColor;
             }
+        }
+    }
+    
+    @for $k from 1 through 2 {
+        
+        $atRootPalette: $paletteSlug + $atRootPalettePrefix + if($k == 1, $p_main, $p_contra);
+        $thisColor: if($k == 1, $thisColorMain, $thisColorContra);
+        // palette-{type}-main || palette-{type}-contra
+        .#{$atRootPalette}-bckgd {
+            background-color: $thisColor;
+        }
+        .#{$atRootPalette}-border {
+            border-color: $thisColor;
+        }
+        .#{$atRootPalette}-color {
+            color: $thisColor;
         }
     }
 }

@@ -49,7 +49,7 @@ angular.module('personalApp.dollmaker', [])
                 
 				function navDollClickCallback() {
 					console.log('doll click animation callback');
-					console.log(scope.section.url);
+					console.log(scope.section.slug);
 					scope.changeLocation(scope.section.slug);
 				}
 				function navDollClick() {

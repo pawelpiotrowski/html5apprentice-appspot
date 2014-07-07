@@ -1,3 +1,4 @@
 <div class="doll-nav--item" ng-repeat="section in sections" ng-style="{ width: sectionDivider() }">
+    <a class="doll-nav--fallback" ui-sref="{{ section.slug }}">{{ section.slug }}</a>
 	<div appdir-make-nav-doll class="doll-attractor"></div>
 </div>
