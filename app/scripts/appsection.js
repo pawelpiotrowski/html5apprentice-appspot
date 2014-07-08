@@ -11,6 +11,14 @@ angular.module('personalApp.appsection', [])
         var _sectionContent = (_sectionContentRef < 0) ? $scope.appErr.handler('no-content') : $scope.sections[_sectionContentRef];
         $scope.sectionContent = _sectionContent.payload;
         console.log($scope.sectionContent);
+        
+        $scope.mainBckgd = $scope.appUtils.decorationCssClass('main','background');
+        $scope.mainBorder = $scope.appUtils.decorationCssClass('main','border');
+        $scope.mainColor = $scope.appUtils.decorationCssClass('main','color');
+        
+        $scope.contraBckgd = $scope.appUtils.decorationCssClass('contra','background');
+        $scope.contraBorder = $scope.appUtils.decorationCssClass('contra','border');
+        $scope.contraColor = $scope.appUtils.decorationCssClass('contra','color');
     }
 ])
 

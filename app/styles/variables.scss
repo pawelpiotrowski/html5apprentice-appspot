@@ -48,3 +48,7 @@ $p_contra: '-contra';
 $paletteContra: #{$paletteSlug}#{$p_contra};
 $p_extension: '-extension';
 $paletteExtension: #{$palette}#{$p_contra};
+
+$navActive: 'active';
+
+$globalTransitionTime: 600ms;

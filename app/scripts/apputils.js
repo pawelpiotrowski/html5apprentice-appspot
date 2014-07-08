@@ -68,13 +68,21 @@ angular.module('personalApp.apputils', [])
             };
         };
         
+        this.paletteSectionTypeSlug = function(sectionRef) {
+            console.log(sectionRef);
+            var _sections = AppfactConfig.getRoutedSections();
+            var _section = (sectionRef < 0) ? false : _sections[sectionRef];
+            var _paletteDefaultSlug = _paletteSett.sectionPaletteCssDefaultSlug;
+            var _sectionDefaultSlug = !_section || _section.defaultPalette;
+            var _paletteTypeSlug = (_sectionDefaultSlug) ? _paletteDefaultSlug : '-'+_section.type;
+            
+            return _paletteTypeSlug;
+        };
+        
         this.paletteCssClass = function(sectionRef) {
             
-            var _sections = AppfactConfig.getRoutedSections();
-            var _section = _sections[sectionRef];
             var _paletteCssSlug = _stateCssSlugs.section + _paletteSett.sectionPaletteCssSlug;
-            var _paletteDefaultCssSlug = _paletteSett.sectionPaletteCssDefaultSlug;
-            var _paletteType = (_section.defaultPalette) ? _paletteDefaultCssSlug : '-'+_section.type;
+            var _paletteType = this.paletteSectionTypeSlug(sectionRef);
             
             return _paletteCssSlug + _paletteType;
         };
@@ -82,7 +90,10 @@ angular.module('personalApp.apputils', [])
         this.decorationCssClass = function(mainOrContra, decorationType, sectionRef) {
             var _decorationType = (decorationType === 'background') ? 'bckgd' : decorationType;
             var _paletteSlug = _paletteSett.sectionPaletteCssSlug.substring(1);
-            var _includeSectionRef = (sectionRef) ? '-'+sectionRef : '';
+            var _includeSectionRef = '';
+            if(angular.isDefined(sectionRef)) {
+                _includeSectionRef = this.paletteSectionTypeSlug(sectionRef);
+            }
             return _paletteSlug + _includeSectionRef + '-' + mainOrContra + '-' + _decorationType;
         };
         

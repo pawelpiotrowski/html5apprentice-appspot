@@ -215,6 +215,16 @@ AddDefaultCharset utf-8
   # RewriteBase /
 </IfModule>
 
+# http://stackoverflow.com/questions/7136642/how-can-i-use-php-apache-mod-rewrite-to-redirect-urls-as-hash-tags
+# redirect anything that isn't a file/directory:
+
+# <IfModule mod_rewrite.c>
+#     RewriteBase /
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteRule ^(.+)$ /#$1 [R,L,NE]
+# </IfModule>
+
 # ------------------------------------------------------------------------------
 # | Suppressing / Forcing the "www." at the beginning of URLs                  |
 # ------------------------------------------------------------------------------

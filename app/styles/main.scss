@@ -120,15 +120,24 @@ Section
     background-color: #fff;
     border-style: solid;
     border-width: 0 0 2px 0;
+    font-size: 1.1em;
     position: relative;
+    text-transform: uppercase;
     z-index: 66;
+    @extend .cursive-medium;
+    @media screen and (max-width: 400px) {
+        font-size: 4.5vw;
+    }
 }
 
 .page-nav--item {
     display: inline-block;
     margin: 10px;
-    text-transform: capitalize;
+    text-decoration: none;
     vertical-align: top;
+    &.#{$navActive} {
+        text-decoration: underline;
+    }
 }
 
 @import 'helpers';

@@ -71,7 +71,8 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         home: 'intro',
         page404: 'not-found',
         section: 'section',
-        sectionDetail: '-detail'
+        sectionDetail: '-detail',
+        sectionActive: 'active'
     },
     homeContent: {
         line1: 'Hello my name is Pawel and I make',

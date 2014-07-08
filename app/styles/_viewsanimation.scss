@@ -6,7 +6,7 @@
 
 // main view
 
-$mainViewTransitionTime: 600ms;
+$mainViewTransitionTime: $globalTransitionTime;
 
 .#{$home}.ng-enter {
 	animation: moveFromBottom $mainViewTransitionTime ease both;
@@ -27,12 +27,15 @@ $mainViewTransitionTime: 600ms;
 
 // section navigation
 
-$navTransitionTime: 600ms;
+$navTransitionTime: $globalTransitionTime;
 $navTransitionFunction: ease;
 
 // this one is to fool angular to trigger animation
 .page-nav {
-    transition: visibility $navTransitionFunction $navTransitionTime;
+    transition: border-color $navTransitionFunction $navTransitionTime;
+}
+.page-nav--item {
+    transition: color $navTransitionFunction $navTransitionTime / 3;
 }
 // on hide
 .page-nav.ng-hide-add.ng-hide-add-active {

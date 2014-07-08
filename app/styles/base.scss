@@ -62,6 +62,10 @@ a {
     color: inherit;
 }
 
+.#{$navActive} {
+    cursor: default !important;
+}
+
 // Palettes classes
 $allPalettesMain: append($palettes_main, $palette_main_default);
 $allPalettesContra: append($palettes_contra, $palette_contra_default);
@@ -74,9 +78,10 @@ $allPalettesCount: length($allPalettesMain);
     $thisColorContra: nth($allPalettesContra, $i);
 
     $atRootPalettePrefix: if($i == 4, $p_default, -#{$i});
+    $paletteColorTypes: 2; // main and contra
 
     .#{$section}#{$thisSectionPalette} {
-        @for $j from 1 through 2 {
+        @for $j from 1 through $paletteColorTypes {
             $thisPalette: if($j == 1, $paletteMain, $paletteContra);
             $thisColor: if($j == 1, $thisColorMain, $thisColorContra);
             // .palette-main || .palette-contra
@@ -92,7 +97,7 @@ $allPalettesCount: length($allPalettesMain);
         }
     }
     
-    @for $k from 1 through 2 {
+    @for $k from 1 through $paletteColorTypes {
         
         $atRootPalette: $paletteSlug + $atRootPalettePrefix + if($k == 1, $p_main, $p_contra);
         $thisColor: if($k == 1, $thisColorMain, $thisColorContra);

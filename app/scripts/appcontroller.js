@@ -15,21 +15,16 @@ angular.module('personalApp.appcontroller', [])
         $scope.appLog = AppservLog.log;
         
         $scope.appErr = AppservError;
+        
+        $scope.appUtils = AppservUtils;
 
         $scope.sections = AppfactConfig.getRoutedSections();
         $scope.sectionsSlugs = AppfactConfig.getRoutedSlugs();
         $scope.stateSlugs = appSettings.stateSlugs;
+        $scope.stateCssSlugs = appSettings.stateCssSlugs;
         
         $scope.stateHome = $scope.stateSlugs.home;
         $scope.statePage404 = $scope.stateSlugs.page404;
-        
-        $scope.mainBckgd = AppservUtils.decorationCssClass('main','background');
-        $scope.mainBorder = AppservUtils.decorationCssClass('main','border');
-        $scope.mainColor = AppservUtils.decorationCssClass('main','color');
-        
-        $scope.contraBckgd = AppservUtils.decorationCssClass('contra','background');
-        $scope.contraBorder = AppservUtils.decorationCssClass('contra','border');
-        $scope.contraColor = AppservUtils.decorationCssClass('contra','color');
         
         $scope.viewsDir = appSettings.templatesDir;
         $scope.partialsDir = appSettings.partialsDir;

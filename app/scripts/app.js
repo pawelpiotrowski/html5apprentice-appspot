@@ -70,7 +70,7 @@ angular.module('personalApp', [
         url: '/:slug',
         templateUrl: _view(_sectionDetail)
     })
-    /*
+    
     .state('blog', {
         url: '/blog',
 		templateUrl: _view(_section)
@@ -80,7 +80,7 @@ angular.module('personalApp', [
         url: '/:entry',
         templateUrl: _view(_sectionDetail)
     })
-    */
+    
     .state('test', {
         url: '/test',
 		templateUrl: _view('test.html')
