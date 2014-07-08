@@ -20,7 +20,7 @@
 	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
 	
-	<nav class="page-nav" appdir-navigation ng-show="navVisible()"></nav>
+	<nav class="page-nav" ng-class="navDecoration('main','border')" appdir-navigation ng-show="navVisible()"></nav>
 	<main class="page-view page-view--main" ng-class="viewCssClass" ui-view=""></main>
 	
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

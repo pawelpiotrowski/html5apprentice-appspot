@@ -4,10 +4,28 @@ angular.module('personalApp.appnavigation', [])
 
 .controller('NavCtrl', [
 	'$scope',
-    '$state',
-	function($scope, $state) {
+    'AppservUtils',
+	function($scope, AppservUtils) {
+        
         $scope.navVisible = function() {
-            return !$state.is($scope.stateHome);
+            // this one was slow !$state.is($scope.stateHome);
+            return $scope.currentViewName !== $scope.stateHome;
+        };
+        
+        $scope.navDecoration = function(type, prop, sectionCheck) {
+            var _sectionValidation = (
+                angular.isDefined(sectionCheck) &&
+                sectionCheck !== $scope.currentState.currentSectionRef
+            );
+            if(_sectionValidation) {
+                return false;
+            } else {
+                return AppservUtils.decorationCssClass(
+                    type,
+                    prop,
+                    $scope.currentState.currentSectionRef + 1
+                );
+            }
         };
 	}
 ])

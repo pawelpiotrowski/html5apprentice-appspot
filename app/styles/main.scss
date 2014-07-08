@@ -1,6 +1,14 @@
 @import 'base';
 @import 'viewsanimation';
 
+/*
+Global classes
+Intro
+Section
+    Section nav
+*/
+
+
 // Cursive font declaration
 .cursive-bold {
     @extend %cursiveLatinBold;
@@ -35,8 +43,11 @@
 }
 
 .page-view {
+	position: absolute;
     @extend %full;
 }
+
+// INTRO
 
 .doll-nav {
     bottom: 5%;
@@ -70,8 +81,8 @@
     @extend %full;
 }
 
-/* intro */
 .#{$home} {
+    top: 0;
     .headline {
         @extend .cursive-regular;
         font-size: 2em;
@@ -101,4 +112,24 @@
     }
 }
 
+// SECTION
+
+// SECTION -> NAV
+
+.page-nav {
+    background-color: #fff;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    position: relative;
+    z-index: 66;
+}
+
+.page-nav--item {
+    display: inline-block;
+    margin: 10px;
+    text-transform: capitalize;
+    vertical-align: top;
+}
+
+@import 'helpers';
 @import 'dev';

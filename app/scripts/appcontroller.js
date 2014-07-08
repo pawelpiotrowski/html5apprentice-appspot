@@ -12,10 +12,6 @@ angular.module('personalApp.appcontroller', [])
     'appSettings',
     function($scope, $state, AppservLog, AppservError, AppfactConfig, AppservUtils, appSettings) {
 
-        //$scope.$route = $route;
-        //$scope.$location = $location;
-        //$scope.$routeParams = $routeParams;
-
         $scope.appLog = AppservLog.log;
         
         $scope.appErr = AppservError;
@@ -24,12 +20,8 @@ angular.module('personalApp.appcontroller', [])
         $scope.sectionsSlugs = AppfactConfig.getRoutedSlugs();
         $scope.stateSlugs = appSettings.stateSlugs;
         
-        //$scope.cssSlugs = 
-        
         $scope.stateHome = $scope.stateSlugs.home;
         $scope.statePage404 = $scope.stateSlugs.page404;
-        
-        
         
         $scope.mainBckgd = AppservUtils.decorationCssClass('main','background');
         $scope.mainBorder = AppservUtils.decorationCssClass('main','border');
@@ -42,12 +34,20 @@ angular.module('personalApp.appcontroller', [])
         $scope.viewsDir = appSettings.templatesDir;
         $scope.partialsDir = appSettings.partialsDir;
         
+        $scope.currentViewName = '';
+        
         $scope.viewCssClass = '';
         
         $scope.currentState = {};
         
+        $scope.$on('$stateChangeStart', function(event, toState, toParams) {
+            console.log('ROUTE CHANGE START');
+            //console.log(event, toState, toParams);
+            $scope.currentViewName = toState.name;
+        });
+        
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams) {
-            
+            console.log('ROUTE CHANGE SUCCESS');
             var _stateObj = AppservUtils.extractPath(toState.name);
             
             var _stateClass = _stateObj.viewCssClass;
@@ -61,8 +61,10 @@ angular.module('personalApp.appcontroller', [])
             $scope.currentState = {
                 event: event,
                 toState: toState,
-                toParams: toParams
+                toParams: toParams,
+                currentSectionRef: _sectionRef
             };
+            $scope.currentViewName = toState.name;
         });
         
         $scope.changeLocation = function(statename) {
