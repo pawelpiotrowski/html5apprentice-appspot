@@ -5,13 +5,14 @@ angular.module('personalApp', [
 	'ngAnimate',
 	'personalApp.appconfig',
 	'personalApp.appcontroller',
+    'personalApp.appdirectives',
     'personalApp.apperror',
 	'personalApp.appnavigation',
     'personalApp.appintro',
     'personalApp.appsection',
 	'personalApp.apputils',
-	'personalApp.dollmaker',
 	'personalApp.dollhandcraft',
+	'personalApp.dollmaker',
 	'personalApp.logservice'
 ])
 .config(function ($stateProvider, $urlRouterProvider, appSettings) {

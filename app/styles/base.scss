@@ -25,6 +25,8 @@
 
 %full { height: 100%; width: 100%; }
 %screenCentered { align-items: center; display: flex; flex-flow: row; justify-content: center; }
+%pageMarginLeft { margin-left: 20%; }
+%pageMarginRight { margin-right: 10%; }
 
 // Helpers
 

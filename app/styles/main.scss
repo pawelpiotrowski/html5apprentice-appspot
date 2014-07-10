@@ -112,8 +112,14 @@ Section
     }
 }
 
-// SECTION
+$spacingForNavAndSection: 10px;
 
+// SECTION
+.section-holder {
+    padding: $spacingForNavAndSection;
+    @extend %pageMarginLeft;
+    @extend %pageMarginRight;
+}
 // SECTION -> NAV
 
 .page-nav {
@@ -130,9 +136,14 @@ Section
     }
 }
 
+.page-nav--holder {
+    width: 100%;
+    @extend %pageMarginLeft;
+}
+
 .page-nav--item {
     display: inline-block;
-    margin: 10px;
+    margin: $spacingForNavAndSection;
     text-decoration: none;
     vertical-align: top;
     &.#{$navActive} {

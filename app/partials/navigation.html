@@ -1,1 +1,4 @@
-<a class="page-nav--item" ui-sref="intro">Intro</a><a class="page-nav--item" ui-sref="{{ section.slug }}" ng-repeat="section in sections" ng-class="navDecoration('main', 'color', $index)" appdir-navigation-hover-style>{{ section.slug }}</a>
+<span appdir-mobile-navigation></span>
+<div class="page-nav--holder">
+    <a class="page-nav--item" ui-sref="{{ stateHome }}">{{ stateHome }}</a><a class="page-nav--item" ui-sref="{{ section.slug }}" ng-repeat="section in sections" ng-class="navDecoration('main', 'color', $index)" appdir-navigation-hover-style>{{ section.slug }}</a>
+</div>
