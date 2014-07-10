@@ -131,9 +131,6 @@ $spacingForNavAndSection: 10px;
     text-transform: uppercase;
     z-index: 66;
     @extend .cursive-medium;
-    @media screen and (max-width: 400px) {
-        font-size: 4.5vw;
-    }
 }
 
 .page-nav--holder {

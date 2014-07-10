@@ -22,7 +22,7 @@ angular.module('personalApp.appcontroller', [])
         $scope.sectionsSlugs = AppfactConfig.getRoutedSlugs();
         $scope.stateSlugs = appSettings.stateSlugs;
         $scope.stateCssSlugs = appSettings.stateCssSlugs;
-        
+		        
         $scope.stateHome = $scope.stateSlugs.home;
         $scope.statePage404 = $scope.stateSlugs.page404;
         
@@ -39,6 +39,11 @@ angular.module('personalApp.appcontroller', [])
             console.log('ROUTE CHANGE START');
             //console.log(event, toState, toParams);
             $scope.currentViewName = toState.name;
+			
+			if(!AppfactConfig.contentReady() && $scope.currentViewName === $scope.stateHome) {
+				console.log('***** Fetching sections content *****');
+				AppfactConfig.fetchContent();
+			}
         });
         
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams) {
@@ -65,15 +70,6 @@ angular.module('personalApp.appcontroller', [])
         $scope.changeLocation = function(statename) {
             $state.go(statename);
         };
-		
-        AppfactConfig.getContentPromise().then(function(d) {
-            angular.forEach($scope.sections, function(thisSection, sectionIndex) {
-                thisSection.payload = d.sections[sectionIndex];
-            });
-            console.log('After loop', $scope.sections);
-        }, function(err) {
-            $scope.appLog('warn', err);
-        }, null);
         
         // AppservUtils.fontTracking();
     }

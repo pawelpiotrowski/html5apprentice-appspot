@@ -3,7 +3,7 @@
 angular.module('personalApp.appconfig', ['personalApp.logservice'])
 
 .constant('appSettings', {
-	contentPath: 'data/content.json',
+	contentPath: 'http://datatest.local/',
     templatesDir: '/views/',
     partialsDir: '/partials/',
 	exludeSections: ['test', 'not-found'],
@@ -129,19 +129,46 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         });
         
 		// console.log(sections);
+		var _sectionContent = null;
+		
+		var contentReady = function() {
+			return _sectionContent;
+		};
+		// $http.defaults.useXDomain = true;
 		
 		var getContent = function() {
-			var deferred = $q.defer();
-			$http.get(settings.contentPath).success(function(d) {
-				deferred.resolve(d);
-			}).error(function(d) {
-				deferred.reject(['Get content error: ',d]);
-			});
-			return deferred.promise;
+			return $http.get(settings.contentPath)
+			.then(
+				function(d) {
+					if (typeof d === 'object') {
+						_sectionContent = d.data;
+						return _sectionContent;
+					} else {
+						// invalid response
+						return $q.reject(d);
+					}
+
+				},
+				function(d) {
+					// something went wrong
+					return $q.reject(d);
+				}
+			);
 		};
-				
+		
+		var fetchContent = function() {
+			$http.get(settings.contentPath).success(function(d) {
+				console.log(d);
+				_sectionContent = d;
+			}).error(function(d) {
+				console.log('Fetching content error', d);
+			});
+		};
+		
 		//API
 		return {
+			contentReady: contentReady,
+			fetchContent: fetchContent,
 			getContentPromise: getContent,
             getRoutedSlugs: function() {
                 return angular.extend([],_sections);
