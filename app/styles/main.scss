@@ -122,22 +122,24 @@ $spacingForNavAndSection: 10px;
 }
 // SECTION -> NAV
 
+$pageNavFontSize: 1.1em;
+$pageNavLineHeight: 1.4;
+
 .page-nav {
     background-color: #fff;
     border-style: solid;
     border-width: 0 0 2px 0;
-    font-size: 1.1em;
+    font-size: $pageNavFontSize;
+    line-height: $pageNavLineHeight;
     position: relative;
     text-transform: uppercase;
     z-index: 66;
     @extend .cursive-medium;
 }
-
 .page-nav--holder {
-    width: 100%;
+    width: 200%;
     @extend %pageMarginLeft;
 }
-
 .page-nav--item {
     display: inline-block;
     margin: $spacingForNavAndSection;
@@ -145,6 +147,28 @@ $spacingForNavAndSection: 10px;
     vertical-align: top;
     &.#{$navActive} {
         text-decoration: underline;
+    }
+}
+
+.page-mobilenav--button {
+    position: absolute;
+    text-align: center;
+    width: $pageNavFontSize * $pageNavLineHeight;
+    &.on {
+        @extend %pageMarginLeft;
+        padding-left: $spacingForNavAndSection;
+    }
+}
+.page-mobilenav--button-inner {
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    svg {
+        height: 100%;
+        width: 100%;
     }
 }
 

@@ -6,7 +6,6 @@ angular.module('personalApp.appnavigation', [])
     '$scope',
     function($scope) {
 
-        console.log('navigation call call');
         $scope.navVisible = function() {
             // this one was slow !$state.is($scope.stateHome);
             return $scope.currentViewName !== $scope.stateHome;
@@ -23,10 +22,24 @@ angular.module('personalApp.appnavigation', [])
                 return $scope.appUtils.decorationCssClass(type,prop,_currentSectionRef) + _activeSlug;
             }
         };
-
+        
         // to use within nav hover style
         $scope.uniqueElClass = '';
         $scope.navHoverStyleString = '';
+        
+        // mobile nav
+        $scope.mobileNavOn = false;
+        $scope.mobileNavOpen = true;
+        
+        $scope.mobileNavToggle = function(navOn) {
+            var s = (navOn) ? 'ON' : 'OFF';
+            console.log('*** Toggle mobile nav *** ', s);
+        };
+        
+        $scope.mobileNavOpenToggle = function(navOpen) {
+            var s = (navOpen) ? 'OPEN' : 'CLOSE';
+            console.log('*** Toggle opening mobile nav *** ', s);
+        };
     }
 ])
 
@@ -47,28 +60,58 @@ angular.module('personalApp.appnavigation', [])
     }
 ])
 
-// Consider Mobile nav controller for nav states
-
-.directive('appdirMobileNavigation', [
+.directive('appdirNavigationHolder', [
     function() {
         return {
             restrict: 'A',
             controller: 'NavCtrl',
+            link: function(scope, iElement, iAttr) {
+                console.log('NAV COLLECTION');
+            }
+        };
+    }
+])
+// Consider Mobile nav controller for nav states
+
+.directive('appdirMobileNavigation', [
+    '$window',
+    function($window) {
+        return {
+            restrict: 'A',
+            controller: 'NavCtrl',
             link: function(scope, iElement) {
-                var _lastNavEl = null;
+                var _lastNavItem = null;
+                console.log(parseInt($window.getComputedStyle(iElement[0]).marginTop, 10));
+                console.log($window.getComputedStyle(iElement[0]).marginBottom);
+                console.log(iElement[0].getBoundingClientRect());
+                
+                var checkIfMobile = function(windowSize) {
+                    var _s = windowSize || scope.appUtils.getWindowSize();
+                    var _ws = _s.innerWidth - _s.innerWidth * 0.1;
+                    var _ler = _lastNavItem[0].getBoundingClientRect().right;
+                    
+                    return _ler >= _ws;
+                };
+                
+                var _navitems = [];
+                
+                scope.$on('registernavitem', function(event, navitem) {
+                    _navitems.push(navitem);
+                });
+                
                 scope.$on('windowresizeend', function(event, windowSize) {
-                    if(angular.isElement(_lastNavEl)) {
-                        //var _innerWidth = windowSize.innerWidth;
-                        //var _windowInnerWidth = _innerWidth - _innerWidth * 0.1;
-                        //var _elRectRight = _lastNavEl[0].getBoundingClientRect().right;
-                        //var _elInScreen = _windowInnerWidth <= _elRectRight;
-                        console.log(windowSize.innerWidth, windowSize.innerWidth * 0.1);
-                        console.log(_lastNavEl[0].getBoundingClientRect().right);
+                    if(angular.isElement(_lastNavItem)) {
+                        scope.mobileNavToggle(checkIfMobile(windowSize));
                     }
                 });
+                
                 scope.$on('navigationready', function(event, lastnavel) {
                     console.log(lastnavel);
-                    _lastNavEl = lastnavel;
+                    _lastNavItem = lastnavel;
+                    console.log(parseInt($window.getComputedStyle(iElement[0]).marginTop, 10));
+                    console.log($window.getComputedStyle(iElement[0]).marginBottom);
+                    console.log(iElement[0].getBoundingClientRect());
+                    console.log(_navitems);
                 });
             }
         };
@@ -94,7 +137,8 @@ angular.module('personalApp.appnavigation', [])
 
                 scope.$parent.navHoverStyleString += _elSelector+_elStyle;
                 iElement.addClass(_uniqueClassType);
-
+                scope.$emit('registernavitem', iElement);
+                
                 if(scope.$last) {
                     var styleEl = angular.element(document.createElement('style'));
                     var headEl = angular.element(document.getElementsByTagName('head')[0]);

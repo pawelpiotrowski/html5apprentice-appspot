@@ -45,8 +45,6 @@ angular.module('personalApp.dollmaker', [])
 					navDollCustomAnimation
 				);
                 
-				var htmlEl = angular.element(document.getElementsByTagName('html')[0]);
-                
 				function navDollClickCallback() {
 					console.log('doll click animation callback');
 					console.log(scope.section.slug);
@@ -63,10 +61,10 @@ angular.module('personalApp.dollmaker', [])
 					navDoll.kiss();
 				}
                 function cursorPointerOn() {
-				    htmlEl.addClass('cursor-pointer');
+				    scope.$emit('htmlclass::cursorPointer', true);
                 }
                 function cursorPointerOff() {
-				    htmlEl.removeClass('cursor-pointer');
+				    scope.$emit('htmlclass::cursorPointer', false);
                 }
                 function removeCursorPointer() {
                     navDoll.action('hover', [cursorPointerOn, cursorPointerOff], false);

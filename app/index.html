@@ -1,25 +1,19 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lte 9]> <html ng-app="personalApp" ng-controller="MainCtrl" class="no-js lt-ie9" appdir-html-cssclass> <![endif]-->
+<!--[if gt IE 9]><!--> <html ng-app="personalApp" ng-controller="MainCtrl" class="no-js" appdir-html-cssclass> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title></title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	
+    
 	<!-- build:css({.tmp,app}) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
 </head>
-<body ng-app="personalApp" ng-controller="MainCtrl" class="page" appdir-bind-window-resize-end>
-	<!--[if lt IE 7]>
-	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-	<![endif]-->
-	
+<body class="page" appdir-bind-window-resize-end>
+    
 	<nav class="page-nav" ng-class="navDecoration('main','border')" appdir-navigation ng-show="navVisible()"></nav>
 	<main class="page-view page-view--main" ng-class="viewCssClass" ui-view=""></main>
 	
@@ -64,6 +58,7 @@
 	<script src="scripts/dollhandcraft.js"></script>
 	<script src="scripts/dollmaker.js"></script>
 	<script src="scripts/logservice.js"></script>
+    <script src="scripts/svgdrawings.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

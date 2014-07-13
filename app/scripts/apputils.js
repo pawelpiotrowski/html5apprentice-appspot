@@ -20,9 +20,11 @@ angular.module('personalApp.apputils', [])
 ])
 
 .service('AppservUtils', [
+    '$window',
+    '$document',
     'AppfactConfig',
     'appSettings',
-	function(AppfactConfig, appsettings) {
+	function($window, $document, AppfactConfig, appsettings) {
         
         var _stateSlugs = appsettings.stateSlugs;
         var _stateCssSlugs = appsettings.stateCssSlugs;
@@ -69,7 +71,7 @@ angular.module('personalApp.apputils', [])
         };
         
         this.paletteSectionTypeSlug = function(sectionRef) {
-            console.log(sectionRef);
+            //console.log(sectionRef);
             var _sections = AppfactConfig.getRoutedSections();
             var _section = (sectionRef < 0) ? false : _sections[sectionRef];
             var _paletteDefaultSlug = _paletteSett.sectionPaletteCssDefaultSlug;
@@ -107,6 +109,25 @@ angular.module('personalApp.apputils', [])
             mtiTracking.async = 'true';
             mtiTracking.src = urlProtocol + trackingUrl;
             elToAppendTo.appendChild(mtiTracking);
+        };
+        
+        this.getWindowSize = function() {
+            var w = $window,
+                d = $document[0],
+                e = d.documentElement,
+                g = d.getElementsByTagName('body')[0],
+                x = w.innerWidth || e.clientWidth || g.clientWidth,
+                y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+            return {
+                innerWidth: x,
+                innerHeight: y
+            };
+        };
+        
+        this.getElementStyle = function(el) {
+            var _el = el[0] || el;
+            console.log(_el);
+            return $window.getComputedStyle(_el);
         };
 	}
 ]);

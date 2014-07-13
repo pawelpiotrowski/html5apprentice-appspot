@@ -2,31 +2,44 @@
 
 angular.module('personalApp.appdirectives', [])
 
+.directive('appdirHtmlCssclass', [
+    function() {
+        return {
+            restrict: 'A',
+            link: function(scope, iElement) {
+                iElement.removeClass('no-js').addClass('js');
+                scope.$on('htmlclass::cursorPointer', function(event, classOn) {
+                    var _class = 'cursor-pointer';
+                    if(classOn) {
+                        iElement.addClass(_class);
+                    } else {
+                        iElement.removeClass(_class);
+                    }
+                });
+            }
+        };
+    }
+])
+
 .directive('appdirBindWindowResizeEnd', [
     '$window',
     '$document',
-    function($window, $document) {
+    'AppservUtils',
+    function($window, $document, AppservUtils) {
         return {
             restrict: 'A',
             link: function(scope) {
                 
                 var resizeEndBroadcast = function() {
-                    var w = $window,
-                        d = $document[0],
-                        e = d.documentElement,
-                        g = d.getElementsByTagName('body')[0],
-                        x = w.innerWidth || e.clientWidth || g.clientWidth,
-                        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-                    scope.$broadcast('windowresizeend', {
-                        innerWidth: x,
-                        innerHeight: y
-                    });
+                    var _s = AppservUtils.getWindowSize();
+                    scope.$broadcast('windowresizeend', _s);
                 };
                 
                 var resizeTimeout;
+                
                 var resizeHandler = function() {
                     /*
-                        yes it is weird however
+                        yes $window.setTimeout is weird however
                         $timeout digest was triggering
                         ng-class function on nav links
                     */

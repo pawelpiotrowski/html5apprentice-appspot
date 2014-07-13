@@ -13,7 +13,8 @@ angular.module('personalApp', [
 	'personalApp.apputils',
 	'personalApp.dollhandcraft',
 	'personalApp.dollmaker',
-	'personalApp.logservice'
+	'personalApp.logservice',
+    'personalApp.svgdrawings'
 ])
 .config(function ($stateProvider, $urlRouterProvider, appSettings) {
     

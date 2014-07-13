@@ -31,23 +31,38 @@ angular.module('personalApp.appcontroller', [])
         
         $scope.currentViewName = '';
         
+        var setCurrentViewName = function(stateName) {
+            var n = stateName.replace(/\..*$/,'');
+            $scope.currentViewName = n;
+        };
+        
         $scope.viewCssClass = '';
         
         $scope.currentState = {};
         
+        $scope.getCurrentPalette = function() {
+            var _isViewSection = $scope.sectionsSlugs.indexOf($scope.currentViewName);
+            var _validView = _isViewSection >= 0;
+            var _palette = appSettings.palette;
+            var _defaultPalette = _palette.sectionDefaultPalette;
+            
+            return (_validView) ? _palette.sections[_isViewSection] : _defaultPalette;
+        };
+        
         $scope.$on('$stateChangeStart', function(event, toState, toParams) {
-            console.log('ROUTE CHANGE START');
-            //console.log(event, toState, toParams);
-            $scope.currentViewName = toState.name;
-			
+            // console.log('ROUTE CHANGE START', event, toState, toParams);
+            
+            setCurrentViewName(toState.name);
+            
 			if(!AppfactConfig.contentReady() && $scope.currentViewName === $scope.stateHome) {
 				console.log('***** Fetching sections content *****');
 				AppfactConfig.fetchContent();
 			}
+            $scope.$broadcast('statechange::start');
         });
         
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams) {
-            console.log('ROUTE CHANGE SUCCESS');
+            // console.log('ROUTE CHANGE SUCCESS', event, toState, toParams);
             var _stateObj = AppservUtils.extractPath(toState.name);
             
             var _stateClass = _stateObj.viewCssClass;
@@ -64,7 +79,8 @@ angular.module('personalApp.appcontroller', [])
                 toParams: toParams,
                 currentSectionRef: _sectionRef
             };
-            $scope.currentViewName = toState.name;
+            setCurrentViewName(toState.name);
+            $scope.$broadcast('statechange::success');
         });
         
         $scope.changeLocation = function(statename) {

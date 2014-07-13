@@ -6,8 +6,9 @@ angular.module('personalApp.appsection', [])
     '$scope',
 	'AppfactConfig',
     function($scope, AppfactConfig) {
-        console.log('SECTION CTRL');
-        var _sectionState = $scope.currentState.toState.name;
+        //console.log('SECTION CTRL');
+        var _sectionState = $scope.currentViewName;
+        //console.log(_sectionState);
         var _sectionContentRef = $scope.sectionsSlugs.indexOf(_sectionState);
         var _sectionContent = (_sectionContentRef < 0) ? $scope.appErr.handler('no-content') : $scope.sections[_sectionContentRef];
         
@@ -18,7 +19,7 @@ angular.module('personalApp.appsection', [])
         $scope.contraBckgd = $scope.appUtils.decorationCssClass('contra','background');
         $scope.contraBorder = $scope.appUtils.decorationCssClass('contra','border');
         $scope.contraColor = $scope.appUtils.decorationCssClass('contra','color');
-		
+        
         $scope.sectionContent = _sectionContent.payload;
 		
 		if(!$scope.sectionContent) {
