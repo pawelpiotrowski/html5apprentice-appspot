@@ -29,7 +29,7 @@ angular.module('personalApp.logservice', [])
 			if(_logtype === 0) {
 				$log.error('Log type not valid, you were trying to say: ', logmsg);
 			} else {
-				$log[logtype](logmsg);
+				$log[logtype]('## APP LOG Service ## ', logmsg);
 			}
 		};
 	}

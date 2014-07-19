@@ -36,7 +36,7 @@ angular.module('personalApp.appsection', [])
 				populateContent(checkForContent);
 			} else {
 				AppfactConfig.getContentPromise().then(function(d) {
-					console.log(d);
+					console.log('*** Content promise in sectionctrl ***', d);
 					populateContent(d);
 				}, function(err) {
 					$scope.appLog('warn', err);

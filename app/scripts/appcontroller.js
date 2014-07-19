@@ -22,6 +22,12 @@ angular.module('personalApp.appcontroller', [])
         $scope.sectionsSlugs = AppfactConfig.getRoutedSlugs();
         $scope.stateSlugs = appSettings.stateSlugs;
         $scope.stateCssSlugs = appSettings.stateCssSlugs;
+        
+        $scope.pageLayoutSettings = {
+            transMsTime: appSettings.globalTransitionMsTime,
+            layoutLeft: appSettings.pageLayoutLeft,
+            layoutRight: appSettings.pageLayoutRight
+        };
 		        
         $scope.stateHome = $scope.stateSlugs.home;
         $scope.statePage404 = $scope.stateSlugs.page404;
@@ -44,9 +50,10 @@ angular.module('personalApp.appcontroller', [])
             var _isViewSection = $scope.sectionsSlugs.indexOf($scope.currentViewName);
             var _validView = _isViewSection >= 0;
             var _palette = appSettings.palette;
+            var _viewPalette = _palette.sections[_isViewSection];
+            var _hasViewPalette = angular.isDefined(_viewPalette);
             var _defaultPalette = _palette.sectionDefaultPalette;
-            
-            return (_validView) ? _palette.sections[_isViewSection] : _defaultPalette;
+            return (_validView && _hasViewPalette) ? _viewPalette : _defaultPalette;
         };
         
         $scope.$on('$stateChangeStart', function(event, toState, toParams) {
@@ -62,7 +69,7 @@ angular.module('personalApp.appcontroller', [])
         });
         
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams) {
-            // console.log('ROUTE CHANGE SUCCESS', event, toState, toParams);
+            
             var _stateObj = AppservUtils.extractPath(toState.name);
             
             var _stateClass = _stateObj.viewCssClass;

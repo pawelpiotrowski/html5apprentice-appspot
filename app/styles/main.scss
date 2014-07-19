@@ -137,26 +137,51 @@ $pageNavLineHeight: 1.4;
     @extend .cursive-medium;
 }
 .page-nav--holder {
+    height: auto;
+    opacity: 1;
     width: 200%;
     @extend %pageMarginLeft;
+    &.#{$mobileNavActive} {
+        overflow: hidden;
+        opacity: 0;
+    }
+    &.#{$mobileNavOpen} {
+        opacity: 1;
+    }
 }
 .page-nav--item {
     display: inline-block;
-    margin: $spacingForNavAndSection;
+    margin: 0 $spacingForNavAndSection $spacingForNavAndSection;
+    padding-top: $spacingForNavAndSection;
     text-decoration: none;
     vertical-align: top;
     &.#{$navActive} {
         text-decoration: underline;
     }
+    .#{$mobileNavActive} & {
+        display: block;
+        visibility: hidden;
+    }
+    .#{$mobileNavOpen} & {
+        visibility: visible;
+    }
 }
 
 .page-mobilenav--button {
+    left: 0;
     position: absolute;
     text-align: center;
+    transform: rotateZ(0deg);
     width: $pageNavFontSize * $pageNavLineHeight;
-    &.on {
-        @extend %pageMarginLeft;
-        padding-left: $spacingForNavAndSection;
+    z-index: 88;
+    &.#{$mobileNavActive} {
+        cursor: pointer;
+        left: $pageLayoutLeft;
+        transform: rotateZ(45deg);
+    }
+    &.#{$mobileNavOpen} {
+        margin-left: -($pageNavFontSize * $pageNavLineHeight);
+        transform: rotateZ(0deg);
     }
 }
 .page-mobilenav--button-inner {

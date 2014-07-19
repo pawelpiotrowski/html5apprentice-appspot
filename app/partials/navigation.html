@@ -3,5 +3,5 @@
     <span appdir-mobile-nav-svg-button class="page-mobilenav--button-inner"></span>
 </span>
 <div class="page-nav--holder" appdir-navigation-holder>
-    <a class="page-nav--item" ui-sref="{{ stateHome }}">{{ stateHome }}</a><a class="page-nav--item" ui-sref="{{ section.slug }}" ng-repeat="section in sections" ng-class="navDecoration('main', 'color', $index)" appdir-navigation-hover-style>{{ section.slug }}</a>
+    <a class="page-nav--item" ui-sref="{{ stateHome }}">{{ stateHome }}</a><a class="page-nav--item" ui-sref="{{ section.slug }}" ng-repeat="section in sections" ng-class="navDecoration('main', 'color', $index)" appdir-navigation-items-collector>{{ section.slug }}</a>
 </div>

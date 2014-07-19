@@ -34,8 +34,14 @@ $navTransitionFunction: ease;
 .page-nav {
     transition: border-color $navTransitionFunction $navTransitionTime;
 }
+.page-nav--holder {
+    transition: all $navTransitionFunction $navTransitionTime;
+}
 .page-nav--item {
-    transition: color $navTransitionFunction $navTransitionTime / 3;
+    transition: all $navTransitionFunction $navTransitionTime / 3;
+}
+.page-mobilenav--button {
+    transition-duration: $navTransitionTime;
 }
 // on hide
 .page-nav.ng-hide-add.ng-hide-add-active {

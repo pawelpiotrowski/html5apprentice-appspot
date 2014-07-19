@@ -23,23 +23,38 @@ angular.module('personalApp.appnavigation', [])
             }
         };
         
-        // to use within nav hover style
+        // to use within nav hover style in nva items collector
         $scope.uniqueElClass = '';
         $scope.navHoverStyleString = '';
         
         // mobile nav
         $scope.mobileNavOn = false;
         $scope.mobileNavOpen = true;
+        $scope.mobileNavOnCssClass = $scope.stateCssSlugs.mobileNavOn;
+        $scope.mobileNavOpenCssClass = $scope.stateCssSlugs.mobileNavOpen;
         
         $scope.mobileNavToggle = function(navOn) {
-            var s = (navOn) ? 'ON' : 'OFF';
-            console.log('*** Toggle mobile nav *** ', s);
+            var s = (navOn) ? 'on' : 'off';
+            if($scope.mobileNavOn !== navOn && $scope.navVisible) {
+                $scope.mobileNavOn = navOn;
+                $scope.$broadcast('mobilenav::'+s);
+            }
         };
         
         $scope.mobileNavOpenToggle = function(navOpen) {
-            var s = (navOpen) ? 'OPEN' : 'CLOSE';
-            console.log('*** Toggle opening mobile nav *** ', s);
+            var s = (navOpen) ? 'open' : 'close';
+            if($scope.mobileNavOpen !== navOpen) {
+                $scope.mobileNavOpen = navOpen;
+                $scope.$broadcast('mobilenav::'+s);
+            }
         };
+        
+        $scope.$on('statechange::start', function() {
+            if($scope.navVisible && $scope.mobileNavOn && $scope.mobileNavOpen) {
+                $scope.mobileNavOpen = false;
+                $scope.$broadcast('mobilenav::close');
+            }
+        });
     }
 ])
 
@@ -66,38 +81,67 @@ angular.module('personalApp.appnavigation', [])
             restrict: 'A',
             controller: 'NavCtrl',
             link: function(scope, iElement, iAttr) {
-                console.log('NAV COLLECTION');
+                
+                var mobileNavOnCloseHeight = 0;
+                var mobileNavOnOpenHeight = 0;
+                
+                scope.$on('mobilenav::on', function() {
+                    var _navItems = iElement.children();
+                    var _navItem = _navItems[0];
+                    var _navItemCss = scope.appUtils.getElementStyle(_navItem);
+                    var _mt = parseInt(_navItemCss.marginTop, 10);
+                    var _oh = _navItem.offsetHeight;
+                    var _mb = parseInt(_navItemCss.marginBottom, 10);
+                    mobileNavOnCloseHeight = _mt + _oh + _mb + 'px';
+                    mobileNavOnOpenHeight = (_mt + _oh + _mb) * _navItems.length + 'px';
+                    iElement.css('height', mobileNavOnCloseHeight);
+                    iElement.addClass(scope.mobileNavOnCssClass);
+                });
+                
+                scope.$on('mobilenav::off', function() {
+                    iElement.removeClass(scope.mobileNavOnCssClass);
+                    iElement.css('height', 'auto');
+                });
+                
+                scope.$on('mobilenav::open', function() {
+                    iElement.addClass(scope.mobileNavOpenCssClass);
+                    iElement.css('height', mobileNavOnOpenHeight);
+                });
+                
+                scope.$on('mobilenav::close', function() {
+                    iElement.removeClass(scope.mobileNavOpenCssClass);
+                    iElement.css('height', mobileNavOnCloseHeight);
+                });
             }
         };
     }
 ])
-// Consider Mobile nav controller for nav states
 
 .directive('appdirMobileNavigation', [
     '$window',
-    function($window) {
+    '$timeout',
+    function($window, $timeout) {
         return {
             restrict: 'A',
             controller: 'NavCtrl',
             link: function(scope, iElement) {
+                
                 var _lastNavItem = null;
-                console.log(parseInt($window.getComputedStyle(iElement[0]).marginTop, 10));
-                console.log($window.getComputedStyle(iElement[0]).marginBottom);
-                console.log(iElement[0].getBoundingClientRect());
+                var _lastNavItemRectRight = 0;
+                
+                var _getLastNavItemRectRight = function() {
+                    if(_lastNavItemRectRight === 0 || !scope.mobileNavOn) {
+                        _lastNavItemRectRight = _lastNavItem[0].getBoundingClientRect().right;
+                    }
+                    return _lastNavItemRectRight;
+                };
                 
                 var checkIfMobile = function(windowSize) {
                     var _s = windowSize || scope.appUtils.getWindowSize();
                     var _ws = _s.innerWidth - _s.innerWidth * 0.1;
-                    var _ler = _lastNavItem[0].getBoundingClientRect().right;
-                    
+                    var _ler = _getLastNavItemRectRight();
                     return _ler >= _ws;
                 };
-                
-                var _navitems = [];
-                
-                scope.$on('registernavitem', function(event, navitem) {
-                    _navitems.push(navitem);
-                });
                 
                 scope.$on('windowresizeend', function(event, windowSize) {
                     if(angular.isElement(_lastNavItem)) {
@@ -106,19 +150,50 @@ angular.module('personalApp.appnavigation', [])
                 });
                 
                 scope.$on('navigationready', function(event, lastnavel) {
-                    console.log(lastnavel);
                     _lastNavItem = lastnavel;
-                    console.log(parseInt($window.getComputedStyle(iElement[0]).marginTop, 10));
-                    console.log($window.getComputedStyle(iElement[0]).marginBottom);
-                    console.log(iElement[0].getBoundingClientRect());
-                    console.log(_navitems);
+                    $timeout(function() {
+                        scope.mobileNavToggle(checkIfMobile());
+                    }, 1);
+                });
+                
+                scope.$on('statechange::success', function() {
+                    if(scope.navVisible) {
+                        $timeout(function() {
+                            scope.mobileNavToggle(checkIfMobile());
+                        }, 1);
+                    }
+                });
+                
+                var mobileNavButtonClickHandler = function() {
+                    var toggleState = scope.mobileNavOpen;
+                    scope.mobileNavOpenToggle(!toggleState);
+                };
+                
+                scope.$on('mobilenav::on', function() {
+                    scope.mobileNavOpenToggle(false);
+                    iElement.addClass(scope.mobileNavOnCssClass);
+                    iElement.on('click', mobileNavButtonClickHandler);
+                });
+                
+                scope.$on('mobilenav::off', function() {
+                    iElement.removeClass(scope.mobileNavOnCssClass);
+                    iElement.removeClass(scope.mobileNavOpenCssClass);
+                    iElement.off('click', mobileNavButtonClickHandler);
+                });
+                
+                scope.$on('mobilenav::open', function() {
+                    iElement.addClass(scope.mobileNavOpenCssClass);
+                });
+                
+                scope.$on('mobilenav::close', function() {
+                    iElement.removeClass(scope.mobileNavOpenCssClass);
                 });
             }
         };
     }
 ])
 
-.directive('appdirNavigationHoverStyle', [
+.directive('appdirNavigationItemsCollector', [
     function() {
         return {
             restrict: 'A',
@@ -137,7 +212,6 @@ angular.module('personalApp.appnavigation', [])
 
                 scope.$parent.navHoverStyleString += _elSelector+_elStyle;
                 iElement.addClass(_uniqueClassType);
-                scope.$emit('registernavitem', iElement);
                 
                 if(scope.$last) {
                     var styleEl = angular.element(document.createElement('style'));

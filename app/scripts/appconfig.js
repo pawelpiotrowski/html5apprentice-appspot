@@ -72,13 +72,18 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         page404: 'not-found',
         section: 'section',
         sectionDetail: '-detail',
-        sectionActive: 'active'
+        sectionActive: 'active',
+        mobileNavOn: 'mobile-nav-on',
+        mobileNavOpen: 'mobile-nav-open'
     },
     homeContent: {
         line1: 'Hello my name is Pawel and I make',
         line2: 'handcrafted html, css',
         line3: 'and javascript.'
-    }
+    },
+    globalTransitionMsTime: 600,
+    pageLayoutLeft: '20%',
+    pageLayoutRight: '10%'
 })
 
 .factory('AppfactConfig', [
@@ -134,19 +139,24 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 		var contentReady = function() {
 			return _sectionContent;
 		};
+        
+        var contentPopulate = function(data) {
+            console.log('*** Content populate ***', data);
+            if(angular.isObject(data)) {
+                _sectionContent = data;
+            } else {
+                // content fetching error()    
+            }
+        };
+        
 		// $http.defaults.useXDomain = true;
 		
 		var getContent = function() {
 			return $http.get(settings.contentPath)
 			.then(
 				function(d) {
-					if (typeof d === 'object') {
-						_sectionContent = d.data;
-						return _sectionContent;
-					} else {
-						// invalid response
-						return $q.reject(d);
-					}
+					contentPopulate(d.data);
+                    return contentReady();
 
 				},
 				function(d) {
@@ -158,8 +168,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 		
 		var fetchContent = function() {
 			$http.get(settings.contentPath).success(function(d) {
-				console.log(d);
-				_sectionContent = d;
+				contentPopulate(d);
 			}).error(function(d) {
 				console.log('Fetching content error', d);
 			});
