@@ -6,7 +6,7 @@ angular.module('personalApp.apperror', [])
     'AppservLog',
     function(AppservLog) {
         this.handler = function() {
-            console.log('Error handler');
+            AppservLog.log('info', 'Error handler called');
         };
     }
 ]);

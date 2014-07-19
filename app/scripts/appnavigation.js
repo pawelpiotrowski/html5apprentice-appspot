@@ -80,20 +80,38 @@ angular.module('personalApp.appnavigation', [])
         return {
             restrict: 'A',
             controller: 'NavCtrl',
-            link: function(scope, iElement, iAttr) {
+            link: function(scope, iElement) {
                 
                 var mobileNavOnCloseHeight = 0;
                 var mobileNavOnOpenHeight = 0;
                 
-                scope.$on('mobilenav::on', function() {
+                var getNavCloseHeight = function() {
                     var _navItems = iElement.children();
                     var _navItem = _navItems[0];
                     var _navItemCss = scope.appUtils.getElementStyle(_navItem);
                     var _mt = parseInt(_navItemCss.marginTop, 10);
                     var _oh = _navItem.offsetHeight;
                     var _mb = parseInt(_navItemCss.marginBottom, 10);
-                    mobileNavOnCloseHeight = _mt + _oh + _mb + 'px';
-                    mobileNavOnOpenHeight = (_mt + _oh + _mb) * _navItems.length + 'px';
+                    var _h = _mt + _oh + _mb;
+                    return {
+                        closeHeight: _h,
+                        openHeight: _h * _navItems.length
+                    };
+                };
+                
+                var setNavHeights = function() {
+                    var _navHeights = getNavCloseHeight();
+                    mobileNavOnCloseHeight = _navHeights.closeHeight + 'px';
+                    mobileNavOnOpenHeight = _navHeights.openHeight + 'px';
+                };
+                
+                scope.$on('navigationready', function() {
+                    setNavHeights();
+                    iElement.css('height', mobileNavOnCloseHeight);
+                });
+                
+                scope.$on('mobilenav::on', function() {
+                    setNavHeights();
                     iElement.css('height', mobileNavOnCloseHeight);
                     iElement.addClass(scope.mobileNavOnCssClass);
                 });

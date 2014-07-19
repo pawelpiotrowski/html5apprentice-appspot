@@ -10,7 +10,8 @@
 	"angular-animate": "1.2.18",
     "raphael": "2.1.2",
     "box2dweb": "git@github.com:pawelpiotrowski/box2dweb.git",
-    "gsap": "1.11.8"
+    "gsap": "1.11.8",
+    "iscroll": "~5"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",

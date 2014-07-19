@@ -20,8 +20,9 @@
   "smarttabs": true,
   "globals": {
     "angular": false,
-	"Raphael": true,
+	"Raphael": false,
 	"Box2D": false,
-    "TweenMax": false
+    "TweenMax": false,
+    "IScroll": false
   }
 }

@@ -126,7 +126,6 @@ angular.module('personalApp.apputils', [])
         
         this.getElementStyle = function(el) {
             var _el = el[0] || el;
-            console.log(_el);
             return $window.getComputedStyle(_el);
         };
 	}

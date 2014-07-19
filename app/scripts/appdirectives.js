@@ -29,14 +29,14 @@ angular.module('personalApp.appdirectives', [])
         return {
             restrict: 'A',
             link: function(scope) {
-                
+
                 var resizeEndBroadcast = function() {
                     var _s = AppservUtils.getWindowSize();
                     scope.$broadcast('windowresizeend', _s);
                 };
-                
+
                 var resizeTimeout;
-                
+
                 var resizeHandler = function() {
                     /*
                         yes $window.setTimeout is weird however
@@ -47,6 +47,36 @@ angular.module('personalApp.appdirectives', [])
                     resizeTimeout = $window.setTimeout(resizeEndBroadcast, 150);
                 };
                 angular.element($window).on('resize', resizeHandler);
+            }
+        };
+    }
+])
+
+.directive('appdirIscroll', [
+    '$timeout',
+    function($timeout) {
+        return {
+            restrict: 'A',
+            link: function(scope, iElement) {
+                
+                var thisScroll, scrollerWrapper = iElement.parent()[0];
+                
+                scope.$on('$viewContentLoaded', function() {
+                    thisScroll = new IScroll(scrollerWrapper, { mouseWheel: true });
+                    $timeout(function() {
+                        thisScroll.refresh();
+                    }, 1);
+                });
+                
+                scope.$on('sectioncontent::loaded', function() {
+                    $timeout(function() {
+                        thisScroll.refresh();
+                    }, 1);
+                });
+                
+                document.addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                }, false);
             }
         };
     }

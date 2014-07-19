@@ -28,6 +28,7 @@ angular.module('personalApp.appsection', [])
 					thisSection.payload = d.sections[sectionIndex];
 				});
 				$scope.sectionContent = _sectionContent.payload;
+                $scope.$emit('sectioncontent::loaded');
 			};
 			
 			var checkForContent = AppfactConfig.contentReady();
@@ -50,6 +51,6 @@ angular.module('personalApp.appsection', [])
 .controller('SectionDetailCtrl', [
     '$scope',
     function($scope) {
-        console.log('SECTION DETAIL CTRL');
+        console.log('SECTION DETAIL CTRL ', $scope);
     }
 ]);

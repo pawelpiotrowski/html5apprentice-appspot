@@ -57,7 +57,7 @@ angular.module('personalApp.appcontroller', [])
         };
         
         $scope.$on('$stateChangeStart', function(event, toState, toParams) {
-            // console.log('ROUTE CHANGE START', event, toState, toParams);
+            console.log('ROUTE CHANGE START', event, toState, toParams);
             
             setCurrentViewName(toState.name);
             
@@ -101,6 +101,6 @@ angular.module('personalApp.appcontroller', [])
 .controller('PaletteTestCtrl', [
     '$scope',
     function($scope) {
-        console.log('Palette test CTRL');
+        console.log('Palette test CTRL ', $scope);
     }
 ]);

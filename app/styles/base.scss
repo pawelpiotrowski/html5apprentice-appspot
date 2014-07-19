@@ -28,6 +28,9 @@
 %pageMarginLeft { margin-left: $pageLayoutLeft; }
 %pageMarginRight { margin-right: $pageLayoutRight; }
 
+%iscrollWrapper { bottom: 0; overflow: hidden; position: absolute; top: 0; z-index: 1; }
+%iscrollHolder { position: absolute; text-size-adjust: none; transform: translateZ(0); width: 100%; z-index: 1; user-select: none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-touch-callout: none; }
+
 // Helpers
 
 %cursorPointer { cursor: pointer; }
