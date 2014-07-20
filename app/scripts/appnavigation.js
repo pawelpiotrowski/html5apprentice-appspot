@@ -84,6 +84,7 @@ angular.module('personalApp.appnavigation', [])
                 
                 var mobileNavOnCloseHeight = 0;
                 var mobileNavOnOpenHeight = 0;
+                var navHeightSet = false;
                 
                 var getNavCloseHeight = function() {
                     var _navItems = iElement.children();
@@ -103,11 +104,20 @@ angular.module('personalApp.appnavigation', [])
                     var _navHeights = getNavCloseHeight();
                     mobileNavOnCloseHeight = _navHeights.closeHeight + 'px';
                     mobileNavOnOpenHeight = _navHeights.openHeight + 'px';
+                    iElement.css('height', mobileNavOnCloseHeight);
+                    navHeightSet = true;
                 };
                 
                 scope.$on('navigationready', function() {
-                    setNavHeights();
-                    iElement.css('height', mobileNavOnCloseHeight);
+                    if(scope.navVisible()) {
+                        setNavHeights();
+                    }
+                });
+                
+                scope.$on('statechange::success', function() {
+                    if(scope.navVisible() && !navHeightSet) {
+                        setNavHeights();
+                    }
                 });
                 
                 scope.$on('mobilenav::on', function() {
