@@ -24,9 +24,30 @@ angular.module('personalApp.appsection', [])
 		
 		if(!$scope.sectionContent) {
 			var populateContent = function(d) {
-				angular.forEach($scope.sections, function(thisSection, sectionIndex) {
-					thisSection.payload = d.sections[sectionIndex];
+				
+                console.log(d);
+                
+                var _sc = {};
+                _sc.sections = [];
+
+                angular.forEach(d.items, function(item) {
+                    _sc.sections[item.fields.sectionOrder] = {
+                        name: item.fields.sectionName,
+                        content: {}
+                    };
+                });
+
+                angular.forEach(d.includes.Entry, function(entry) {
+                    var _sectionRef = _sc.sections[entry.fields.sectionIdReference];
+                    _sectionRef.content.title = entry.fields.sectionArticleTitle;
+                    _sectionRef.content.txt = entry.fields.sectionArticleText;
+                });
+
+                angular.forEach($scope.sections, function(thisSection, sectionIndex) {
+					thisSection.payload = _sc.sections[sectionIndex];
 				});
+                
+                
 				$scope.sectionContent = _sectionContent.payload;
                 $scope.$emit('sectioncontent::loaded');
 			};

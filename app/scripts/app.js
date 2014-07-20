@@ -3,6 +3,7 @@
 angular.module('personalApp', [
     'ui.router',
     'ngAnimate',
+    'ngSanitize',
     'personalApp.appconfig',
     'personalApp.appcontroller',
     'personalApp.appdirectives',
