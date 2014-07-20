@@ -11,7 +11,7 @@ angular.module('personalApp.appcontroller', [])
     'AppservUtils',
     'appSettings',
     function($scope, $state, AppservLog, AppservError, AppfactConfig, AppservUtils, appSettings) {
-        console.log('MAIN CTRL');
+        
         $scope.appLog = AppservLog.log;
         
         $scope.appErr = AppservError;
