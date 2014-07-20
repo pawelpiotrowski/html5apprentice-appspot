@@ -8,7 +8,7 @@
     "angular-route": "1.2.6",
 	"angular-ui-router": "0.2.10",
 	"angular-animate": "1.2.18",
-    "raphael": "2.1.2",
+    "raphael": "~2.1",
     "box2dweb": "git@github.com:pawelpiotrowski/box2dweb.git",
     "gsap": "1.11.8",
     "iscroll": "~5"

@@ -91,7 +91,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 	'$q',
     '$state',
 	'appSettings',
-	function($http, $q, $state, settings) {
+	function($http, $q, $state, appSettings) {
         
         var appStates = $state.get();
 		// stores valid routes
@@ -106,15 +106,15 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
             // ignore detail (nested) routes -> /:something
             var childRouteCheck = route.match(/[\:]/);
             // ignore sections
-            var routeValidator = settings.exludeSections;
+            var routeValidator = appSettings.exludeSections;
             // valid route conditions
             var validRoute = route.length && !childRouteCheck && _sections.indexOf(route) < 0 && routeValidator.indexOf(route) < 0;
             
             var validRouteRef = sections.length;
             
 			if(validRoute) {
-				var _p = settings.palette.sections[validRouteRef];
-                var _palette = settings.palette.sectionDefaultPalette;
+				var _p = appSettings.palette.sections[validRouteRef];
+                var _palette = appSettings.palette.sectionDefaultPalette;
                 var _defaultPalette = true;
                 if(_p) {
                     _palette = _p;
@@ -151,8 +151,8 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         
 		// $http.defaults.useXDomain = true;
 		
-		var getContent = function() {
-			return $http.get(settings.contentPath)
+		var getContentPromise = function() {
+			return $http.get(appSettings.contentPath)
 			.then(
 				function(d) {
 					contentPopulate(d.data);
@@ -167,7 +167,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 		};
 		
 		var fetchContent = function() {
-			$http.get(settings.contentPath).success(function(d) {
+			$http.get(appSettings.contentPath).success(function(d) {
 				contentPopulate(d);
 			}).error(function(d) {
 				console.log('Fetching content error', d);
@@ -178,7 +178,7 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 		return {
 			contentReady: contentReady,
 			fetchContent: fetchContent,
-			getContentPromise: getContent,
+			getContentPromise: getContentPromise,
             getRoutedSlugs: function() {
                 return angular.extend([],_sections);
             },

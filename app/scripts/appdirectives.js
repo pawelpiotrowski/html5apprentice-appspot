@@ -23,9 +23,8 @@ angular.module('personalApp.appdirectives', [])
 
 .directive('appdirBindWindowResizeEnd', [
     '$window',
-    '$document',
     'AppservUtils',
-    function($window, $document, AppservUtils) {
+    function($window, AppservUtils) {
         return {
             restrict: 'A',
             link: function(scope) {
@@ -59,10 +58,10 @@ angular.module('personalApp.appdirectives', [])
             restrict: 'A',
             link: function(scope, iElement) {
                 
-                var thisScroll, scrollerWrapper = iElement.parent()[0];
+                var thisScroll, thisScrollWrapper = iElement.parent()[0];
                 
                 scope.$on('$viewContentLoaded', function() {
-                    thisScroll = new IScroll(scrollerWrapper, { mouseWheel: true });
+                    thisScroll = new IScroll(thisScrollWrapper, { mouseWheel: true });
                     $timeout(function() {
                         thisScroll.refresh();
                     }, 1);

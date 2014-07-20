@@ -5,14 +5,14 @@ angular.module('personalApp.svgdrawings', [])
 .directive('appdirMobileNavSvgButton', [
     'AppservSvgSource',
     'AppfactSvgDrawing',
-    function(SvgSource, SvgDrawing) {
+    function(AppservSvgSource, AppfactSvgDrawing) {
         return {
             restrict: 'A',
             link: function(scope, iElement) {
                 //console.log(scope, iElement);
                 var button = new Raphael(iElement[0]);
-                var buttonSource = SvgSource.flower1();
-                var buttonDrawing = new SvgDrawing(button, buttonSource);
+                var buttonSource = AppservSvgSource.flower1();
+                var buttonDrawing = new AppfactSvgDrawing(button, buttonSource);
                 var pageSettings = scope.pageLayoutSettings;
                 
                 buttonDrawing.drawsvg();

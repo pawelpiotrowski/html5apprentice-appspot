@@ -16,7 +16,11 @@ angular.module('personalApp', [
 	'personalApp.logservice',
     'personalApp.svgdrawings'
 ])
-.config(function ($stateProvider, $urlRouterProvider, appSettings) {
+.config([
+    '$stateProvider', 
+    '$urlRouterProvider',
+    'appSettings',
+    function ($stateProvider, $urlRouterProvider, appSettings) {
     
     var _home = appSettings.stateSlugs.home;
     var _page404 = appSettings.stateSlugs.page404;
@@ -43,9 +47,12 @@ angular.module('personalApp', [
 	.state(_home, {
 		url: '/',
 		templateUrl: _view(_home),
-        controller: function($scope) {
-            $scope.content = appSettings.homeContent;
-        }
+        controller: [
+            '$scope',
+            function($scope) {
+                $scope.content = appSettings.homeContent;
+            }
+        ]
 	})
     
     .state('about', {
@@ -94,4 +101,5 @@ angular.module('personalApp', [
 	});
     
     $urlRouterProvider.otherwise('/'+_page404);
-});
+}
+]);

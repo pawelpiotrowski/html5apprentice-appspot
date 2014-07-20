@@ -24,11 +24,11 @@ angular.module('personalApp.apputils', [])
     '$document',
     'AppfactConfig',
     'appSettings',
-	function($window, $document, AppfactConfig, appsettings) {
+	function($window, $document, AppfactConfig, appSettings) {
         
-        var _stateSlugs = appsettings.stateSlugs;
-        var _stateCssSlugs = appsettings.stateCssSlugs;
-        var _paletteSett = appsettings.palette;
+        var _stateSlugs = appSettings.stateSlugs;
+        var _stateCssSlugs = appSettings.stateCssSlugs;
+        var _paletteSett = appSettings.palette;
         
 		this.uniqueid = function() {
 			var timeStamp = new Date().getTime();
