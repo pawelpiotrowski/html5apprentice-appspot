@@ -195,7 +195,7 @@ angular.module('personalApp.apputils', [])
         
         var contentStringOut = contentStringIn;
         var stringLength = contentStringOut.length;
-        
+        console.log(contentStringOut);
         // em = * & strong = **
         var replaceTag = function(tag) {
             var regex = tag.findRegex, result, counter = 0;
@@ -238,108 +238,55 @@ angular.module('personalApp.apputils', [])
         };
         
         var replaceList = function(list) {
+            
             var regexStart = list.findRegexStart;
-            var regexEnd = list.findRegexEnd;
             var regexPart = list.findRegexPart;
-            var resultStart, resultEnd, counter = 0;
-            var contentStringOutRaw = contentStringOut;
-            var stringLengthRaw = contentStringOutRaw.length;
-            var nextIsTagRegex = /</gi;
-            while((resultStart = regexStart.exec(contentStringOutRaw))) {
+            var regexEnd = list.findRegexEnd;
+            
+            var startTag = list.replaceStartTag;
+            var startTagWrap = list.replaceStartTagWrap;
+            
+            var endTag = list.replaceEndTag;
+            var endTagWrap = list.replaceEndTagWrap;
+            var endLength = list.regexEndLength;
+            
+            var resultStart;
+            var counter = 0;
+            
+            //console.log(regexStart.exec(contentStringOut));
+            while((resultStart = regexStart.exec(contentStringOut))) {
                 counter++;
-                var openingTag = list.replaceStartTag;
-                var closingTag = list.replaceEndTag + list.replaceEndTagWrap;
-                
-                if(counter === 1) {
-                    console.log('################');
-                    openingTag = list.replaceStartTagWrap + list.replaceStartTag;
-                }
-                
+                console.log('#########');
+                console.log(resultStart);
                 var _riStart = resultStart.index;
-                var _csStart1 = contentStringOutRaw.substr(0,_riStart);
-                var _csStart2 = contentStringOutRaw.substr(
-                    _riStart + list.regexStartLength, _riStart + stringLengthRaw
+                var _csStart1 = contentStringOut.substr(0,_riStart);
+                var _csStart2 = contentStringOut.substr(
+                    _riStart + list.regexStartLength, stringLength
                 );
-                /*
-                var otherTag = nextIsTagRegex.exec(_csStart2);
-                var otherTagIndex = (otherTag) ? otherTag.index : -1;
-                var closingTag = regexEnd.exec(_csStart2);
-                var closingTagIndex = (closingTag) ? closingTag.index : -1;
                 
-                if(closingTag >= 0 && otherTag >= 0) {
-                    if(otherTagIndex < closingTagIndex) {
-                        var _riEnd = otherTagIndex;
-                        var _csEnd1 = _csStart2.substr(0,_riEnd);
-                        var _csEnd2 = _csStart2.substr(_riEnd, stringLength);
-                        contentStringOutRaw = _csStart1 + openingTag + _csEnd1 + closingTag + _csEnd2;
-                        counter = 0;
-                    } else {
-                        if()
-                    }
-                }
-                console.log('****');
-                */
+                console.log(_riStart);
+                console.log(_csStart1);
                 console.log(_csStart2);
                 
-                //console.log(otherTagIndex);
-                //console.log(closingTagIndex);
-                console.log('****');
-                /*
-                if(otherTagIndex === closingTagIndex) {
-                    contentStringOutRaw = _csStart1 + openingTag + _csStart2 + closingTag
-                }
+                var resultEndSearch = _csStart2.search(regexEnd);
+                var resultEndMatchPart = resultEndSearch + endLength;
+                var resultPartSearch = _csStart2.search(regexPart);
                 
-                contentStringOut = contentStringOutRaw
-                */
-                /*
+                console.log(resultEndMatchPart, resultPartSearch);
                 
-                var otherTag = nextIsTagRegex.exec(_csStart2);
-                var closingTag = regexEnd.exec(_csStart2);
-                var listEnd = list.findRegexPart.exec(_csStart2);
-                var isListEnd = (listEnd) ? listEnd.index : -1;
-                var endLength = (otherTag) ? 1 : list.regexEndLength;
-                
-                resultEnd = otherTag || closingTag;
-                
-                var _riEnd = resultEnd.index;
+                var _riEnd = resultEndSearch;
                 var _csEnd1 = _csStart2.substr(0,_riEnd);
-                var _csEnd2 = _csStart2.substr(_riEnd + endLength, stringLength);
+                var _csEnd2 = _csStart2.substr(_riEnd, stringLength);
                 
-                contentStringOut = _csStart1 + startTag + _csEnd1 + endTag + _csEnd2;
+                var openingTag = (counter === 1) ? startTagWrap + startTag : startTag;
+                var closingTag = endTag;
                 
-                if(closingTag && isListEnd === closingTag.index + list.regexEndLength) {
-                    closingTag = list.replaceEndTag;
+                if(resultPartSearch < 0 || resultEndMatchPart !== resultPartSearch) {
+                    closingTag = endTag + endTagWrap;
+                    counter = 0;
                 }
-                */
                 
-                /*
-                if(counter === 1) {
-                    contentStringOutRaw = _csStart1 + list.replaceStartTagWrap + list.replaceStartTag + _csStart2;
-                } else {
-                    
-                }
-                //console.log(counter);
-                var nextIsListEnd = regexEnd.exec(_csStart2);
-                var nextIsListEndCheck = regexPart.exec(_csStart2);
-                console.log(resultStart.index);
-                //console.log(nextIsListEnd);
-                //console.log(nextIsListEndCheck);
-                if(nextIsListEnd) {
-                    console.log(nextIsListEnd.index);
-                    console.log(nextIsListEndCheck);    
-                }
-                var nextIsListItem = regexStart.exec(_csStart2);
-                var nextIsListEnd = regexEnd.exec(_csStart2);
-                console.log(nextIsListItem, '******', nextIsListEnd);
-                */
-                /*
-                var _counterOdd = counter % 2;
-                var _htmlReplacer = (_counterOdd) ? tag.replaceStartTag : tag.replaceEndTag;
-                var _ri = result.index;
-                var _cspart1 = contentStringOut.substr(0,_ri);
-                var _cspart2 = contentStringOut.substr(_ri + tag.regexLength, _ri + stringLength);
-                contentStringOut = _cspart1 + _htmlReplacer + _cspart2;
-                */
+                contentStringOut = _csStart1 + openingTag + _csEnd1 + closingTag + _csEnd2;
             }
         };
         
@@ -347,12 +294,12 @@ angular.module('personalApp.apputils', [])
             replaceTag(_tag);
         });
         
-        angular.forEach(titlesCollection, function(_title) {
-            replaceTitle(_title);
-        });
-        
         angular.forEach(listsCollection, function(_list) {
             replaceList(_list);
+        });
+        
+        angular.forEach(titlesCollection, function(_title) {
+            replaceTitle(_title);
         });
         
         console.log(contentStringOut);
