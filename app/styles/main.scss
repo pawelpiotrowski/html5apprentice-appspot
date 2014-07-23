@@ -118,6 +118,7 @@ Section
 
 $spacingForNavAndSection: 10px;
 $sectionHolderWidth: 100% - $pageLayoutLeft - $pageLayoutRight;
+$sectionDetailHolderWidth: 100% - $pageLayoutLeft;
 
 // SECTION
 .section-holder {
@@ -132,6 +133,26 @@ $sectionHolderWidth: 100% - $pageLayoutLeft - $pageLayoutRight;
         width: auto;
     }
 }
+
+// SECTION -> DETAIL
+.page-view--detail {
+    background-color: hsla(216, 92%, 50%, 0.4);
+    z-index: 2;
+}
+
+.section-detail--holder {
+    @extend %iscrollWrapper;
+    background-color: hsla(53, 84%, 50%, 0.4);
+    bottom: 0;
+    padding: $spacingForNavAndSection $pageLayoutRight $spacingForNavAndSection $spacingForNavAndSection;
+    min-width: $sectionDetailHolderWidth;
+    @extend %pageMarginLeft;
+    .iscroll-holder {
+        padding-bottom: 1em;
+        width: auto;
+    }
+}
+
 // SECTION -> NAV
 
 $pageNavFontSize: 1.1em;

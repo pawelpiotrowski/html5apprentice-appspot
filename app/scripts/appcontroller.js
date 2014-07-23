@@ -57,7 +57,13 @@ angular.module('personalApp.appcontroller', [])
         };
         
         $scope.$on('$stateChangeStart', function(event, toState, toParams) {
-            //console.log('ROUTE CHANGE START', event, toState, toParams);
+            
+            if(toParams && angular.isDefined(toParams.slug) && !toParams.slug.length) {
+                event.preventDefault();
+                var backToStateName = toState.name.substring(0, toState.name.indexOf('.'));
+                $state.transitionTo(backToStateName);
+                return;
+            }
             
             setCurrentViewName(toState.name);
             
