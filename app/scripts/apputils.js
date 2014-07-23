@@ -131,6 +131,7 @@ angular.module('personalApp.apputils', [])
     }
 ])
 
+// That was great fun 
 .filter('appfiltContentful', function() {
     return function(contentStringIn) {
         
@@ -303,6 +304,8 @@ angular.module('personalApp.apputils', [])
         });
         
         console.log(contentStringOut);
+    
+        
         return contentStringOut;
     };
 });

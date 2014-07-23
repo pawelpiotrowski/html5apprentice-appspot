@@ -4,6 +4,7 @@ angular.module('personalApp', [
     'ui.router',
     'ngAnimate',
     'ngSanitize',
+    'btford.markdown',
     'personalApp.appconfig',
     'personalApp.appcontroller',
     'personalApp.appdirectives',

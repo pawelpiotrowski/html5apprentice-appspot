@@ -2,7 +2,9 @@
     <div class="iscroll-holder" appdir-iscroll>
         <h1>{{ sectionContent.content.title }}</h1>
         <div class="{{ mainBckgd }}">This is section view background</div>
-        <div ng-bind-html="sectionContent.content.txt | linky | appfiltContentful"></div>
+        
+        <div btf-markdown="sectionContent.content.txt"></div>
+        
         <h2>Lorem Ipsum Extender</h2>
         <div>
             Maecenas faucibus mollis interdum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nulla vitae elit libero, a pharetra augue. Vestibulum id ligula porta felis euismod semper.
