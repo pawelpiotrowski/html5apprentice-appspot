@@ -27,12 +27,12 @@ $mainViewTransitionTime: $globalTransitionTime;
 
 .page-view--detail.ng-enter {
     animation: moveFromRight $mainViewTransitionTime ease-in-out both;
-    z-index: 20;
+    z-index: 3;
 }
 
 .page-view--detail.ng-leave {
 	animation: moveToRight $mainViewTransitionTime ease-in-out both;
-    z-index: 10;
+    z-index: 2;
 }
 
 // section navigation
