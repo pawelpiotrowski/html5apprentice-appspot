@@ -6,11 +6,15 @@ angular.module('personalApp.appsection', [])
     '$scope',
 	'AppfactConfig',
     function($scope, AppfactConfig) {
-        //console.log('SECTION CTRL');
+        console.log('SECTION CTRL');
         var _sectionState = $scope.currentViewName;
-        //console.log(_sectionState);
+        
         var _sectionContentRef = $scope.sectionsSlugs.indexOf(_sectionState);
         var _sectionContent = (_sectionContentRef < 0) ? $scope.appErr.handler('no-content') : $scope.sections[_sectionContentRef];
+        
+        $scope.isDetailView = function() {
+            return angular.isUndefined($scope.currentState.toParams.slug);
+        };
         
         $scope.mainBckgd = $scope.appUtils.decorationCssClass('main','background');
         $scope.mainBorder = $scope.appUtils.decorationCssClass('main','border');
@@ -33,21 +37,31 @@ angular.module('personalApp.appsection', [])
                 angular.forEach(d.items, function(item) {
                     _sc.sections[item.fields.sectionOrder] = {
                         name: item.fields.sectionName,
-                        content: {}
+                        content: {
+                            resources: {
+                                items: {}
+                            }
+                        }
                     };
                 });
 
                 angular.forEach(d.includes.Entry, function(entry) {
-                    var _sectionRef = _sc.sections[entry.fields.sectionIdReference];
-                    _sectionRef.content.title = entry.fields.sectionArticleTitle;
-                    _sectionRef.content.txt = entry.fields.sectionArticleText;
+                    var _sArticle = entry.fields;
+                    var _sectionRef = _sc.sections[_sArticle.sectionIdReference];
+                    var _content = _sectionRef.content;
+                    if(angular.isDefined(_sArticle.sectionArticleName)) {
+                        _content.title = _sArticle.sectionArticleTitle;
+                        _content.txt = _sArticle.sectionArticleText;
+                    } else if(angular.isDefined(_sArticle.articleSlug)) {
+                        _content.resources.items[_sArticle.articleSlug] = _sArticle;
+                    }
                 });
 
                 angular.forEach($scope.sections, function(thisSection, sectionIndex) {
 					thisSection.payload = _sc.sections[sectionIndex];
 				});
                 
-                
+                console.log($scope.sections);
 				$scope.sectionContent = _sectionContent.payload;
                 $scope.$emit('sectioncontent::loaded');
 			};

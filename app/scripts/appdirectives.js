@@ -61,10 +61,12 @@ angular.module('personalApp.appdirectives', [])
                 var thisScroll, thisScrollWrapper = iElement.parent()[0];
                 
                 scope.$on('$viewContentLoaded', function() {
-                    thisScroll = new IScroll(thisScrollWrapper, { mouseWheel: true });
-                    $timeout(function() {
-                        thisScroll.refresh();
-                    }, 1);
+                    if(angular.isUndefined(thisScroll)) {
+                        thisScroll = new IScroll(thisScrollWrapper, { mouseWheel: true });
+                        $timeout(function() {
+                            thisScroll.refresh();
+                        }, 1);
+                    }
                 });
                 
                 scope.$on('sectioncontent::loaded', function() {

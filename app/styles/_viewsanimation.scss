@@ -25,6 +25,16 @@ $mainViewTransitionTime: $globalTransitionTime;
     z-index: 0;
 }
 
+.page-view--detail.ng-enter {
+    animation: moveFromRight $mainViewTransitionTime ease-in-out both;
+    z-index: 3;
+}
+
+.page-view--detail.ng-leave {
+	animation: moveToRight $mainViewTransitionTime ease-in-out both;
+    z-index: 2;
+}
+
 // section navigation
 
 $navTransitionTime: $globalTransitionTime;

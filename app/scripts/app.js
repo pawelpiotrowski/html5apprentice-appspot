@@ -69,7 +69,7 @@ angular.module('personalApp', [
         })
 
         .state('projects.detail', {
-            url: '/:id',
+            url: '/:slug',
             templateUrl: _view(_sectionDetail)
         })
 
@@ -89,7 +89,7 @@ angular.module('personalApp', [
         })
 
         .state('blog.detail', {
-            url: '/:entry',
+            url: '/:slug',
             templateUrl: _view(_sectionDetail)
         })
 
