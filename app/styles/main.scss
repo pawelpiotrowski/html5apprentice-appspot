@@ -117,40 +117,32 @@ Section
 }
 
 $spacingForNavAndSection: 10px;
-$sectionHolderWidth: 100% - $pageLayoutLeft - $pageLayoutRight;
-$sectionDetailHolderWidth: 100% - $pageLayoutLeft;
+$sectionHolderWidth: 100% - $pageLayoutLeft;
 
 // SECTION
 .section-holder {
     @extend %iscrollWrapper;
+    background-color: #f4f4f4;
+    border-style: dashed;
+    border-width: 0 0 0 1px;
     bottom: 4em;
-    padding: $spacingForNavAndSection;
-    min-width: calc(#{$sectionHolderWidth} - #{$spacingForNavAndSection * 2});
+    width: $sectionHolderWidth;
     @extend %pageMarginLeft;
     @extend %pageMarginRight;
     .iscroll-holder {
-        padding-bottom: 1em;
+        padding: $spacingForNavAndSection $pageLayoutRight 1em $spacingForNavAndSection;
         width: auto;
     }
 }
 
 // SECTION -> DETAIL
 .page-view--detail {
-    background-color: hsla(216, 92%, 50%, 0.4);
+    background-color: hsla(0, 0%, 100%, 0.3);
     z-index: 2;
 }
 
 .section-detail--holder {
-    @extend %iscrollWrapper;
-    background-color: hsla(53, 84%, 50%, 0.4);
-    bottom: 0;
-    padding: $spacingForNavAndSection $pageLayoutRight $spacingForNavAndSection $spacingForNavAndSection;
-    min-width: $sectionDetailHolderWidth;
-    @extend %pageMarginLeft;
-    .iscroll-holder {
-        padding-bottom: 1em;
-        width: auto;
-    }
+    background-color: #f8f8f8;
 }
 
 // SECTION -> NAV
