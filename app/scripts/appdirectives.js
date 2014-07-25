@@ -58,15 +58,13 @@ angular.module('personalApp.appdirectives', [])
             restrict: 'A',
             link: function(scope, iElement) {
                 
-                var thisScroll, thisScrollWrapper = iElement.parent()[0];
+                //var thisScroll, thisScrollWrapper = iElement.parent()[0];
+                var thisScroll = new IScroll(iElement.parent()[0], { mouseWheel: true });
                 
                 scope.$on('$viewContentLoaded', function() {
-                    if(angular.isUndefined(thisScroll)) {
-                        thisScroll = new IScroll(thisScrollWrapper, { mouseWheel: true });
-                        $timeout(function() {
-                            thisScroll.refresh();
-                        }, 1);
-                    }
+                    $timeout(function() {
+                        thisScroll.refresh();
+                    }, 1);
                 });
                 
                 scope.$on('sectioncontent::loaded', function() {
