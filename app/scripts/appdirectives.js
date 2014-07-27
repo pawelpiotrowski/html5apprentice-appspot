@@ -61,6 +61,7 @@ angular.module('personalApp.appdirectives', [])
                 var thisScroll = new IScroll(iElement.parent()[0], { mouseWheel: true });
                 
                 var refresh = function() {
+                    //console.log('***REFRESHING***', thisScroll);
                     $timeout(function() {
                         thisScroll.refresh();
                     }, 1);

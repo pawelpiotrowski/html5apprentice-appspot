@@ -57,6 +57,7 @@ Section
     background-color: #c1c1c1;
     text-align: center;
     img {
+        color: transparent;
         display: inline-block;
         vertical-align: middle;
     }
@@ -225,6 +226,12 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
         &.img-width-caption {
             display: inline-block;
             vertical-align: top;
+        }
+        &.img-landscape {
+            width: 65%;
+        }
+        &.img-portrait {
+            height: 320px;
         }
     }
     .img-caption {

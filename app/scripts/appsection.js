@@ -29,7 +29,7 @@ angular.module('personalApp.appsection', [])
 		if(!$scope.sectionContent) {
 			var populateContent = function(d) {
 				
-                console.log(d);
+                // console.log(d);
                 
                 var _sc = {};
                 _sc.sections = [];
@@ -46,7 +46,7 @@ angular.module('personalApp.appsection', [])
                 });
 
                 angular.forEach(d.includes.Entry, function(entry) {
-                    console.log(entry);
+                    // console.log(entry);
                     var _sArticle = entry.fields;
                     var _sectionRef = _sc.sections[_sArticle.sectionIdReference];
                     var _content = _sectionRef.content;
@@ -62,8 +62,8 @@ angular.module('personalApp.appsection', [])
 					thisSection.payload = _sc.sections[sectionIndex];
 				});
                 
-                console.log($scope.sections);
 				$scope.sectionContent = _sectionContent.payload;
+                // console.log($scope.sectionContent);
                 $scope.$emit('sectioncontent::loaded');
 			};
 			
@@ -86,8 +86,63 @@ angular.module('personalApp.appsection', [])
 
 .controller('SectionDetailCtrl', [
     '$scope',
-    function($scope) {
-        console.log('SECTION DETAIL CTRL ', $scope);
+    '$rootScope',
+    '$timeout',
+    function($scope, $rootScope, $timeout) {
+        console.log('SECTION DETAIL CTRL');
+        $scope.detailContent = null;
+        $scope.detailValid = false;
+        
+        var isContent = angular.isObject($scope.sectionContent);
+        
+        var noContent = function() {
+            console.log('NO CONTENT :((');
+        };
+
+        var gotContent = function() {
+            var urlRefSlug = $scope.currentState.toParams.slug;
+            $scope.detailContent = $scope.sectionContent.content.resources.items[urlRefSlug];
+            console.log($scope.detailContent);
+            $scope.detailValid = true;
+            $timeout(function() {
+                $rootScope.$broadcast('sectioncontent::refresh');
+            }, 10);
+        };
+        
+        var checkContent = function() {
+            
+            var urlRef = $scope.currentState.toParams;
+            
+            // shortcut
+            var isObj = function(_obj) {
+                return angular.isObject(_obj);
+            };
+            
+            var contentHasResources = isObj($scope.sectionContent.content.resources);
+            
+            var contentHasItems = (contentHasResources) ? isObj($scope.sectionContent.content.resources.items) : false;
+            
+            if(contentHasResources && contentHasItems) {
+                var items = $scope.sectionContent.content.resources.items;
+                var urlValid = angular.isDefined(urlRef.slug);
+                var urlRefValid = (urlValid) ? (urlRef.slug in items) : false;
+                if(urlValid && urlRefValid) {
+                    gotContent();
+                } else {
+                    noContent();
+                }
+            } else {
+                noContent();
+            }
+        };
+        
+        if(isContent) {
+            checkContent();
+        } else {
+            $rootScope.$on('sectioncontent::loaded', function() {
+                checkContent();
+            });
+        }
     }
 ])
 
