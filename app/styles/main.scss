@@ -38,6 +38,8 @@ Section
     }
 }
 
+// GLOBALS
+
 .cursor-pointer {
     @extend %cursorPointer;
 }
@@ -49,6 +51,29 @@ Section
 
 .iscroll-holder {
     @extend %iscrollHolder;
+}
+
+.img-wrap {
+    background-color: #c1c1c1;
+    text-align: center;
+    img {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.img-portrait img {
+    height: 100%;
+    width: auto;
+}
+
+.img-landscape img {
+    height: auto;
+    width: 100%;
+}
+
+.footer {
+    background-color: #808080;
 }
 
 // INTRO
@@ -95,20 +120,26 @@ Section
         text-align: right;
         text-shadow: 1px 1px 1px #808080;
         z-index: 10;
-        ._wrap {
-            background-color: #fff;
-            border-width: 1em;
+        ._border-wrap {
+            border-width: 0.675em;
             display: inline-block;
             margin: 20px 10% 0 0;
-            padding: 10px 15px;
             text-align: center;
             vertical-align: top;
             @extend %frameBorder;
             // @extend %frameBorderBckgd;
         }
+        ._bckgd-wrap {
+            background-color: #ffffff;
+            background-clip: padding-box;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 1px;
+            padding: 10px 15px;
+        }
     }
     .footer {
-        background-color: #808080;
         bottom: 0;
         height: 16%;
         position: absolute;
@@ -122,10 +153,10 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
 // SECTION
 .section-holder {
     @extend %iscrollWrapper;
-    background-color: #f4f4f4;
-    border-style: dashed;
-    border-width: 0 0 0 1px;
     bottom: 4em;
+    line-height: 1.65;
+    font-size: 1.1em;
+    max-width: 1000px;
     width: $sectionHolderWidth;
     @extend %pageMarginLeft;
     @extend %pageMarginRight;
@@ -135,14 +166,123 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     }
 }
 
+.section-inner {
+    padding-top: 20px;
+    padding-right: 5px;
+}
+
+.section-title {
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    font-size: 1.375em;
+    line-height: 2;
+    margin: -0.55em 10px 0.7em 0;
+    text-indent: 0.15em;
+    text-transform: uppercase;
+    @extend .cursive-bold;
+    &:empty {
+        border-color: transparent;
+        margin: 0;
+    }
+}
+
+.section-markdown {
+    h2, h3, p, ul, ol {
+        margin-bottom: 15px;
+    }
+    h2 {
+        font-size: 1.66em;
+        letter-spacing: 0.05em;
+        padding-top: 10px;
+        @extend .cursive-medium;
+    }
+    h3 {
+        font-size: 1.1em;
+        font-style: italic;
+        font-weight: bold;
+        padding-top: 15px;
+    }
+    h2 + h3 {
+        padding-top: 0;
+    }
+    a {
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    .img-wrap {
+        border-width: 1em;
+        max-width: 65%;
+        min-height: 1.5em;
+        @extend %frameBorderTrans;
+        &:before {
+            color: #fff;
+            content: 'Loading Image...';
+            display: block;
+            height: 0;
+        }
+        &.img-width-caption {
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+    .img-caption {
+        display: inline-block;
+        margin: 1em 0 0 1em;
+        vertical-align: top;
+        width: calc(35% - 3em);
+        @media screen and (max-width: 1000px) {
+            display: block;
+            margin-left: 0;
+            width: calc(65% + 2em);
+        }
+    }
+    .img-wrap img {
+        border-radius: 4px;
+        margin-left: 0.025em;
+    }
+    ul li {
+        $leftIndent: 20px;
+        margin: 5px 0px 5px 0;
+        padding: 0 $leftIndent;
+        &:before {
+            content: '-';
+            display: inline-block;
+            font-size: 1.1em;
+            margin-top: -0.1em;
+            margin-left: -$leftIndent;
+            vertical-align: top;
+            width: $leftIndent;
+        }
+    }
+    strong {
+        font-weight: bold;
+    }
+    em {
+        font-style: italic;
+    }
+}
+
+.section-end {
+    font-size: 1.1em;
+    font-style: italic;
+    text-align: center;
+    span {
+        display: inline-block;
+        vertical-align: top;
+    }
+}
+
 // SECTION -> DETAIL
 .page-view--detail {
-    background-color: hsla(0, 0%, 100%, 0.3);
     z-index: 2;
 }
 
 .section-detail--holder {
-    background-color: #f8f8f8;
+    border-style: solid;
+    border-width: 0 0 0 1px;
+    @extend %pageBckgdImg;
 }
 
 // SECTION -> NAV

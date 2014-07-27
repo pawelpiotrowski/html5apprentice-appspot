@@ -1,23 +1,20 @@
 <section ng-controller="SectionCtrl">
-    <div class="section-holder palette-main-border">
+    <div class="section-holder {{ mainBorder }}">
         <div class="iscroll-holder" appdir-iscroll>
-            <h1>{{ sectionContent.content.title }}</h1>
-            <div class="{{ mainBckgd }}">This is section view background</div>
-
-            <div btf-markdown="sectionContent.content.txt"></div>
-
-            <h2>Lorem Ipsum Extender</h2>
-            <div>
-                Maecenas faucibus mollis interdum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nulla vitae elit libero, a pharetra augue. Vestibulum id ligula porta felis euismod semper.
-
-                Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-
-                Donec sed odio dui. Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-
-                Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec sed odio dui. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-                EXTENDER END
+            <div class="section-inner">
+                <h1 class="section-title {{ mainBorder }} {{ mainColor }}">{{ sectionContent.content.title }}</h1>
+                <div class="section-markdown" appdir-markdown="sectionContent.content.txt"></div>
+                <div class="section-end {{ mainColor }}" appdir-section-loading>
+                    <span>~</span>
+                    <span ng-hide="contentLoaded">Loading content, one sec please...</span>
+                    <span ng-show="contentLoaded">&bull;</span>
+                    <span>~</span>
+                </div>
             </div>
         </div>
     </div>
     <article ui-view class="page-view page-view--detail" ng-class="{hidden:isDetailView()}"></article>
+    <footer class="section-footer footer">
+        Footer
+    </footer>
 </section>

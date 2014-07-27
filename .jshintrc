@@ -23,6 +23,7 @@
 	"Raphael": false,
 	"Box2D": false,
     "TweenMax": false,
-    "IScroll": false
+    "IScroll": false,
+    "Showdown": false
   }
 }

@@ -46,6 +46,7 @@ angular.module('personalApp.appsection', [])
                 });
 
                 angular.forEach(d.includes.Entry, function(entry) {
+                    console.log(entry);
                     var _sArticle = entry.fields;
                     var _sectionRef = _sc.sections[_sArticle.sectionIdReference];
                     var _content = _sectionRef.content;
@@ -87,5 +88,19 @@ angular.module('personalApp.appsection', [])
     '$scope',
     function($scope) {
         console.log('SECTION DETAIL CTRL ', $scope);
+    }
+])
+
+.directive('appdirSectionLoading', [
+    function() {
+        return {
+            restrict: 'A',
+            link: function(scope) {
+                scope.contentLoaded = angular.isObject(scope.sectionContent);
+                scope.$on('sectioncontent::loaded', function() {
+                    scope.contentLoaded = true;
+                });
+            }
+        };
     }
 ]);

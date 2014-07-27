@@ -1,7 +1,7 @@
 .page-view {
-	backface-visibility: hidden;
-	transform: translate3d(0, 0, 0);
-	transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transform-style: preserve-3d;
 }
 
 // main view
@@ -9,11 +9,11 @@
 $mainViewTransitionTime: $globalTransitionTime;
 
 .#{$home}.ng-enter {
-	animation: moveFromBottom $mainViewTransitionTime ease both;
+    animation: moveFromBottom $mainViewTransitionTime ease both;
 }
 
 .#{$section}.ng-enter {
-	animation: moveFromTop $mainViewTransitionTime ease-in-out both;
+    animation: moveFromTop $mainViewTransitionTime ease-in-out both;
 }
 
 .page-view--main.ng-enter {
@@ -21,7 +21,7 @@ $mainViewTransitionTime: $globalTransitionTime;
 }
 
 .page-view--main.ng-leave {
-	animation: moveToBottom $mainViewTransitionTime ease-in-out both;
+    animation: moveToBottom $mainViewTransitionTime ease-in-out both;
     z-index: 0;
 }
 
@@ -31,7 +31,7 @@ $mainViewTransitionTime: $globalTransitionTime;
 }
 
 .page-view--detail.ng-leave {
-	animation: moveToRight $mainViewTransitionTime ease-in-out both;
+    animation: moveToRight $mainViewTransitionTime ease-in-out both;
     z-index: 2;
 }
 
@@ -56,10 +56,20 @@ $navTransitionFunction: ease;
 // on hide
 .page-nav.ng-hide-add.ng-hide-add-active {
     transform-origin: 50% 0%;
-	animation: rotatePushTop $navTransitionTime both $navTransitionFunction;
+    animation: rotatePushTop $navTransitionTime both $navTransitionFunction;
 }
 // on show
 .page-nav.ng-hide-remove.ng-hide-remove-active {
     transform-origin: 50% 0%;
     animation: rotatePullTop $navTransitionTime both $navTransitionFunction;
+}
+
+.freakout {
+    transform: rotateY(0deg);
+    transition: all $navTransitionFunction $navTransitionTime / 3;
+    &:hover {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+        transform: rotateY(180deg);
+    }
 }

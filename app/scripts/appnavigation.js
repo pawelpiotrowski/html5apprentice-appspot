@@ -233,12 +233,18 @@ angular.module('personalApp.appnavigation', [])
                 }
 
                 var _uniqueClassType = scope.$parent.uniqueClass+ '-' + (scope.$index + 1);
+                // var _color = scope.section.palette.main;
                 var _hoverColor = scope.section.palette.contra;
                 var _activeSlug = scope.stateCssSlugs.sectionActive;
-                var _elSelector = '.' + _uniqueClassType + ':not(.'+_activeSlug+'):hover';
-                var _elStyle = '{color:'+_hoverColor+'}';
-
-                scope.$parent.navHoverStyleString += _elSelector+_elStyle;
+                var _elSelector = '.' + _uniqueClassType + ':not(.'+_activeSlug+')';
+                // var _elStyle = '{color:'+_color+'}';
+                var _elSelectorHover = _elSelector+':hover';
+                var _elStyleHover = '{color:'+_hoverColor+'}';
+                
+                // var _cssStringPart = _elSelector+_elStyle+_elSelectorHover+_elStyleHover;
+                var _cssStringPart = _elSelectorHover+_elStyleHover;
+                
+                scope.$parent.navHoverStyleString += _cssStringPart;
                 iElement.addClass(_uniqueClassType);
                 
                 if(scope.$last) {

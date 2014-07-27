@@ -58,19 +58,24 @@ angular.module('personalApp.appdirectives', [])
             restrict: 'A',
             link: function(scope, iElement) {
                 
-                //var thisScroll, thisScrollWrapper = iElement.parent()[0];
                 var thisScroll = new IScroll(iElement.parent()[0], { mouseWheel: true });
                 
-                scope.$on('$viewContentLoaded', function() {
+                var refresh = function() {
                     $timeout(function() {
                         thisScroll.refresh();
                     }, 1);
+                };
+                
+                scope.$on('$viewContentLoaded', function() {
+                    refresh();
                 });
                 
                 scope.$on('sectioncontent::loaded', function() {
-                    $timeout(function() {
-                        thisScroll.refresh();
-                    }, 1);
+                    refresh();
+                });
+                
+                scope.$on('sectioncontent::refresh', function() {
+                    refresh();
                 });
                 
                 document.addEventListener('touchmove', function(e) {
