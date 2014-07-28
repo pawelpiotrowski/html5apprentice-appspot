@@ -242,7 +242,7 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
         @media screen and (max-width: 1000px) {
             display: block;
             margin-left: 0;
-            width: calc(65% + 2em);
+            width: auto;
         }
     }
     .img-wrap img {
