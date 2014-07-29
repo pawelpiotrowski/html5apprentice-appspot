@@ -292,6 +292,14 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     @extend %pageBckgdImg;
 }
 
+.section-detail--close {
+    cursor: pointer;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 20%;
+}
 // SECTION -> NAV
 
 $pageNavFontSize: 1.1em;
