@@ -9,12 +9,17 @@
                     <span ng-hide="$parent.contentLoaded">Loading content, one sec please...</span>
                     <span ng-show="$parent.contentLoaded && detailValid">&bull;</span>
                     <span ng-show="$parent.contentLoaded && !detailValid">
-                        Back to projects link
+                        Oops ): no luck here, try again in <a ui-sref="{{ currentViewName }}">{{ currentViewName }}</a>
                     </span>
                     <span>~</span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="section-detail--close" appdir-detail-close></div>
+    <div class="section-detail--close {{ contraColor }} cursive-medium" appdir-detail-close="close-on">
+        <div class="_inner {{ mainColor }}" ng-show="$parent.contentLoaded && detailValid">
+            <span>&lt;</span>
+            <span>{{ currentViewName }}</span>
+        </div>
+    </div>
 </div>

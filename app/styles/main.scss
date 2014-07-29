@@ -212,9 +212,12 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
             text-decoration: underline;
         }
     }
+    $imgWrapHeight: 320px;
+    $imgWrapWidth: 65%;
     .img-wrap {
         border-width: 1em;
-        max-width: 65%;
+        max-height: $imgWrapHeight;
+        max-width: $imgWrapWidth;
         min-height: 1.5em;
         @extend %frameBorderTrans;
         &:before {
@@ -228,10 +231,13 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
             vertical-align: top;
         }
         &.img-landscape {
-            width: 65%;
+            max-height: none;
+            width: $imgWrapWidth;
         }
         &.img-portrait {
-            height: 320px;
+            display: inline-block;
+            height: $imgWrapHeight;
+            vertical-align: top;
         }
     }
     .img-caption {
@@ -296,9 +302,32 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     cursor: pointer;
     height: 100%;
     left: 0;
+    overflow: hidden;
     position: absolute;
     top: 0;
     width: 20%;
+    ._inner {
+        font-size: 1.1em;
+        line-height: 1;
+        margin-left: 100%;
+        padding-top: 30px;
+        text-align: center;
+        text-transform: uppercase;
+        width: 100%;
+        span {
+            display: inline-block;
+            vertical-align: middle;
+            &:first-child {
+                vertical-align: top;
+            }
+        }
+    }
+    &.close-on ._inner {
+        margin-left: 0;
+    }
+    &:hover ._inner {
+        color: inherit;
+    }
 }
 // SECTION -> NAV
 

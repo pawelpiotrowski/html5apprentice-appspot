@@ -158,4 +158,31 @@ angular.module('personalApp.appsection', [])
             }
         };
     }
+])
+
+.directive('appdirDetailClose', [
+    '$timeout',
+    function($timeout) {
+        return {
+            restrict: 'A',
+            link: function(scope, iElement, iAttrs) {
+                
+                var activeClassName = iAttrs.appdirDetailClose;
+                var viewTransTime = scope.pageLayoutSettings.transMsTime + 100;
+                
+                var _delay = $timeout(function() {
+                    iElement.addClass(activeClassName);
+                }, viewTransTime);
+                
+                iElement.on('click', function() {
+                    scope.changeLocation(scope.currentViewName);
+                });
+                
+                scope.$on('$destroy', function() {
+                    iElement.removeClass(activeClassName);
+                    $timeout.cancel(_delay);
+                });
+            }
+        };
+    }
 ]);

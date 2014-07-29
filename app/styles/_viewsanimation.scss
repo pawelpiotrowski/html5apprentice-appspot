@@ -64,12 +64,6 @@ $navTransitionFunction: ease;
     animation: rotatePullTop $navTransitionTime both $navTransitionFunction;
 }
 
-.freakout {
-    transform: rotateY(0deg);
+.section-detail--close ._inner {
     transition: all $navTransitionFunction $navTransitionTime / 3;
-    &:hover {
-        unicode-bidi: bidi-override;
-        direction: rtl;
-        transform: rotateY(180deg);
-    }
 }

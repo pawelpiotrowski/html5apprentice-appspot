@@ -59,8 +59,11 @@ angular.module('personalApp.appmarkdown', ['ngSanitize'])
                         var imgHeight = _img.height;
                         var imgWidth = _img.width;
                         var imgTitle = _img.title;
-                        var imgOrientation = (imgWidth > imgHeight) ? 'img-landscape' : 'img-portrait';
-                        var imgWrapClass = scope.mainBckgd+' '+imgOrientation;
+                        var imgOrientation = function(w, h) {
+                            //console.log('***IMG*** ', w, h);
+                            return (w >= h) ? 'img-landscape' : 'img-portrait';
+                        };
+                        var imgWrapClass = scope.mainBckgd+' '+imgOrientation(imgWidth, imgHeight);
                         if(imgTitle.length && _img.nextSibling) {
                             img.removeAttr('title');
                             angular.element(_img.nextSibling).wrap('<div class="img-caption">');
@@ -68,7 +71,14 @@ angular.module('personalApp.appmarkdown', ['ngSanitize'])
                         }
                         img.wrap('<div class="img-wrap '+imgWrapClass+'">');
                         img.on('load', function() {
-                            console.log('image loaded');
+                            var _imgLoaded = this;
+                            var imgLoaded = angular.element(_imgLoaded);
+                            var imgParent = imgLoaded.parent();
+                            var w = _imgLoaded.width;
+                            var h = _imgLoaded.height;
+                            var _class = imgOrientation(w, h);
+                            imgParent.removeClass('img-landscape img-portrait');
+                            imgParent.addClass(_class);
                             $timeout(function() {
                                 scope.$emit('sectioncontent::refresh');
                             }, 10);
