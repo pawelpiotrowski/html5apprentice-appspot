@@ -3,47 +3,24 @@
 angular.module('personalApp.dollmaker', [])
 
 .directive('appdirMakeNavDoll', [
-	'AppfactDoll',
 	'AppfactDollCollection',
-	function(AppfactDoll, AppfactDollCollection) {
+    'AppservDesignDoll',
+	function(AppfactDollCollection, AppservDesignDoll) {
 		return {
 			restrict: 'A',
 			link: function(scope, iElement) {
-				//console.log(scope, iElement, iAttr);
+                
 				var dollCollection = new AppfactDollCollection();
 				var navDollCounter = scope.$index;
 				var navDollWrapper = iElement;
-				var navDollRaphael = new Raphael(iElement[0]);
 				var navDollSize = navDollCounter + 1;
-				
-				// extension array order: hair eyebrow eye nose lips
-				var navDollCustomColors = {
-					basePath: scope.sections[navDollCounter].palette.contra,
-					headPath: scope.sections[navDollCounter].palette.main,
-					bellyPath: scope.sections[navDollCounter].palette.main,
-					bowPath: scope.sections[navDollCounter].palette.main,
-					hairPath: scope.sections[navDollCounter].palette.extension[0],
-					leftEyeBrowPath: scope.sections[navDollCounter].palette.extension[1],
-					rightEyeBrowPath: scope.sections[navDollCounter].palette.extension[1],
-					leftEyeLashPath: scope.sections[navDollCounter].palette.extension[2],
-					rightEyeLashPath: scope.sections[navDollCounter].palette.extension[2],
-					leftEyePath: scope.sections[navDollCounter].palette.extension[2],
-					rightEyePath: scope.sections[navDollCounter].palette.extension[2],
-					nosePath: scope.sections[navDollCounter].palette.extension[3],
-					lipsPath: scope.sections[navDollCounter].palette.extension[4]
-				};
-			
-				var navDollCustomPaths = navDollCounter;
-				var navDollCustomAnimation = (navDollCounter === 0) ? false : { kiss: navDollCounter - 1 };
 								
-				var navDoll = new AppfactDoll(
-					navDollRaphael,
-					navDollSize,
-					navDollWrapper,
-					navDollCustomColors,
-					navDollCustomPaths,
-					navDollCustomAnimation
-				);
+				var navDoll = AppservDesignDoll.please(
+                    navDollCounter,
+                    navDollWrapper,
+                    navDollSize,
+                    scope.sections[navDollCounter].palette
+                );
                 
 				function navDollClickCallback() {
 					console.log('doll click animation callback');
@@ -80,6 +57,85 @@ angular.module('personalApp.dollmaker', [])
 			}
 		};
 	}
+])
+
+.directive('appdirMakeSectionDoll', [
+    'AppservDesignDoll',
+	function(AppservDesignDoll) {
+		return {
+			restrict: 'A',
+			link: function(scope, iElement) {
+                
+				// sectionRef, element, size, palette
+                var sectionRef = scope.currentState.currentSectionRef;
+                var size = sectionRef + 1;
+                var sectionPalette = scope.getCurrentPalette();
+                var sectionDoll = AppservDesignDoll.please(sectionRef, iElement, size, sectionPalette);
+                
+				function navDollClick() {
+					sectionDoll.kiss();
+				}
+                function cursorPointerOn() {
+				    scope.$emit('htmlclass::cursorPointer', true);
+                }
+                function cursorPointerOff() {
+				    scope.$emit('htmlclass::cursorPointer', false);
+                }
+                function removeCursorPointer() {
+                    sectionDoll.action('hover', [cursorPointerOn, cursorPointerOff], false);
+                    cursorPointerOff();
+                }
+				sectionDoll.make();
+				sectionDoll.action('click', navDollClick, true);
+                sectionDoll.action('hover', [cursorPointerOn, cursorPointerOff], true);
+                
+                scope.$on('$destroy', function() {
+                    removeCursorPointer();
+                });
+			}
+		};
+	}
+])
+
+.service('AppservDesignDoll', [
+    'AppfactDoll',
+	function(AppfactDoll) {
+		this.please = function(sectionRef, element, size, palette) {
+            var dollReference = sectionRef;
+            var dollWrapper = element;
+            var dollRaphael = new Raphael(element[0]);
+            var dollSize = size;
+
+            // extension array order: hair eyebrow eye nose lips
+            var dollCustomColors = {
+                basePath: palette.contra,
+                headPath: palette.main,
+                bellyPath: palette.main,
+                bowPath: palette.main,
+                hairPath: palette.extension[0],
+                leftEyeBrowPath: palette.extension[1],
+                rightEyeBrowPath: palette.extension[1],
+                leftEyeLashPath: palette.extension[2],
+                rightEyeLashPath: palette.extension[2],
+                leftEyePath: palette.extension[2],
+                rightEyePath: palette.extension[2],
+                nosePath: palette.extension[3],
+                lipsPath: palette.extension[4]
+            };
+
+            var dollCustomPaths = dollReference;
+            var dollCustomAnimation = (dollReference === 0) ? false : { kiss: dollReference - 1 };
+
+            return new AppfactDoll(
+                dollRaphael,
+                dollSize,
+                dollWrapper,
+                dollCustomColors,
+                dollCustomPaths,
+                dollCustomAnimation
+            );
+		};
+    }
 ])
 
 .factory('AppfactDollCollection', [

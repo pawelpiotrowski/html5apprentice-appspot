@@ -5,6 +5,7 @@
 Global classes
 Intro
 Section
+    Section detail
     Section nav
 */
 
@@ -105,10 +106,9 @@ Section
     position: absolute;
     top: 0;
     z-index: 1;
-}
-
-.doll-attractor svg {
-    @extend %full;
+    svg {
+        @extend %full;
+    }
 }
 
 .#{$home} {
@@ -257,7 +257,7 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     }
     ul li {
         $leftIndent: 20px;
-        margin: 5px 0px 5px 0;
+        margin: 5px 0px;
         padding: 0 $leftIndent;
         &:before {
             content: '-';
@@ -287,9 +287,34 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     }
 }
 
+.section-footer {
+    background-clip: padding-box;
+    background-color: #d4d4d4;
+    border-top: 3px groove hsla(0, 0%, 97%, 0.2);
+    bottom: 2.9em;
+    height: 1.45em;
+    overflow: visible;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+}
+
+.section-doll {
+    bottom: 2.9em;
+    height: 20%;
+    margin-bottom: 8px;
+    position: absolute;
+    text-align: center;
+    width: 20%;
+    z-index: 4;
+    svg {
+        @extend %full;
+    }
+}
+
 // SECTION -> DETAIL
 .page-view--detail {
-    z-index: 2;
+    z-index: 5;
 }
 
 .section-detail--holder {
