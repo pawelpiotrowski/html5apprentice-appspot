@@ -33,7 +33,7 @@ angular.module('personalApp.appmarkdown', ['ngSanitize'])
                 var addStyle = function() {
                     
                     // titles
-                    element.find('h2').addClass(scope.mainColor);
+                    element.find('h2').addClass(scope.mainColor+' '+scope.mainBorder);
                     
                     // links
                     var links = element.find('a');

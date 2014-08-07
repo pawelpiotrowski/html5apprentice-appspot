@@ -177,7 +177,7 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     border-width: 0 0 1px 0;
     font-size: 1.375em;
     line-height: 2;
-    margin: -0.55em 10px 0.7em 0;
+    margin: -0.55em 0 0.7em 0;
     text-indent: 0.15em;
     text-transform: uppercase;
     @extend .cursive-bold;
@@ -192,6 +192,8 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
         margin-bottom: 15px;
     }
     h2 {
+        border-style: dotted;
+        border-width: 0 0 1px 0;
         font-size: 1.66em;
         letter-spacing: 0.05em;
         padding-top: 10px;
@@ -281,6 +283,11 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     font-size: 1.1em;
     font-style: italic;
     text-align: center;
+    &.loaded {
+        font-size: 1.66em;
+        font-style: normal;
+        @extend .cursive-medium;
+    }
     span {
         display: inline-block;
         vertical-align: top;

@@ -2,9 +2,9 @@
     <div class="section-holder section-detail--holder {{ contraBorder }}">
         <div class="iscroll-holder" appdir-iscroll>
             <div class="section-inner">
-                <h1 class="section-title {{ contraBorder }} {{ contraColor }}">{{ detailContent.articleTitle }}</h1>
+                <h1 class="section-title {{ mainBorder }} {{ mainColor }}">{{ detailContent.articleTitle }}</h1>
                 <div class="section-markdown" appdir-markdown="detailContent.articleText"></div>
-                <div class="section-end {{ contraColor }}" appdir-section-loading>
+                <div class="section-end {{ contraColor }}" ng-class="{loaded: contentLoaded}" appdir-section-loading>
                     <span>~</span>
                     <span ng-hide="$parent.contentLoaded">Loading content, one sec please...</span>
                     <span ng-show="$parent.contentLoaded && detailValid">&bull;</span>

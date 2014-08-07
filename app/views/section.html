@@ -4,7 +4,7 @@
             <div class="section-inner">
                 <h1 class="section-title {{ mainBorder }} {{ mainColor }}">{{ sectionContent.content.title }}</h1>
                 <div class="section-markdown" appdir-markdown="sectionContent.content.txt"></div>
-                <div class="section-end {{ mainColor }}" appdir-section-loading>
+                <div class="section-end {{ mainColor }}" ng-class="{loaded: contentLoaded}"appdir-section-loading>
                     <span>~</span>
                     <span ng-hide="contentLoaded">Loading content, one sec please...</span>
                     <span ng-show="contentLoaded">&bull;</span>
