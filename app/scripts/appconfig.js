@@ -4,8 +4,8 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 
 .constant('appSettings', {
 	contentPath: 'http://cdn.contentful.com/spaces/hbdg3afnrqv7/entries?content_type=204FqWl3MAcAosq0gMoKKm&access_token=2b9e567ba1502393bee07289559bdcb852a9349202178a3e6c0ba7a523067e62',
-    templatesDir: '/views/',
-    partialsDir: '/partials/',
+    templatesDir: 'views/',
+    partialsDir: 'partials/',
 	exludeSections: ['test', 'not-found'],
 	palette: {
 		page: {
