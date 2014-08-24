@@ -7,15 +7,17 @@
 
 // Fonts
 
-%cursiveLatinBold { font-family: "VeljovicScriptLTW02-Bol", cursive; }
-%cursiveLatinMedium { font-family: "VeljovicScriptLTW02-Med", cursive; }
-%cursiveLatinRegular { font-family: "VeljovicScriptLTW02-Reg", cursive; }
-%cursiveLatinLight { font-family: "VeljovicScriptLTW02-Lig", cursive; }
+$fontPalatino: Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
 
-%cursiveCyrillicBold { font-family: "VeljovicScriptLTW10-Bol", cursive; }
-%cursiveCyrillicMedium { font-family: "VeljovicScriptLTW10-Med", cursive; }
-%cursiveCyrillicRegular { font-family: "VeljovicScriptLTW10-Reg", cursive; }
-%cursiveCyrillicLight { font-family: "VeljovicScriptLTW10-Lig", cursive; }
+%cursiveLatinBold { font-family: "VeljovicScriptLTW02-Bol", $fontPalatino; }
+%cursiveLatinMedium { font-family: "VeljovicScriptLTW02-Med", $fontPalatino; }
+%cursiveLatinRegular { font-family: "VeljovicScriptLTW02-Reg", $fontPalatino; }
+%cursiveLatinLight { font-family: "VeljovicScriptLTW02-Lig", $fontPalatino; }
+
+%cursiveCyrillicBold { font-family: "VeljovicScriptLTW10-Bol", $fontPalatino; }
+%cursiveCyrillicMedium { font-family: "VeljovicScriptLTW10-Med", $fontPalatino; }
+%cursiveCyrillicRegular { font-family: "VeljovicScriptLTW10-Reg", $fontPalatino; }
+%cursiveCyrillicLight { font-family: "VeljovicScriptLTW10-Lig", $fontPalatino; }
 
 // Background images
 
@@ -56,8 +58,6 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
-
-$fontPalatino: Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
 
 html, body {
     background-color: $pageBckgd;
