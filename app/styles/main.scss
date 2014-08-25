@@ -157,19 +157,17 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     bottom: 4em;
     line-height: 1.65;
     font-size: 1.1em;
-    max-width: 1000px;
     width: $sectionHolderWidth;
     @extend %pageMarginLeft;
-    @extend %pageMarginRight;
     .iscroll-holder {
-        padding: $spacingForNavAndSection $pageLayoutRight 1em $spacingForNavAndSection;
-        width: auto;
+        width: 100%;
     }
 }
 
 .section-inner {
-    padding-top: 20px;
-    padding-right: 5px;
+	@extend %pageMarginRight;
+	max-width: 1000px;
+    padding: 20px 0 0 $spacingForNavAndSection;
 }
 
 .section-title {

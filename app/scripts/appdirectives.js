@@ -58,7 +58,11 @@ angular.module('personalApp.appdirectives', [])
             restrict: 'A',
             link: function(scope, iElement) {
                 
-                var thisScroll = new IScroll(iElement.parent()[0], { mouseWheel: true });
+                var thisScroll = new IScroll(iElement.parent()[0], {
+					click: true,
+					mouseWheel: true,
+					tap: true
+				});
                 
                 var refresh = function() {
                     //console.log('***REFRESHING***', thisScroll);
