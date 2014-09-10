@@ -1063,4 +1063,78 @@ angular.module('personalApp.dollmaker', [])
 			'flowerPath4'
 		];
 	}
+])
+
+
+.service('AppservNewDoll', [
+    function() {
+        this.svgSize = {
+            h: 300,
+            w: 134
+        };
+        this.getPathsString = function(pathsArray) {
+			var pathsString = '';
+			angular.forEach(pathsArray, function(p) {
+				pathsString += p.toString()+' ';
+			});
+			return pathsString;
+		};
+        this.customPaths = [];
+        this.paths = {
+            bottom1Base: {
+				name: 'bottom1Base',
+				color: '#ECC117',
+				path: 'M6.899,198.667c5.242,22.376,13.385,49.222,25.254,66.276c-7.27,3.925-11.574,8.787-11.574,13.361 c0,9.898,20.111,17.256,46.923,17.256s46.922-7.357,46.922-17.256c0-4.822-4.775-9.975-12.776-14 c12.239-16.824,21.404-42.787,26.317-65.149C118.32,219.813,16.311,219.14,6.899,198.667z',
+				make: function(dollpath) {
+					dollpath.attr({
+						'id': this.name,
+						'stroke-width': '0',
+						'stroke-opacity': '1'
+					})
+					.data('id', this.name);
+				}
+			},
+            bottom2Inner1: {
+				name: 'bottom2Inner1',
+				color: '#C9A897',
+				path: 'M6.452,197.068 c6.068-22.196,117.264-22.781,122.099,0v0.406c-4.834,22.781-116.03,22.196-122.099,0V197.068z',
+				make: function(dollpath) {
+					dollpath.attr({
+						'id': this.name,
+						'connector-curvature': '0',
+						'stroke-width': '0',
+						'stroke-opacity': '1',
+						'nodetypes': 'cccsccccc'
+					})
+					.data('id', this.name);
+				}
+			},
+            bottom3Inner2: {
+				name: 'bottom3Inner2',
+				color: '#FAF3EE',
+				path: 'M12.557,197.089 c5.461-19.977,105.538-20.503,109.889,0v0.365c-4.351,20.503-104.427,19.977-109.889,0V197.089z',
+				make: function(dollpath) {
+					dollpath.attr({
+						'id': this.name,
+						'connector-curvature': '0',
+						'stroke-width': '0',
+						'stroke-opacity': '1',
+						'nodetypes': 'cccsccccc'
+					})
+					.data('id', this.name);
+				}
+			}
+        };
+        this.customAnimation = {
+			kiss: []
+        };
+        this.animationPaths = {
+			kiss: []
+        };
+        this.pathOrder = [
+            'bottom1Base',
+            'bottom2Inner1',
+            'bottom3Inner2'
+        ];
+    }
 ]);
