@@ -39,21 +39,17 @@ angular.module('personalApp.dollmaker', [])
 				}
                 function cursorPointerOn() {
 				    scope.$emit('htmlclass::cursorPointer', true);
-                    //console.log(navDoll.dollTop);
-                    var _ty = 40 * navDoll.scale;
-                    var _trans = 't0,-'+_ty+'s'+navDoll.scale+','+navDoll.scale+',67,300';
-                    console.log(_trans);
-                    navDoll.dollTop.animate({
-                        transform: _trans
-                    }, 200, 'bounce');
+                    var c = function() {
+                        console.log('opened');
+                    };
+                    navDoll.open(c);
                 }
                 function cursorPointerOff() {
 				    scope.$emit('htmlclass::cursorPointer', false);
-                    var _trans = 't0,0s'+navDoll.scale+','+navDoll.scale+',67,300';
-                    console.log(_trans);
-                    navDoll.dollTop.animate({
-                        transform: _trans
-                    }, 200);
+                    var c = function() {
+                        console.log('closed');
+                    };
+                    navDoll.close(c);
                 }
                 function removeCursorPointer() {
                     navDoll.action('hover', [cursorPointerOn, cursorPointerOff], false);
@@ -187,10 +183,13 @@ angular.module('personalApp.dollmaker', [])
 			this.dollShape = null;
             this.dollBottom = null;
             this.dollTop = null;
+            this.dollOuter = null;
 			this.dollPaths = {};
 			this.customPaths = (angular.isNumber(pathsRef) && AppservDoll.customPaths[pathsRef]) ? AppservDoll.customPaths[pathsRef] : {};
 			this.customAnimation = (animationRef) ? animationRef : false;
 			this.animated = false;
+            this.openingAnimation = null;
+            this.closingAnimation = null;
 			this.make = function() {
 
 				var doll = this.el;
@@ -199,10 +198,9 @@ angular.module('personalApp.dollmaker', [])
                 
                 dollRoot.dollBottom = doll.set();
                 dollRoot.dollTop = doll.set();
-				//doll.setStart();
                 
 				angular.forEach(AppservDoll.pathOrder, function(pathName) {
-                    // setting dollTop group
+                    
                     var _pathNamePart = pathName.substr(0,3);
                     
 					var thisPath = (pathName in dollRoot.customPaths) ? dollRoot.customPaths[pathName] : dollRef[pathName];
@@ -212,19 +210,19 @@ angular.module('personalApp.dollmaker', [])
                     
                     if(_pathNamePart === 'bot') {
                         dollRoot.dollBottom.push(dollRoot.dollPaths[pathName]);
-                    } else {
+                    } else if(_pathNamePart === 'top') {
                         dollRoot.dollTop.push(dollRoot.dollPaths[pathName]);
+                    } else if(_pathNamePart === 'sha') { // shape
+                        dollRoot.dollOuter = dollRoot.dollPaths[pathName];
                     }
 				});
 
-				//doll.setViewBox(0, 0, this.svgSize.w * this.divider, this.svgSize.h * this.divider, true);
 				doll.setViewBox(0, 0, AppservDoll.svgSize.w, AppservDoll.svgSize.h, true);
 				//doll.setSize('100%', '100%');
 				doll.canvas.setAttribute('preserveAspectRatio', 'xMidYMax');
                 
-				// this.dollShape = doll.setFinish();
                 this.dollShape = doll.set();
-                this.dollShape.push(this.dollBottom, this.dollTop);
+                this.dollShape.push(this.dollBottom, this.dollTop, this.dollOuter);
 				this.dollShape.scale(this.scale,this.scale,AppservDoll.svgSize.w / 2, AppservDoll.svgSize.h);
                 
 			};
@@ -239,9 +237,9 @@ angular.module('personalApp.dollmaker', [])
 						break;
                     case 'hover':
                         if(addOrRemove) {
-							this.dollShape.hover(eHandler[0], eHandler[1]);
+							this.dollOuter.hover(eHandler[0], eHandler[1]);
 						} else {
-							this.dollShape.unhover(eHandler[0], eHandler[1]);
+							this.dollOuter.unhover(eHandler[0], eHandler[1]);
 						}
                         break;
 				}
@@ -317,6 +315,66 @@ angular.module('personalApp.dollmaker', [])
 				};
 				TweenMax.to(dollWrapper, 2, { css: { x: window.innerWidth }, delay: 0.5, ease: 'Power1.easeIn', onComplete: wentAway });
 			};
+            
+            // this is rather internal serves open and close
+            this._toggle = function(dirUpDown, clbk) {
+                var dollRoot = this;
+                var _scale = dollRoot.scale;
+                var _transY = (dirUpDown) ? 40 * _scale : 0;
+                var _scaleW = AppservDoll.svgSize.w / 2;
+                var _scaleH = AppservDoll.svgSize.h;
+                
+                // for scaling outer path
+                var _sx = _scale * 0.1;
+                var _sy = _scale * 0.18;
+                
+                var _scaleOuterX = (dirUpDown) ? _scale + _sx : _scale;
+                var _scaleOuterY = (dirUpDown) ? _scale + _sy : _scale;
+                
+                var _trans = 't0,-'+_transY+'s'+_scale+','+_scale+','+_scaleW+','+_scaleH;
+                var _transOuter = 's'+_scaleOuterX+','+_scaleOuterY+','+_scaleW+','+_scaleH;
+                var _thisAnimRefStr = (dirUpDown) ? 'openingAnimation' : 'closingAnimation';
+                var _otherAnimRefStr = (dirUpDown) ? 'closingAnimation' : 'openingAnimation';
+                var _animEasing = (dirUpDown) ? 'bounce' : 'linear';
+                var _animTime = (dirUpDown) ? 250 : 150;
+                
+                if(dollRoot[_otherAnimRefStr]) {
+                    console.log('KILLING', (dirUpDown) ? 'CLOSE' : 'OPEN');
+                    dollRoot.dollTop.stop(dollRoot[_otherAnimRefStr]);
+                    dollRoot[_otherAnimRefStr] = null;
+                }
+                
+                dollRoot.dollOuter.transform(_transOuter);
+                // this is hack for firing animation clbk for a set of paths once
+                var _clbkCounter = 0;
+                var _clbk = function() {
+                    _clbkCounter++;
+                    if(_clbkCounter === dollRoot.dollTop.length) {
+                        console.log('animation sets FINISHED!!!');
+                        dollRoot[_thisAnimRefStr] = null;
+                        if(angular.isFunction(clbk)) { clbk(); }
+                    }
+                };
+
+                dollRoot[_thisAnimRefStr] = Raphael.animation({
+                    transform: _trans
+                }, _animTime, _animEasing, _clbk);
+
+                dollRoot.dollTop.animate(dollRoot[_thisAnimRefStr]);
+                
+            };
+            
+            this.open = function(clbk) {
+                if(!this.openingAnimation) {
+                    this._toggle(true, clbk);
+                }
+            };
+            
+            this.close = function(clbk) {
+                if(!this.closingAnimation) {
+                    this._toggle(false, clbk);
+                }
+            };
 		};
 	}
 ])
@@ -1640,7 +1698,21 @@ angular.module('personalApp.dollmaker', [])
 					})
 					.data('id', this.name);
 				}
-			}
+			},
+            shape36: {
+                name: 'shape36',
+				color: '#ffffff',
+				path: 'M66.384,49.885c-33.021,0.44-39.297,27.441-39.297,54.79 c0.192,22.427-20.81,34.056-20.81,55.662c0,0-2.566,23.821,0,35.086c5.212,22.879,13.528,51.22,25.876,68.961 c-7.27,3.925-11.574,8.787-11.574,13.361c0,9.898,20.111,17.256,46.923,17.256s46.922-7.357,46.922-17.256 c0-4.822-4.775-9.975-12.776-14c12.822-17.626,22.274-45.285,26.994-68.322c2.332-11.375-2.152-35.086-2.152-35.086 c-1.693-27.546-20.877-35.705-20.808-55.662C105.681,77.326,99.399,49.445,66.384,49.885L66.384,49.885z',
+				make: function(dollpath) {
+					dollpath.attr({
+						'id': this.name,
+						'stroke-width': '0',
+						'stroke-opacity': '1',
+                        'opacity': '0'
+					})
+					.data('id', this.name);
+				}
+            }
         };
         this.customAnimation = {
 			kiss: []
@@ -1683,7 +1755,8 @@ angular.module('personalApp.dollmaker', [])
             'top32Flower1',
             'top33Flower2',
             'top34Flower3',
-            'top35Flower4'
+            'top35Flower4',
+            'shape36'
         ];
     }
 ]);
