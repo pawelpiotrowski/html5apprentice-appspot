@@ -5,7 +5,8 @@ angular.module('personalApp.dollmaker', [])
 .directive('appdirMakeNavDoll', [
 	'AppfactDollCollection',
     'AppservDesignDoll',
-	function(AppfactDollCollection, AppservDesignDoll) {
+    '$timeout',
+	function(AppfactDollCollection, AppservDesignDoll, $timeout) {
 		return {
 			restrict: 'A',
 			link: function(scope, iElement) {
@@ -14,7 +15,7 @@ angular.module('personalApp.dollmaker', [])
 				var navDollCounter = scope.$index;
 				var navDollWrapper = iElement;
 				var navDollSize = navDollCounter + 1;
-                console.log(scope.sections[navDollCounter]);
+                
 				var navDoll = AppservDesignDoll.please(
                     navDollCounter,
                     navDollWrapper,
@@ -30,13 +31,21 @@ angular.module('personalApp.dollmaker', [])
 				}
 				function navDollClick() {
 					console.log('doll clicked');
-					//navDoll.action('click', navDollClick, false);
+					navDoll.action('click', navDollClick, false);
 					var others = dollCollection.getOthers(navDoll);
 					angular.forEach(others, function(other, i) {
 						var clbk = (i === others.length - 1) ? navDollClickCallback : false;
 						other.goAway(clbk);
 					});
-					navDoll.kiss();
+                    
+                    var closeClbk = function() {
+                        $timeout(function() {
+                            navDoll.kiss();
+                        }, 200);
+                    };
+                    
+                    navDoll.close(closeClbk);
+                    removeCursorPointer();
 				}
                 function cursorPointerOn() {
 				    scope.$emit('htmlclass::cursorPointer', true);
@@ -1747,7 +1756,20 @@ angular.module('personalApp.dollmaker', [])
 			kiss: []
         };
         this.animationPaths = {
-			kiss: []
+			kiss: [
+				{
+					reference: 'top28Lips',
+					path: 'M55.327,116.719 c6.587,1.392,4.155,5.395,11.092,5.45c7.099-0.073,4.505-4.059,11.092-5.45c-9.587-0.936-5.88-3.776-10.828-2.199 C61.194,112.972,64.914,116.492,55.327,116.719z'
+				},
+				{
+					reference: 'top25LeftEye',
+					path: 'M51.939,99.585c0-1.153,1.838-2.085,4.104-2.085 s4.104,0.932,4.104,2.085c0,1.152-1.838,0.095-4.104,0.095S51.939,100.737,51.939,99.585z'
+				},
+				{
+					reference: 'top26RightEye',
+					path: 'M80.232,99.585c0-1.153-1.839-2.085-4.104-2.085 c-2.266,0-4.104,0.932-4.104,2.085c0,1.152,1.839,0.095,4.104,0.095C78.393,99.68,80.232,100.737,80.232,99.585z'
+				}
+			]
         };
         this.pathOrder = [
             'bottom1Base',
