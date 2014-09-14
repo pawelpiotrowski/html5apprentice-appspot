@@ -14,12 +14,13 @@ angular.module('personalApp.dollmaker', [])
 				var navDollCounter = scope.$index;
 				var navDollWrapper = iElement;
 				var navDollSize = navDollCounter + 1;
-								
+                console.log(scope.sections[navDollCounter]);
 				var navDoll = AppservDesignDoll.please(
                     navDollCounter,
                     navDollWrapper,
                     navDollSize,
-                    scope.sections[navDollCounter].palette
+                    scope.sections[navDollCounter].palette,
+                    scope.sections[navDollCounter].slug.toUpperCase()
                 );
                 
 				function navDollClickCallback() {
@@ -108,11 +109,14 @@ angular.module('personalApp.dollmaker', [])
 .service('AppservDesignDoll', [
     'AppfactDoll',
 	function(AppfactDoll) {
-		this.please = function(sectionRef, element, size, palette) {
+		this.please = function(sectionRef, element, size, palette, innerText) {
+            
+            
             var dollReference = sectionRef;
             var dollWrapper = element;
             var dollRaphael = new Raphael(element[0]);
             var dollSize = size;
+            var dollInnerText = (angular.isDefined(innerText)) ? innerText : '';
             
             var dollCustomColors = {
                 bottom1Base: palette.contra,
@@ -140,7 +144,8 @@ angular.module('personalApp.dollmaker', [])
                 dollWrapper,
                 dollCustomColors,
                 dollCustomPaths,
-                dollCustomAnimation
+                dollCustomAnimation,
+                dollInnerText
             );
 		};
     }
@@ -174,7 +179,7 @@ angular.module('personalApp.dollmaker', [])
 	'AppservUtils',
 	'$timeout',
 	function(AppservDoll, AppservUtils, $timeout) {
-		return function(doll, dollsize, dollWrapper, colors, pathsRef, animationRef) {
+		return function(doll, dollsize, dollWrapper, colors, pathsRef, animationRef, dollText) {
 			this.id = AppservUtils.uniqueid();
 			this.el = doll;
 			this.wrapper = dollWrapper;
@@ -190,12 +195,18 @@ angular.module('personalApp.dollmaker', [])
 			this.animated = false;
             this.openingAnimation = null;
             this.closingAnimation = null;
+            this.dollText = dollText;
 			this.make = function() {
 
 				var doll = this.el;
 				var	dollRef = AppservDoll.paths;
 				var	dollRoot = this;
                 
+                var txt = dollRoot.dollText;
+                var txtStyle = AppservDoll.textStyle;
+                var txtCoords = AppservDoll.textCoords;
+                
+                var prevPath = '';
                 dollRoot.dollBottom = doll.set();
                 dollRoot.dollTop = doll.set();
                 
@@ -211,12 +222,23 @@ angular.module('personalApp.dollmaker', [])
                     if(_pathNamePart === 'bot') {
                         dollRoot.dollBottom.push(dollRoot.dollPaths[pathName]);
                     } else if(_pathNamePart === 'top') {
+                        // adding text path between 
+                        if(prevPath === 'bot') {
+                            var txtPath = doll.text(txtCoords.x, txtCoords.y, txt);
+                            
+                            txtPath.attr(txtStyle);
+                            
+                            txtPath.insertBefore(dollRoot.dollPaths[pathName]);
+                            dollRoot.dollBottom.push(txtPath);
+                        }
                         dollRoot.dollTop.push(dollRoot.dollPaths[pathName]);
                     } else if(_pathNamePart === 'sha') { // shape
                         dollRoot.dollOuter = dollRoot.dollPaths[pathName];
                     }
+                    
+                    prevPath = _pathNamePart;
 				});
-
+                
 				doll.setViewBox(0, 0, AppservDoll.svgSize.w, AppservDoll.svgSize.h, true);
 				//doll.setSize('100%', '100%');
 				doll.canvas.setAttribute('preserveAspectRatio', 'xMidYMax');
@@ -230,9 +252,9 @@ angular.module('personalApp.dollmaker', [])
 				switch(eName) {
 					case 'click':
 						if(addOrRemove) {
-							this.dollShape.click(eHandler);
+							this.dollOuter.click(eHandler);
 						} else {
-							this.dollShape.unclick(eHandler);
+							this.dollOuter.unclick(eHandler);
 						}
 						break;
                     case 'hover':
@@ -339,7 +361,6 @@ angular.module('personalApp.dollmaker', [])
                 var _animTime = (dirUpDown) ? 250 : 150;
                 
                 if(dollRoot[_otherAnimRefStr]) {
-                    console.log('KILLING', (dirUpDown) ? 'CLOSE' : 'OPEN');
                     dollRoot.dollTop.stop(dollRoot[_otherAnimRefStr]);
                     dollRoot[_otherAnimRefStr] = null;
                 }
@@ -350,7 +371,6 @@ angular.module('personalApp.dollmaker', [])
                 var _clbk = function() {
                     _clbkCounter++;
                     if(_clbkCounter === dollRoot.dollTop.length) {
-                        console.log('animation sets FINISHED!!!');
                         dollRoot[_thisAnimRefStr] = null;
                         if(angular.isFunction(clbk)) { clbk(); }
                     }
@@ -1156,6 +1176,15 @@ angular.module('personalApp.dollmaker', [])
         this.svgSize = {
             h: 300,
             w: 134
+        };
+        this.textCoords = {
+            x: 67,
+            y: 187
+        };
+        this.textStyle = {
+            'font-family': '"VeljovicScriptLTW02-Bol", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif',
+            'font-size': 16,
+            'fill': '#222222'
         };
         this.getPathsString = function(pathsArray) {
 			var pathsString = '';

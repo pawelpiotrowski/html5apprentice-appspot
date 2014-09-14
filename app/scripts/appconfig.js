@@ -77,9 +77,9 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         mobileNavOpen: 'mobile-nav-open'
     },
     homeContent: {
-        line1: 'Hello my name is Pawel and I make',
-        line2: 'handcrafted html, css',
-        line3: 'and javascript.'
+        line1: 'Hey, how are you? My name is Pawel',
+        line2: 'I am a web developer',
+        line3: 'and this is how I rock.'
     },
     globalTransitionMsTime: 600,
     pageLayoutLeft: '20%',
