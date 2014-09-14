@@ -39,9 +39,21 @@ angular.module('personalApp.dollmaker', [])
 				}
                 function cursorPointerOn() {
 				    scope.$emit('htmlclass::cursorPointer', true);
+                    //console.log(navDoll.dollTop);
+                    var _ty = 40 * navDoll.scale;
+                    var _trans = 't0,-'+_ty+'s'+navDoll.scale+','+navDoll.scale+',67,300';
+                    console.log(_trans);
+                    navDoll.dollTop.animate({
+                        transform: _trans
+                    }, 200, 'bounce');
                 }
                 function cursorPointerOff() {
 				    scope.$emit('htmlclass::cursorPointer', false);
+                    var _trans = 't0,0s'+navDoll.scale+','+navDoll.scale+',67,300';
+                    console.log(_trans);
+                    navDoll.dollTop.animate({
+                        transform: _trans
+                    }, 200);
                 }
                 function removeCursorPointer() {
                     navDoll.action('hover', [cursorPointerOn, cursorPointerOff], false);
@@ -105,22 +117,22 @@ angular.module('personalApp.dollmaker', [])
             var dollWrapper = element;
             var dollRaphael = new Raphael(element[0]);
             var dollSize = size;
-
-            // extension array order: hair eyebrow eye nose lips
+            
             var dollCustomColors = {
-                basePath: palette.contra,
-                headPath: palette.main,
-                bellyPath: palette.main,
-                bowPath: palette.main,
-                hairPath: palette.extension[0],
-                leftEyeBrowPath: palette.extension[1],
-                rightEyeBrowPath: palette.extension[1],
-                leftEyeLashPath: palette.extension[2],
-                rightEyeLashPath: palette.extension[2],
-                leftEyePath: palette.extension[2],
-                rightEyePath: palette.extension[2],
-                nosePath: palette.extension[3],
-                lipsPath: palette.extension[4]
+                bottom1Base: palette.contra,
+                bottom4Body: palette.main,
+                top12Base: palette.contra,
+                top13Head: palette.main,
+                top14Bow: palette.main,
+                top22Hair: palette.extension[0],
+                top20LeftEyebrow: palette.extension[1],
+                top21RightEyebrow: palette.extension[1],
+                top23LeftEyelash: palette.extension[2],
+                top24RightEyelash: palette.extension[2],
+                top25LeftEye: palette.extension[2],
+                top26RightEye: palette.extension[2],
+                top27Nose: palette.extension[3],
+                top28Lips: palette.extension[4]
             };
 
             var dollCustomPaths = dollReference;
@@ -173,6 +185,8 @@ angular.module('personalApp.dollmaker', [])
 			this.scale = 1 - dollsize / 10;
 			this.pathColors = (colors) ? colors : {};
 			this.dollShape = null;
+            this.dollBottom = null;
+            this.dollTop = null;
 			this.dollPaths = {};
 			this.customPaths = (angular.isNumber(pathsRef) && AppservDoll.customPaths[pathsRef]) ? AppservDoll.customPaths[pathsRef] : {};
 			this.customAnimation = (animationRef) ? animationRef : false;
@@ -182,22 +196,35 @@ angular.module('personalApp.dollmaker', [])
 				var doll = this.el;
 				var	dollRef = AppservDoll.paths;
 				var	dollRoot = this;
-				
-				doll.setStart();
-
+                
+                dollRoot.dollBottom = doll.set();
+                dollRoot.dollTop = doll.set();
+				//doll.setStart();
+                
 				angular.forEach(AppservDoll.pathOrder, function(pathName) {
+                    // setting dollTop group
+                    var _pathNamePart = pathName.substr(0,3);
+                    
 					var thisPath = (pathName in dollRoot.customPaths) ? dollRoot.customPaths[pathName] : dollRef[pathName];
 					dollRoot.dollPaths[pathName] = doll.path(thisPath.path)
 					.attr('fill', (thisPath.name in dollRoot.pathColors) ? dollRoot.pathColors[thisPath.name] : thisPath.color);
 					thisPath.make(dollRoot.dollPaths[pathName]);
+                    
+                    if(_pathNamePart === 'bot') {
+                        dollRoot.dollBottom.push(dollRoot.dollPaths[pathName]);
+                    } else {
+                        dollRoot.dollTop.push(dollRoot.dollPaths[pathName]);
+                    }
 				});
 
 				//doll.setViewBox(0, 0, this.svgSize.w * this.divider, this.svgSize.h * this.divider, true);
 				doll.setViewBox(0, 0, AppservDoll.svgSize.w, AppservDoll.svgSize.h, true);
 				//doll.setSize('100%', '100%');
 				doll.canvas.setAttribute('preserveAspectRatio', 'xMidYMax');
-
-				this.dollShape = doll.setFinish();
+                
+				// this.dollShape = doll.setFinish();
+                this.dollShape = doll.set();
+                this.dollShape.push(this.dollBottom, this.dollTop);
 				this.dollShape.scale(this.scale,this.scale,AppservDoll.svgSize.w / 2, AppservDoll.svgSize.h);
                 
 			};
@@ -1079,7 +1106,49 @@ angular.module('personalApp.dollmaker', [])
 			});
 			return pathsString;
 		};
-        this.customPaths = [];
+        this.customPaths = [/*
+            {
+				top28Lips: {
+					name: 'top28Lips',
+					color: '#D45714',
+					path: 'M52.3271,67.2861c0.9131,3.5283,6.9858,9.3008,13.9229,9.3394c7.0986-0.0513,13.876-5.8691,14.2617-9.3394 C79.6992,69.6123,71.5,72.042,66.2085,72.042C60.8335,72.042,53.1401,69.6123,52.3271,67.2861z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'stroke-width': '0',
+							'stroke-opacity': '1'
+						})
+						.data('id', this.name);
+					}
+				},
+				top25LeftEye: {
+					name: 'top25LeftEye',
+					color: '#29190F',
+					path: 'M60.2319,53.583c0-1.5249-1.8389-2.7568-4.1035-2.7568c-2.2656,0-4.1045,1.2319-4.1045,2.7568 c0,1.5239,1.8389,2.771,4.1045,2.771C58.3931,56.354,60.2319,55.1069,60.2319,53.583z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'stroke-width': '0',
+							'stroke-opacity': '1'
+						})
+						.data('id', this.name);
+					}
+				},
+				top26RightEye: {
+					name: 'top26RightEye',
+					color: '#29190F',
+					path: 'M80.2324,53.583c0-1.5244-1.8398-2.7568-4.1045-2.7568c-2.2666,0-4.1045,1.2324-4.1045,2.7568 c0,1.5234,1.8398,2.771,4.1045,2.771S80.2324,55.1064,80.2324,53.583z',
+					make: function(dollpath) {
+						dollpath.attr({
+							'id': this.name,
+							'stroke-width': '0',
+							'stroke-opacity': '1'
+						})
+						.data('id', this.name);
+					}
+				}
+			}
+        */];
         this.paths = {
             bottom1Base: {
 				name: 'bottom1Base',
