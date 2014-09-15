@@ -49,17 +49,11 @@ angular.module('personalApp.dollmaker', [])
 				}
                 function cursorPointerOn() {
 				    scope.$emit('htmlclass::cursorPointer', true);
-                    var c = function() {
-                        console.log('opened');
-                    };
-                    navDoll.open(c);
+                    navDoll.open();
                 }
                 function cursorPointerOff() {
 				    scope.$emit('htmlclass::cursorPointer', false);
-                    var c = function() {
-                        console.log('closed');
-                    };
-                    navDoll.close(c);
+                    navDoll.close();
                 }
                 function removeCursorPointer() {
                     navDoll.action('hover', [cursorPointerOn, cursorPointerOff], false);
