@@ -50,6 +50,19 @@ Section
     @extend %full;
 }
 
+$pageViewNavTopSpace: 2.9em;
+
+.page-view--main {
+    height: 100%;
+    height: calc(100% - #{$pageViewNavTopSpace});
+    top: $pageViewNavTopSpace;
+}
+
+.page-view--detail {
+    top: 0;
+    z-index: 5;
+}
+
 .iscroll-holder {
     @extend %iscrollHolder;
 }
@@ -112,6 +125,7 @@ Section
 }
 
 .#{$home} {
+    height: 100%;
     top: 0;
     .headline {
         @extend .cursive-regular;
@@ -150,11 +164,12 @@ Section
 
 $spacingForNavAndSection: 10px;
 $sectionHolderWidth: 100% - $pageLayoutLeft;
+$sectionBottom: 0;
 
 // SECTION
 .section-holder {
     @extend %iscrollWrapper;
-    bottom: 4em;
+    bottom: $sectionBottom;
     line-height: 1.65;
     font-size: 1.1em;
     width: $sectionHolderWidth;
@@ -167,7 +182,7 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
 .section-inner {
 	@extend %pageMarginRight;
 	max-width: 1000px;
-    padding: 20px 0 0 $spacingForNavAndSection;
+    padding: 20px 0 $pageViewNavTopSpace $spacingForNavAndSection;
 }
 
 .section-title {
@@ -296,7 +311,7 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
     background-clip: padding-box;
     background-color: #d4d4d4;
     border-top: 3px groove hsla(0, 0%, 97%, 0.2);
-    bottom: 2.9em;
+    bottom: $sectionBottom;
     height: 1.45em;
     overflow: visible;
     position: absolute;
@@ -305,7 +320,7 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
 }
 
 .section-doll {
-    bottom: 2.9em;
+    bottom: $sectionBottom;
     height: 20%;
     margin-bottom: 8px;
     position: absolute;
@@ -318,9 +333,6 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
 }
 
 // SECTION -> DETAIL
-.page-view--detail {
-    z-index: 5;
-}
 
 .section-detail--holder {
     border-style: solid;
@@ -363,6 +375,7 @@ $sectionHolderWidth: 100% - $pageLayoutLeft;
 
 $pageNavFontSize: 1.1em;
 $pageNavLineHeight: 1.4;
+$pageNavMinHeight: $pageViewNavTopSpace - 0.4em;
 
 .page-nav {
     background-color: #fff;
@@ -370,8 +383,11 @@ $pageNavLineHeight: 1.4;
     border-width: 0 0 2px 0;
     font-size: $pageNavFontSize;
     line-height: $pageNavLineHeight;
-    position: relative;
+    min-height: $pageNavMinHeight;
+    position: absolute;
     text-transform: uppercase;
+    top: 0;
+    width: 100%;
     z-index: 66;
     @extend .cursive-medium;
 }
@@ -431,7 +447,7 @@ $pageNavLineHeight: 1.4;
     top: 0;
     width: 100%;
     svg {
-        height: 100%;
+        height: 2em;
         width: 100%;
     }
 }
