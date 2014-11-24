@@ -164,12 +164,11 @@ $pageViewNavTopSpace: 2.9em;
 
 $spacingForNavAndSection: 10px;
 $sectionHolderWidth: 100% - $pageLayoutLeft;
-$sectionBottom: 0;
 
 // SECTION
 .section-holder {
     @extend %iscrollWrapper;
-    bottom: $sectionBottom;
+    bottom: $pageViewNavTopSpace / 2;
     line-height: 1.65;
     font-size: 1.1em;
     width: $sectionHolderWidth;
@@ -182,7 +181,7 @@ $sectionBottom: 0;
 .section-inner {
 	@extend %pageMarginRight;
 	max-width: 1000px;
-    padding: 20px 0 $pageViewNavTopSpace $spacingForNavAndSection;
+    padding: 20px 0 0 $spacingForNavAndSection;
 }
 
 .section-title {
@@ -307,11 +306,14 @@ $sectionBottom: 0;
     }
 }
 
+
+$sectionFooterBottom: 0;
+
 .section-footer {
     background-clip: padding-box;
     background-color: #d4d4d4;
     border-top: 3px groove hsla(0, 0%, 97%, 0.2);
-    bottom: $sectionBottom;
+    bottom: $sectionFooterBottom;
     height: 1.45em;
     overflow: visible;
     position: absolute;
@@ -320,7 +322,7 @@ $sectionBottom: 0;
 }
 
 .section-doll {
-    bottom: $sectionBottom;
+    bottom: $sectionFooterBottom;
     height: 20%;
     margin-bottom: 8px;
     position: absolute;

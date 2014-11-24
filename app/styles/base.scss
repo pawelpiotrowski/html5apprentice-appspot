@@ -63,6 +63,7 @@ html, body {
     background-color: $pageBckgd;
     color: $pageColor;
     overflow: hidden;
+    position: relative;
     @extend %full;
 }
 
