@@ -13,17 +13,20 @@ angular.module('personalApp', [
     'personalApp.appintro',
     'personalApp.appsection',
     'personalApp.apputils',
-    'personalApp.dollhandcraft',
     'personalApp.dollmaker',
     'personalApp.logservice',
-    'personalApp.svgdrawings'
+    'personalApp.svgdrawings',
+    'personalApp.audiocontext'
 ])
 
 .config([
     '$stateProvider',
     '$urlRouterProvider',
+    '$locationProvider',
     'appSettings',
-    function ($stateProvider, $urlRouterProvider, appSettings) {
+    function ($stateProvider, $urlRouterProvider, $locationProvider, appSettings) {
+        
+        //$locationProvider.hashPrefix('!');
 
         var _home = appSettings.stateSlugs.home;
         var _page404 = appSettings.stateSlugs.page404;
@@ -104,5 +107,12 @@ angular.module('personalApp', [
         });
 
         $urlRouterProvider.otherwise('/'+_page404);
+    }
+])
+
+.run([
+    'AppservAudio',
+    function(AppservAudio) {
+        AppservAudio.init();
     }
 ]);

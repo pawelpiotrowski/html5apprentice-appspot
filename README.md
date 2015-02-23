@@ -1,18 +1,7 @@
 # README #
 
-### My private repo for html5apprentice.com ###
+app.yaml
 
-## TO DO ##
-
-* Check iscroll refresh event for each scroll instance against scope
-* Delay state for animation out if in detail view
-
-## DISTRIBUTION ##
-
-Put app.yaml in dist folder
-
-it should contain:
-    
     application: html5apprenticecom
     version: 1
     runtime: python27
@@ -20,10 +9,14 @@ it should contain:
     threadsafe: true
     
     handlers:
+    # re-direct to index.html if no path is given
     - url: /
     static_files: index.html
     upload: index.html
     
+    # access the static resources in the root directory
+    
     - url: /(.*)
     static_files: \1
     upload: (.*)
+
