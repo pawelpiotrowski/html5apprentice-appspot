@@ -9,7 +9,15 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         '/audio/greet/en/1.mp3',
         '/audio/greet/en/2.mp3',
         '/audio/greet/en/3.mp3',
-        '/audio/greet/en/4.mp3'
+        '/audio/greet/en/4.mp3',
+        '/audio/kiss/1.mp3',
+        '/audio/kiss/2.mp3',
+        '/audio/kiss/3.mp3',
+        '/audio/kiss/4.mp3',
+        '/audio/laugh/1.mp3',
+        '/audio/laugh/2.mp3',
+        '/audio/laugh/3.mp3',
+        '/audio/laugh/4.mp3'
     ],
     templatesDir: 'views/',
     partialsDir: 'partials/',

@@ -36,13 +36,23 @@ angular.module('personalApp.dollmaker', [])
                     navDoll.action('click', navDollClick, false);
                     var others = dollCollection.getOthers(navDoll);
                     angular.forEach(others, function(other, i) {
-                        var clbk = (i === others.length - 1) ? navDollClickCallback : false;
-                        other.goAway(clbk);
+                        /*var awaySoundRef = other._indexInCollection + 8;
+                        var clbkStart = {
+                            delay: other._indexInCollection * 20 + 1000,
+                            func: function() {
+                                //AppservAudio.playSound(awaySoundRef, 0);
+                                //console.log('away sound ref: ', awaySoundRef);
+                            }
+                        };*/
+                        // find last one and attach callback;
+                        var clbkFinished = (i === others.length - 1) ? navDollClickCallback : false;
+                        other.goAway(clbkFinished);
                     });
 
                     var closeClbk = function() {
                         $timeout(function() {
-                            navDoll.kiss();
+                            navDoll.kiss(navDollCounter);
+                            AppservAudio.playSound(navDollCounter + 4, 0);
                         }, 200);
                     };
 
@@ -67,6 +77,7 @@ angular.module('personalApp.dollmaker', [])
                 dollCollection.addDoll(navDoll);
                 scope.$on('$destroy', function() {
                     removeCursorPointer();
+                    dollCollection.resetCollection();
                 });
             }
         };
@@ -75,7 +86,8 @@ angular.module('personalApp.dollmaker', [])
 
 .directive('appdirMakeSectionDoll', [
     'AppservDesignDoll',
-    function(AppservDesignDoll) {
+    'AppservAudio',
+    function(AppservDesignDoll, AppservAudio) {
         return {
             restrict: 'A',
             link: function(scope, iElement) {
@@ -87,7 +99,10 @@ angular.module('personalApp.dollmaker', [])
                 var sectionDoll = AppservDesignDoll.please(sectionRef, iElement, size, sectionPalette);
 
                 function navDollClick() {
-                    sectionDoll.kiss();
+                    var sectionClickSoundRef = 8 + sectionRef;
+                    //console.log('SECTION DOLL click sound ref: ', sectionClickSoundRef);
+                    //sectionDoll.kiss();
+                    AppservAudio.playSound(sectionClickSoundRef, 0);
                 }
                 function cursorPointerOn() {
                     scope.$emit('htmlclass::cursorPointer', true);
@@ -168,12 +183,16 @@ angular.module('personalApp.dollmaker', [])
             };
             this.getOthers = function(doll) {
                 var _otherDolls = [];
-                angular.forEach(dolls, function(_doll) {
+                angular.forEach(dolls, function(_doll, i) {
                     if(doll.id !== _doll.id) {
+                        _doll._indexInCollection = i;
                         _otherDolls.push(_doll);
                     }
                 });
                 return _otherDolls;
+            };
+            this.resetCollection = function() {
+                dolls = [];
             };
         };
     }
@@ -332,16 +351,20 @@ angular.module('personalApp.dollmaker', [])
                 };
                 this.animateGesture(animationKissObj);
             };
-            this.goAway = function(clbk) {
+            this.goAway = function(clbkFinished, clbkStart) {
                 var dollWrapper = this.wrapper[0];
                 var walkingJump = TweenMax.to(dollWrapper, 0.04, { css: { y: '-10px' }, delay: 0.6, repeat: -1, yoyo: true, ease: 'Linear.easeNone' });
                 var wentAway = function() {
                     console.log('tween finished');
                     walkingJump.kill();
-                    if(angular.isFunction(clbk)) { $timeout(function() { clbk(); }, 100); }
+                    if(angular.isFunction(clbkFinished)) { $timeout(function() { clbkFinished(); }, 100); }
                 };
                 TweenMax.to(dollWrapper, 2, { css: { x: window.innerWidth }, delay: 0.5, ease: 'Power1.easeIn', onComplete: wentAway });
-                console.log('PLAY AWAY SOUND');
+                if(angular.isObject(clbkStart) && angular.isFunction(clbkStart.func)) {
+                    $timeout(function() {
+                        clbkStart.func();
+                    }, clbkStart.delay);
+                }
             };
 
             // this is rather internal serves open and close
