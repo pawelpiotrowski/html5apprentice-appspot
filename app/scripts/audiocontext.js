@@ -13,39 +13,39 @@ angular.module('personalApp.audiocontext', [])
         }
 
         BufferLoader.prototype.loadBuffer = function(url, index) {
-                // Load buffer asynchronously
-                var request = new XMLHttpRequest();
-                request.open('GET', url, true);
-                request.responseType = 'arraybuffer';
+            // Load buffer asynchronously
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.responseType = 'arraybuffer';
 
-                var loader = this;
+            var loader = this;
 
-                request.onload = function() {
-                    // Asynchronously decode the audio file data in request.response
-                    loader.context.decodeAudioData(
-                        request.response,
-                        function(buffer) {
-                            if (!buffer) {
-                                console.log('error decoding file data: ' + url);
-                                return;
-                            }
-                            loader.bufferList[index] = buffer;
-                            if (++loader.loadCount === loader.urlList.length) {
-                                loader.onload(loader.bufferList);
-                            }
-                        },
-                        function(error) {
-                            console.error('decodeAudioData error', error);
+            request.onload = function() {
+                // Asynchronously decode the audio file data in request.response
+                loader.context.decodeAudioData(
+                    request.response,
+                    function(buffer) {
+                        if (!buffer) {
+                            console.log('error decoding file data: ' + url);
+                            return;
                         }
-                    );
-                };
-
-                request.onerror = function() {
-                    console.error('BufferLoader: XHR error');
-                };
-
-                request.send();
+                        loader.bufferList[index] = buffer;
+                        if (++loader.loadCount === loader.urlList.length) {
+                            loader.onload(loader.bufferList);
+                        }
+                    },
+                    function(error) {
+                        console.error('decodeAudioData error', error);
+                    }
+                );
             };
+
+            request.onerror = function() {
+                console.error('BufferLoader: XHR error');
+            };
+
+            request.send();
+        };
 
         BufferLoader.prototype.load = function() {
             for (var i = 0; i < this.urlList.length; ++i) {

@@ -31,16 +31,12 @@ angular.module('personalApp.dollmaker', [])
                     scope.changeLocation(scope.section.slug);
                 }
                 
-                function navDollAwayCallback() {
-                    console.log('away callback');
-                }
-                
                 function navDollClick() {
                     console.log('doll clicked');
                     navDoll.action('click', navDollClick, false);
                     var others = dollCollection.getOthers(navDoll);
                     angular.forEach(others, function(other, i) {
-                        var clbk = (i === others.length - 1) ? navDollClickCallback : navDollAwayCallback;
+                        var clbk = (i === others.length - 1) ? navDollClickCallback : false;
                         other.goAway(clbk);
                     });
 
