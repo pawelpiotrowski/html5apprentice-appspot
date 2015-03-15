@@ -4,6 +4,13 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 
 .constant('appSettings', {
 	contentPath: 'http://cdn.contentful.com/spaces/hbdg3afnrqv7/entries?content_type=204FqWl3MAcAosq0gMoKKm&access_token=2b9e567ba1502393bee07289559bdcb852a9349202178a3e6c0ba7a523067e62',
+    contentToken: '2b9e567ba1502393bee07289559bdcb852a9349202178a3e6c0ba7a523067e62',
+    contentSounds: [
+        '/audio/greet/en/1.mp3',
+        '/audio/greet/en/2.mp3',
+        '/audio/greet/en/3.mp3',
+        '/audio/greet/en/4.mp3'
+    ],
     templatesDir: 'views/',
     partialsDir: 'partials/',
 	exludeSections: ['test', 'not-found'],
@@ -77,9 +84,9 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
         mobileNavOpen: 'mobile-nav-open'
     },
     homeContent: {
-        line1: 'Hello my name is Pawel and I make',
-        line2: 'handcrafted html, css',
-        line3: 'and javascript.'
+        line1: 'Hey, how are you? My name is Pawel',
+        line2: 'I am a web developer',
+        line3: 'and this is how I rock.'
     },
     globalTransitionMsTime: 600,
     pageLayoutLeft: '20%',

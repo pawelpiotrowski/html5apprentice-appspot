@@ -117,7 +117,8 @@ module.exports = function (grunt) {
 					src: [
 						'.tmp',
 						'<%= yeoman.dist %>/*',
-						'!<%= yeoman.dist %>/.git*'
+						'!<%= yeoman.dist %>/.git*',
+                        '!<%= yeoman.dist %>/*.yaml*'
 					]
 				}]
 			},
@@ -186,8 +187,8 @@ module.exports = function (grunt) {
 					src: [
 						'<%= yeoman.dist %>/scripts/{,*/}*.js',
 						'<%= yeoman.dist %>/styles/{,*/}*.css',
-						'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-						'<%= yeoman.dist %>/fonts/*'
+						'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'/*,
+						'<%= yeoman.dist %>/fonts/*' */
 					]
 				}
 			}
@@ -287,7 +288,8 @@ module.exports = function (grunt) {
 						'bower_components/**/*',
 						'images/{,*/}*.{webp}',
 						'fonts/*',
-						'data/*'
+						'data/*',
+                        'audio/{,**/}*.mp3'
 					]
 				}, {
 					expand: true,
