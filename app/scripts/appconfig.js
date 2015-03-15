@@ -6,10 +6,10 @@ angular.module('personalApp.appconfig', ['personalApp.logservice'])
 	contentPath: 'http://cdn.contentful.com/spaces/hbdg3afnrqv7/entries?content_type=204FqWl3MAcAosq0gMoKKm&access_token=2b9e567ba1502393bee07289559bdcb852a9349202178a3e6c0ba7a523067e62',
     contentToken: '2b9e567ba1502393bee07289559bdcb852a9349202178a3e6c0ba7a523067e62',
     contentSounds: [
-        '/audio/1a.wav',
-        '/audio/2a.wav',
-        '/audio/3a.wav',
-        '/audio/4a.wav'
+        '/audio/greet/pl/1.mp3',
+        '/audio/greet/pl/2.mp3',
+        '/audio/greet/pl/3.mp3',
+        '/audio/greet/pl/4.mp3'
     ],
     templatesDir: 'views/',
     partialsDir: 'partials/',

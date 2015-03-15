@@ -30,12 +30,17 @@ angular.module('personalApp.dollmaker', [])
                     console.log(scope.section.slug);
                     scope.changeLocation(scope.section.slug);
                 }
+                
+                function navDollAwayCallback() {
+                    console.log('away callback');
+                }
+                
                 function navDollClick() {
                     console.log('doll clicked');
                     navDoll.action('click', navDollClick, false);
                     var others = dollCollection.getOthers(navDoll);
                     angular.forEach(others, function(other, i) {
-                        var clbk = (i === others.length - 1) ? navDollClickCallback : false;
+                        var clbk = (i === others.length - 1) ? navDollClickCallback : navDollAwayCallback;
                         other.goAway(clbk);
                     });
 
@@ -340,6 +345,7 @@ angular.module('personalApp.dollmaker', [])
                     if(angular.isFunction(clbk)) { $timeout(function() { clbk(); }, 100); }
                 };
                 TweenMax.to(dollWrapper, 2, { css: { x: window.innerWidth }, delay: 0.5, ease: 'Power1.easeIn', onComplete: wentAway });
+                console.log('PLAY AWAY SOUND');
             };
 
             // this is rather internal serves open and close

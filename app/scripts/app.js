@@ -26,7 +26,7 @@ angular.module('personalApp', [
     'appSettings',
     function ($stateProvider, $urlRouterProvider, $locationProvider, appSettings) {
         
-        //$locationProvider.hashPrefix('!');
+        $locationProvider.hashPrefix('!');
 
         var _home = appSettings.stateSlugs.home;
         var _page404 = appSettings.stateSlugs.page404;
